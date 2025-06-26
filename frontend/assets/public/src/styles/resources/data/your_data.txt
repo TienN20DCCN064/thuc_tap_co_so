@@ -1,0 +1,18 @@
+@relation sales_data
+
+@attribute maSp {SP001, SP002, SP003, SP004, SP005}
+@attribute maSize {S, M, L, XL}
+@attribute soLuong numeric
+@attribute thoiGian date "yyyy-MM-dd"
+
+@data
+SP001, S, 10, 2024-11-01
+SP002, M, 20, 2024-11-02
+SP003, L, 30, 2024-11-03
+SP004, XL, 15, 2024-11-04
+SP005, M, 25, 2024-11-05
+SP001, L, 5, 2024-11-06
+SP003, XL, 10, 2024-11-07
+SP004, S, 12, 2024-11-08
+SP005, L, 18, 2024-11-09
+SP001, M, 30, 2024-11-10

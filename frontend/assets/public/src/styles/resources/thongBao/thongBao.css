@@ -1,0 +1,23 @@
+.special-highlight {
+  background-color: #ffe6e6; /* Màu nền nhạt để làm nổi bật */
+  border: 2px solid red; /* Đường viền đỏ */
+  padding: 10px; /* Thêm khoảng cách bên trong */
+  border-radius: 5px; /* Làm mềm các góc */
+}
+
+.no-products {
+  color: green; /* Màu chữ xanh */
+}
+
+.no-products i {
+  font-size: 20px; /* Chữ nhỏ */
+  font-style: italic; /* In nghiêng */
+}
+
+/* CSS để in chữ màu đỏ */
+.red-text {
+  color: red; /* Đổi màu chữ thành đỏ */
+}
+
+
+

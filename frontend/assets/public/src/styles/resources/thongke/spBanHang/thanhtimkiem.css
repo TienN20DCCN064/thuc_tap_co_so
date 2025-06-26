@@ -1,0 +1,26 @@
+/* Container của thanh tìm kiếm */
+
+
+/* Ô tìm kiếm */
+#searchInput {
+    width: calc(100% - 500px); /* Chiều rộng giảm đi 10px */
+    padding: 10px 15px; /* Khoảng cách bên trong */
+    font-size: 30px; /* Kích thước chữ */
+    border: 3px solid #ccc; /* Viền mỏng */
+    border-radius: 5px; /* Góc bo tròn */
+    outline: none; /* Loại bỏ viền mặc định khi chọn */
+    transition: all 0.3s ease; /* Hiệu ứng khi tương tác */
+}
+
+/* Hiệu ứng khi hover hoặc focus */
+#searchInput:hover, 
+#searchInput:focus {
+    border-color: #4caf50; /* Đổi màu viền khi focus */
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Tạo hiệu ứng đổ bóng */
+}
+
+/* Placeholder style (nếu muốn tùy chỉnh thêm) */
+#searchInput::placeholder {
+    color: #aaa; /* Màu placeholder */
+    font-style: italic; /* Chữ nghiêng */
+}

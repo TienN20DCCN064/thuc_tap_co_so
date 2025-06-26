@@ -1,0 +1,25 @@
+#pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+ }
+ 
+ .page-btn {
+    background: #ff6347;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+ }
+ 
+ .page-btn.active {
+    background: #333;
+ }
+ 
+ .page-btn:hover {
+    background: #ff4500;
+ }
+ 

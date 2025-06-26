@@ -1,0 +1,52 @@
+/* Toàn bộ nền */
+body {
+    font-family: Arial, sans-serif;
+ /* Đường dẫn tương đối đến ảnh nền */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Hộp nội dung */
+.container {
+    background-color: rgba(255, 255, 255, 0.9); /* Nền trong suốt */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hình ảnh đại diện */
+.avatar {
+    border: 2px solid #ddd;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+/* Tiêu đề */
+h2 {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Các nhãn */
+label {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Nút */
+button {
+    border-radius: 20px;
+    font-size: 14px;
+}
+button.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+button.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}

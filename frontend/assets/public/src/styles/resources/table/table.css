@@ -1,0 +1,102 @@
+/* Định dạng chung cho bảng */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Định dạng các ô trong bảng */
+th, td {
+    padding: 15px 10px;
+    text-align: center; /* Canh giữa nội dung */
+    border: 1px solid #ddd; /* Đường viền ngăn cách */
+    vertical-align: middle; /* Căn giữa nội dung dọc */
+}
+
+/* Định dạng tiêu đề bảng */
+th {
+    background-color: #4CAF50; /* Màu nền nổi bật */
+    color: white; /* Chữ màu trắng */
+    font-weight: bold;
+}
+
+/* Định dạng các hàng chẵn và lẻ để dễ nhìn hơn */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Hiệu ứng hover cho các hàng */
+tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Định dạng phần tổng doanh thu */
+.right {
+    margin-top: 30px;
+}
+
+.total {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.total-label {
+    color: #4CAF50;
+}
+
+.total-amount {
+    color: #FF5722;
+}
+
+/* Định dạng phần Top 5 sản phẩm bán chạy */
+.top5 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #FF5722;
+}
+
+/* Định dạng các bảng nhỏ */
+.product-table {
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    width: 100%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-table th, .product-table td {
+    text-align: center;
+    padding: 12px;
+}
+
+.product-table th {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.product-table td {
+    color: #555;
+}
+
+/* Cố định độ rộng cột */
+.id-list {
+    width: 15%; /* ID */
+}
+
+.date-list {
+    width: 40%; /* Ngày lập */
+}
+
+.amount-list {
+    width: 45%; /* Tổng tiền */
+}

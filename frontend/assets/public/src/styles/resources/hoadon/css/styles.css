@@ -1,0 +1,90 @@
+table {
+  margin: 50px auto 0;
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 1200px; /* increased max-width to fit larger screens */
+  background-color: #f8f8f8; /* changed background color to a lighter shade */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+thead tr th {
+  background-color: #2ecc71; /* changed background color to a brighter green */
+  color: #fff;
+  text-align: left;
+  height: 50px;
+}
+
+tbody tr td {
+  height: 30px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #e5e5e5; /* changed hover background color to a lighter shade */
+}
+
+.btn-confirm {
+  position: absolute;
+  top: 20px;
+  right: 5px; /* adjust this value to move the button to the right */
+  margin-right: calc((100% - 80%) / 2); /* Calculates margin to match table width */
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: #fff;
+  background-color: #2ecc71;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-confirm:hover {
+  background-color: #27ae60;
+}
+
+table, thead, tbody, tr, th, td {
+  font-family: Open Sans, sans-serif;
+}
+
+.toggle-button {
+  display: block;
+  width: 40px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: gray;
+  position: relative;
+  margin-left: 10px; /* added margin-left to push the toggle button to the left */
+}
+
+.circle {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  transition: left 0.2s;
+}
+
+.toggle-button.on {
+  background-color: green;
+}
+
+.toggle-button.on .circle {
+  left: calc(100% - 20px);
+}
+
+td:last-child {
+  text-align: center;
+  padding: 0;
+  white-space: nowrap; /* added to prevent the last column from wrapping */
+}

@@ -1,0 +1,210 @@
+<!-- <%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%> -->
+<!-- 	
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark"> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>QUẢN LÝ</title>
+
+    <link href="/frontend/assets/public/src/styles/resources/quanly/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="height: 100px;">
+
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="/frontend/assets/public/src/view/quanly_admin/giai_dau/giaiDau.html">Trang chủ trung
+                tâm</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false"><i
+                            class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item"
+                                href="/frontend/assets/public/src/view/trang_chung/ho_so.html">Hồ sơ
+                                của bạn</a></li>
+                        <li><a class="dropdown-item"
+                                href="/frontend/assets/public/src/view/trang_chung/doi_mk.html">Đổi
+                                Mật Khẩu</a></li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li><a class="dropdown-item" href="/frontend/assets/public/src/view/login.html">Đăng
+                                Xuất</a></li>
+                    </ul>
+                </li>
+
+
+            </ul>
+            <!-- UL Gửi Gmail (TÁCH RIÊNG) -->
+            <ul class="navbar-nav me-auto ms-3">
+                <li class="nav-item">
+                    <a class="nav-link" href="/frontend/assets/public/src/view/trang_chung/gui_gmail.html" onclick="sendEmail()">
+                        <i class="fas fa-envelope"></i> Gửi Gmail
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+
+                            <!-- Người Dùng -->
+                            <div class="sb-sidenav-menu-heading">Người Dùng</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users-cog"></i></div> Người Dùng
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseUsers" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/frontend/assets/public/src/view/quanly_admin/nguoi_dung/vaiTro.html">Vai
+                                        Trò</a>
+                                    <a class="nav-link" href="/frontend/assets/public/src/view/quanly_admin/nguoi_dung/tai_khoan.html">Tài
+                                        Khoản</a>
+                                    <a class="nav-link"
+                                        href="/frontend/assets/public/src/view/quanly_admin/nguoi_dung/nguoiDung.html">Người
+                                        Dùng</a>
+                                </nav>
+                            </div>
+
+                            <!-- Trọng Tài -->
+                            <div class="sb-sidenav-menu-heading">Trọng Tài</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseReferees" aria-expanded="false"
+                                aria-controls="collapseReferees">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div> Trọng Tài
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseReferees" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/frontend/assets/public/src/view/quanly_admin/trong_tai/trongTai.html">Trọng
+                                        Tài</a>
+                                    <a class="nav-link"
+                                        href="/frontend/assets/public/src/view/quanly_admin/trong_tai/loaiTrongTai.html">Loại
+                                        Trọng Tài</a>
+                                </nav>
+                            </div>
+
+                            <!-- Trận Đấu -->
+                            <div class="sb-sidenav-menu-heading">Trận Đấu</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseMatches" aria-expanded="false" aria-controls="collapseMatches">
+                                <div class="sb-nav-link-icon"><i class="fas fa-futbol"></i></div> Trận Đấu
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseMatches" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/frontend/assets/public/src/view/quanly_admin/tran_dau/tranDau.html">Trận
+                                        Đấu</a>
+                                    <a class="nav-link"
+                                        href="/frontend/assets/public/src/view/quanly_admin/tran_dau/ketQuaTranDau.html">Kết
+                                        Quả</a>
+
+                                </nav>
+                            </div>
+
+                            <!-- Đội Bóng -->
+                            <div class="sb-sidenav-menu-heading">Đội Bóng</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTeams" aria-expanded="false" aria-controls="collapseTeams">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div> Đội Bóng
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseTeams" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/doiBong.html">Đội
+                                        Bóng</a>
+                                    <a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/cau_thu.html">Cầu
+                                        Thủ</a>
+                                    <a class="nav-link" href="/frontend/view/quanly_admin/doi_bong/viTriCauThu.html">Vị
+                                        Trí
+                                        Cầu Thủ</a>
+                                </nav>
+                            </div>
+
+                            <!-- Giải Đấu -->
+                            <div class="sb-sidenav-menu-heading">Giải Đấu</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTournament" aria-expanded="false"
+                                aria-controls="collapseTournament">
+                                <div class="sb-nav-link-icon"><i class="fas fa-trophy"></i></div> Giải Đấu
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseTournament" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/giaiDau.html">Giải
+                                        Đấu</a>
+                                    <a class="nav-link"
+                                        href="/frontend/view/quanly_admin/giai_dau/dangKyThamGiaGiai.html">Đăng
+                                        Ký Tham Gia</a>
+                                    <a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/bangDau.html">Bảng
+                                        Đấu</a>
+                                    <a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/vongDau.html">Vòng
+                                        Đấu</a>
+                                    <a class="nav-link"
+                                        href="/frontend/view/quanly_admin/giai_dau/bangXepHangVongLoai.html">BXH Vòng
+                                        Loại</a>
+                                    <a class="nav-link" href="/frontend/view/quanly_admin/giai_dau/sanVanDong.html">Sân
+                                        Vận
+                                        Động</a>
+                                </nav>
+                            </div>
+
+
+                            <!-- Trong 1 Trận Đấu -->
+                            <div class="sb-sidenav-menu-heading">Trong Một Giải Đấu</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTournamentDetail" aria-expanded="false"
+                                aria-controls="collapseTournamentDetail">
+                                <div class="sb-nav-link-icon"><i class="fas fa-trophy"></i></div> Trong Một Giải Đấu
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+
+                            <div class="collapse" id="collapseTournamentDetail" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link"
+                                        href="/frontend/view/quanly_admin/trong_mot_giai_dau/trongTai_tranDau.html">Trọng
+                                        Tài -
+                                        Trận Đấu</a>
+                                    <a class="nav-link"
+                                        href="/frontend/view/quanly_admin/trong_mot_giai_dau/cauThu_giaiDau.html">Cầu
+                                        Thủ - Giải
+                                        Đấu</a>
+                                    <a class="nav-link"
+                                        href="/frontend/view/quanly_admin/trong_mot_giai_dau/doiBong_giaiDau.html"> Đội
+                                        Bóng
+                                        Giải Đấu</a>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        Quản lý
+                    </div>
+
+                </nav>
+            </div>
+        </div>
+
+</body>
