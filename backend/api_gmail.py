@@ -2,14 +2,26 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import smtplib
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
+import os
+
+# Nạp file .env (vì nằm cùng thư mục với file này)
+load_dotenv(dotenv_path=".env")
+# Lấy biến môi trường
+email = os.getenv("EMAIL_SENDER")
+password = os.getenv("EMAIL_PASSWORD")
+
+# # In ra kiểm tra
+# print("Email:", email)
+# print("Mật khẩu:", password)
 
 app = Flask(__name__)
 CORS(app)
 port = 5002
 
 # Cấu hình tài khoản Gmail
-EMAIL_SENDER = "vantien18122002@gmail.com"
-EMAIL_PASSWORD = "lgez ijzt asgs hpju"  # Mật khẩu ứng dụng mới từ Google
+EMAIL_SENDER = email
+EMAIL_PASSWORD = password  # Mật khẩu ứng dụng mới từ Google
 @app.route('/api/send-email', methods=['POST'])
 def send_email():
     try:

@@ -1,0 +1,4 @@
+# Bỏ qua file cấu hình nhạy cảm ở bất kỳ đâu
+**/.env
+# Node modules (với Node.js)
+node_modules/

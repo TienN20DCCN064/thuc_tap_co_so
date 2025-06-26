@@ -3,16 +3,19 @@ from flask_cors import CORS
 import cloudinary
 import cloudinary.uploader
 import os
+from dotenv import load_dotenv  # ← Thêm dòng này
 from werkzeug.utils import secure_filename
+# Nạp biến môi trường từ .env
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 port = 5000 ;           # api chạy trên cổng
-# Cấu hình Cloudinary
+# Cấu hình Cloudinary từ biến môi trường
 cloudinary.config(
-    cloud_name='dyilzwziv',
-    api_key='215441275658421',
-    api_secret='pMiC5-j_zWwvmOlkgohQ62cyQsY'
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('CLOUD_API_KEY'),
+    api_secret=os.getenv('CLOUD_API_SECRET')
 )
 
 # Thư mục lưu ảnh Cloudinary tạm thời
