@@ -57,12 +57,18 @@
                 <div class="card-header">
                     <form:form class="row mb-3" modelAttribute="vongDauEntity" action="" method="post">
                         <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Giải Đấu</label>
+                            <select class="form-control" id="maGiaiDau">
+                                <option value="">-- Chọn Mã Giải Đấu --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
                             <label class="font-weight-bold">Mã Vòng Đấu</label>
                             <input path="maVongDau" type="text" class="form-control" id="maVongDau" required readonly />
                         </div>
                         <div class="col-md-4">
-                            <label class="font-weight-bold">Tên Vòng</label>
-                            <input path="tenVong" type="text" class="form-control" id="tenVong" required />
+                            <label class="font-weight-bold">Tên Vòng Đấu</label>
+                            <input path="tenVongDau" type="text" class="form-control" id="tenVongDau" required />
                         </div>
                         <div class="col-md-4">
                             <label class="font-weight-bold">Mô Tả</label>
@@ -80,10 +86,23 @@
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH VÒNG ĐẤU
                     </div>
+                    <div style="margin-left: 100px;">
+                        <form:form class="row mb-3" modelAttribute="doiBongTrongBangEntity" action="" method="post">
+                            <div class="col-md-3">
+                                <label class="font-weight-bold">Giải Đấu</label>
+                                <select class="form-control" id="maGiaiDau_chon_viewbody" required>
+                                    <option value="">-- Chọn Giải Đấu--</option>
+                                </select>
+                            </div>
+
+
+                        </form:form>
+                    </div>
                     <div class="card-body">
                         <table id="table">
                             <thead>
                                 <tr>
+                                    <th style="text-align: center;">Mã Giải Đấu</th>
                                     <th style="text-align: center;">Mã Vòng Đấu</th>
                                     <th style="text-align: center;">Tên Vòng</th>
                                     <th style="text-align: center;">Mô Tả</th>
@@ -93,6 +112,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th style="text-align: center;">Mã Giải Đấu</th>
                                     <th style="text-align: center;">Mã Vòng Đấu</th>
                                     <th style="text-align: center;">Tên Vòng</th>
                                     <th style="text-align: center;">Mô Tả</th>

@@ -8,33 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Quản lý nhân viên</title>
-    <style>
-        label {
-            display: block;
-            font: 1rem 'Fira Sans', sans-serif;
-        }
-
-        input,
-        label {
-            margin: 0.4rem 0;
-        }
-    </style>
+    <title>Quản lý người dùng</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="/frontend/assets/public/src/styles/resources/quanly/css/styles.css" rel="stylesheet" />
-
     <link href="/frontend/assets/public/src/styles/resources/table/table.css" rel="stylesheet" />
     <link href="/frontend/assets/public/src/styles/resources/table/time.css" rel="stylesheet" />
     <link rel="icon" href="/frontend/assets/public/src/styles/resources/img/logowebsite.png" type="image/png" />
-
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="sb-nav-fixed">
-
     <div id="chen"></div>
     <script>
-        // Sử dụng Fetch API để tải nội dung file HTML và chèn vào vị trí div
         fetch('/frontend/assets/public/src/common/quanly/header.html')
             .then(response => response.text())
             .then(data => {
@@ -52,109 +37,87 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="card-header">
-                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ NHÀ HÀNG</label>
+                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ NGƯỜI DÙNG</label>
                 </div>
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
                         <div class="col-md-3">
                             <label class="font-weight-bold">Mã Người Dùng</label>
-                            <input path="maNguoiDung" type="text" class="form-control" id="maNguoiDung" required readonly />
+                            <input type="text" class="form-control" id="maNguoiDung" readonly />
                         </div>
-
-                        <!-- <div class="col-md-3">
-                            <label class="font-weight-bold">Tài Khoản</label>
-                            <input path="taiKhoan" type="text" class="form-control" id="taiKhoan" required />
-                        </div> -->
-
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Tài Khoản</label>
-                            <select class="form-control" id="taiKhoan">
-                                <option value="">-- Chọn Tài Khoản --</option>
+                            <label class="font-weight-bold">Mã Trường</label>
+                            <select class="form-control" id="maTruong">
+                                <option value="">-- Chọn Trường --</option>
                             </select>
                         </div>
-
                         <div class="col-md-3">
                             <label class="font-weight-bold">Họ Tên</label>
-                            <input path="hoTen" type="text" class="form-control" id="hoTen" required />
+                            <input type="text" class="form-control" id="hoTen" required />
                         </div>
-
                         <div class="col-md-3">
                             <label class="font-weight-bold">Giới Tính</label>
-                            <select path="gioiTinh" class="form-control" id="gioiTinh">
+                            <select class="form-control" id="gioiTinh">
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                             </select>
                         </div>
-
                         <div class="col-md-3">
                             <label class="font-weight-bold">Email</label>
-                            <input path="email" type="email" class="form-control" id="email" required />
+                            <input type="email" class="form-control" id="email" required />
                         </div>
-
                         <div class="col-md-3">
                             <label class="font-weight-bold">Số Điện Thoại</label>
-                            <input path="soDienThoai" type="tel" class="form-control" id="soDienThoai" required />
+                            <input type="tel" class="form-control" id="soDienThoai" required />
                         </div>
-
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Ngày Tạo</label>
-                            <input path="ngayTao" type="date" class="form-control" id="ngayTao" required />
+                            <label class="font-weight-bold">Ngày Sinh</label>
+                            <input type="date" class="form-control" id="ngaySinh" required />
                         </div>
-
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
                                 <button id="button_luu" class="btn btn-success">Lưu</button>
-                                <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
-                                    Trang</button>
-                               
+                                <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại Trang</button>
                             </div>
                         </div>
-                    </form:form>
+                    </form>
                 </div>
-
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH NGƯỜI DÙNG
                     </div>
                     <div class="card-body">
-
                         <table id="table">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;">Mã Người Dùng</th>
-                                    <th style="text-align: center;">Tài Khoản</th>
+                                    <th style="text-align: center;">Mã Trường</th>
                                     <th style="text-align: center;">Họ Tên</th>
                                     <th style="text-align: center;">Giới Tính</th>
                                     <th style="text-align: center;">Email</th>
                                     <th style="text-align: center;">Số Điện Thoại</th>
-                                    <th style="text-align: center;">Ngày Tạo</th>
+                                    <th style="text-align: center;">Ngày Sinh</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </thead>
-
                             <tfoot>
                                 <tr>
                                     <th style="text-align: center;">Mã Người Dùng</th>
-                                    <th style="text-align: center;">Tài Khoản</th>
+                                    <th style="text-align: center;">Mã Trường</th>
                                     <th style="text-align: center;">Họ Tên</th>
                                     <th style="text-align: center;">Giới Tính</th>
                                     <th style="text-align: center;">Email</th>
                                     <th style="text-align: center;">Số Điện Thoại</th>
-                                    <th style="text-align: center;">Ngày Tạo</th>
+                                    <th style="text-align: center;">Ngày Sinh</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </tfoot>
-
                             <tbody id="dataTable">
                                 <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
                             </tbody>
                         </table>
-
-
-
-
                     </div>
                 </div>
             </div>
@@ -164,29 +127,16 @@
                 <div class="d-flex align-items-center justify-content-between small">
                     <div class="text-muted">Copyright &copy; Your Website 2024</div>
                     <div>
-                        <a href="#">Privacy Policy</a> &middot; <a href="#">Terms
-                            &amp; Conditions</a>
+                        <a href="#">Privacy Policy</a> &middot; <a href="#">Terms &amp; Conditions</a>
                     </div>
                 </div>
             </div>
         </footer>
     </div>
-    <script>
-        function confirmDelete() {
-            if (window.confirm("Nhân viên hiện đang được cấp 1 tài khoản, xóa nhân viên sẽ dẫn đến xóa tài khoản. Bạn có muốn xóa?")) {
-                // perform the delete action
-            }
-        }
-    </script>
-       <script type="module" src="/frontend/mvc/controller/quanly_admin/nguoi_dung/nguoiDung.controller.js"></script>
+    <script type="module" src="/frontend/mvc/controller/quanly_admin/nguoi_dung/nguoiDung.controller.js"></script>
     <script type="module" src="/frontend/global/global.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <!-- <script src=" /public/src/styles/resources/quanly/js/scripts.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-
     <script src="/frontend/assets/public/src/styles/resources/quanly/js/datatables-simple-demo.js"></script>
 </body>
-
 </html>

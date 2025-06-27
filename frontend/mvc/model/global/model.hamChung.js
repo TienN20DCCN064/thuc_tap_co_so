@@ -12,18 +12,18 @@ const hamChung = {
         return await layThongTinTheo_2_ID(table, id, id2);
     },
 
-    taoID_theoBang(table) {
-        return taoID_theoBang(table);
+    async taoID_theoBang(table) {
+        return await taoID_theoBang(table);
     },
 
-    them(data, table_name) {
-        return them(data, table_name)
+    async them(data, table_name) {
+        return await them(data, table_name)
     },
-    sua(data, table_name) {
-        return sua(data, table_name)
+    async sua(data, table_name) {
+        return await sua(data, table_name)
     },
-    xoa(data, table_name) {
-        return xoa(data, table_name)
+    async xoa(data, table_name) {
+        return await xoa(data, table_name)
     },
     doiKhoangTrangThanhGachDuoi(tenFile) {
         return doiKhoangTrangThanhGachDuoi(tenFile)
@@ -140,7 +140,7 @@ async function taoID_theoBang(table) {
 
 
 
-function them(data, table_name) {
+async function them(data, table_name) {
     if (!data) {
         console.error("Dữ liệu không hợp lệ!");
         alert("Dữ liệu không hợp lệ!");
@@ -175,7 +175,7 @@ function them(data, table_name) {
             alert(`Lỗi: ${error.message}`);
         });
 }
-function sua(data, table_name) {
+async function sua(data, table_name) {
 
     const primaryKeys = PrimaryKeys[table_name];
 
