@@ -1,0 +1,81 @@
+// frontend/mvc/view/view_js/quanly_admin/trong_tai/trong_tai.view.js
+
+export function getElementIds() {
+    return {
+        btnLuuThayDoi: document.getElementById("button_luu"),
+        btnTaiLaiTrang: document.getElementById("button_taiLaiTrang"),
+        form: document.getElementById("inputForm"),
+
+        maTrongTai: document.getElementById("maTrongTai"),
+        maGiaiDau: document.getElementById("maGiaiDau"),
+        hoTen: document.getElementById("hoTen"),
+        ngaySinh: document.getElementById("ngaySinh"),
+        maGioiTinh: document.getElementById("maGioiTinh"),
+        maLoaiTrongTai: document.getElementById("maLoaiTrongTai"),
+
+
+        hinhAnh: document.getElementById("hinhAnh"),
+        inputFile: document.getElementById("hinhAnhFile"),
+
+        gioiTinh_chon_viewbody: document.getElementById("gioiTinh_chon_viewbody"),
+        tableBody: document.getElementById("dataTable"),
+    };
+}
+
+export async function viewTbody(data, hamChung, onEdit, onDelete) {
+    const { tableBody, gioiTinh_chon_viewbody } = getElementIds();
+    tableBody.innerHTML = "";
+
+    if (!data) {
+        data = await hamChung.layDanhSach("trong_tai");
+    }
+
+    if (gioiTinh_chon_viewbody.value !== "All") {
+        data = data.filter(item => item.gioi_tinh === gioiTinh_chon_viewbody.value);
+    }
+
+    for (const item of data) {
+        const row = document.createElement("tr");
+        const hinhAnh = item.hinh_anh
+            ? await hamChung.getImage(item.hinh_anh)
+            : "/frontend/public/images/cat-2.png";
+
+        row.innerHTML = `
+            <td style="text-align: center;">${item.ma_giai_dau}</td>
+            <td style="text-align: center;">${item.ho_ten}</td>
+            <td style="text-align: center;">${item.ngay_sinh}</td>
+            <td style="text-align: center;">${item.gioi_tinh}</td>
+            <td style="text-align: center;">
+                <img src="${hinhAnh}" alt="Hình ảnh" style="width: 50px; height: 50px; border-radius: 50%;">
+            </td>
+            <td style="text-align: center;">${item.ma_loai_trong_tai}</td>
+            <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
+            <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
+        `;
+        tableBody.appendChild(row);
+    }
+
+    document.querySelectorAll(".edit-btn").forEach((btn, index) => {
+        btn.addEventListener("click", () => onEdit(data[index]));
+    });
+
+    document.querySelectorAll(".delete-btn").forEach((btn, index) => {
+        btn.addEventListener("click", () => onDelete(data[index]));
+    });
+}
+
+export function fillForm(data) {
+    // const {
+    //     maTrongTai, hoTen, ngaySinh, maGioiTinh, hinhAnh
+    // } = getElementIds();
+    const elementIDs = getElementIds();
+    elementIDs.maGiaiDau.value = data.ma_giai_dau;
+    elementIDs.maTrongTai.value = data.ma_trong_tai;
+    elementIDs.hoTen.value = data.ho_ten;
+    elementIDs.ngaySinh.value = data.ngay_sinh;
+    elementIDs.maGioiTinh.value = data.gioi_tinh;
+    elementIDs.maLoaiTrongTai.value = data.ma_loai_trong_tai;
+    elementIDs.hinhAnh.value = data.hinh_anh;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}

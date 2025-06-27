@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Quản lý loại trọng tài</title>
+    <title>Quản lý nhân viên</title>
     <style>
         label {
             display: block;
-            font: 1rem "Fira Sans", sans-serif;
+            font: 1rem 'Fira Sans', sans-serif;
         }
 
         input,
@@ -31,15 +31,16 @@
 </head>
 
 <body class="sb-nav-fixed">
+
     <div id="chen"></div>
     <script>
         // Sử dụng Fetch API để tải nội dung file HTML và chèn vào vị trí div
-        fetch("/frontend/assets/public/src/common/quanly/header.html")
-            .then((response) => response.text())
-            .then((data) => {
-                document.getElementById("chen").innerHTML = data;
+        fetch('/frontend/assets/public/src/common/quanly/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('chen').innerHTML = data;
             })
-            .catch((error) => console.error("Error loading HTML:", error));
+            .catch(error => console.error('Error loading HTML:', error));
     </script>
     <style>
         #layoutSidenav_content {
@@ -51,55 +52,52 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="card-header">
-                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ LOẠI TRỌNG
-                        TÀI</label>
+                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ VÒNG ĐẤU</label>
                 </div>
                 <div class="card-header">
-                    <form class="row mb-3" id="inputForm">
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Mã Loại Trọng Tài</label>
-                            <input path="maTrongTai" type="text" class="form-control" id="maLoaiTrongTai" required
-                                readonly />
+                    <form:form class="row mb-3" modelAttribute="vongDauEntity" action="" method="post">
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Vòng Đấu</label>
+                            <input path="maVongDau" type="text" class="form-control" id="maVongDau" required readonly />
                         </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Tên Vòng</label>
+                            <input path="tenVong" type="text" class="form-control" id="tenVong" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mô Tả</label>
+                            <textarea path="moTa" class="form-control" id="moTa"></textarea>
+                        </div>
+                        <div class='col-md-12 mt-3'>
+                            <button id="button_luu" class="btn btn-success">Lưu</button>
+                            <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
+                                Trang</button>
 
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Tên Loại Trọng Tài</label>
-                            <input path="hoTen" type="text" class="form-control" id="tenLoaiTrongTai" required />
                         </div>
-
-                        <div class="parent col-md-12 mt-3">
-                            <div class="child float-left-child">
-                                <button id="button_luu" class="btn btn-success" accept="image/*">
-                                    Lưu
-                                </button>
-                                <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">
-                                    Tải Lại Trang
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    </form:form>
                 </div>
-
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> DANH SÁCH LOẠI TRỌNG TÀI
+                        <i class="fas fa-table me-1"></i> DANH SÁCH VÒNG ĐẤU
                     </div>
                     <div class="card-body">
                         <table id="table">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center">Mã Loại Trọng Tài</th>
-                                    <th style="text-align: center">Tên Loại Trọng Tài</th>
-                                    <th style="text-align: center">Sửa</th>
-                                    <th style="text-align: center">Xóa</th>
+                                    <th style="text-align: center;">Mã Vòng Đấu</th>
+                                    <th style="text-align: center;">Tên Vòng</th>
+                                    <th style="text-align: center;">Mô Tả</th>
+                                    <th style="text-align: center;">Sửa</th>
+                                    <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th style="text-align: center">Mã Loại Trọng Tài</th>
-                                    <th style="text-align: center">Tên Loại Trọng Tài</th>
-                                    <th style="text-align: center">Sửa</th>
-                                    <th style="text-align: center">Xóa</th>
+                                    <th style="text-align: center;">Mã Vòng Đấu</th>
+                                    <th style="text-align: center;">Tên Vòng</th>
+                                    <th style="text-align: center;">Mô Tả</th>
+                                    <th style="text-align: center;">Sửa</th>
+                                    <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </tfoot>
                             <tbody id="dataTable">
@@ -111,13 +109,16 @@
             </div>
         </main>
 
+
+
+
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
                     <div class="text-muted">Copyright &copy; Your Website 2024</div>
                     <div>
-                        <a href="#">Privacy Policy</a> &middot;
-                        <a href="#">Terms &amp; Conditions</a>
+                        <a href="#">Privacy Policy</a> &middot; <a href="#">Terms
+                            &amp; Conditions</a>
                     </div>
                 </div>
             </div>
@@ -125,17 +126,14 @@
     </div>
     <script>
         function confirmDelete() {
-            if (
-                window.confirm(
-                    "Nhân viên hiện đang được cấp 1 tài khoản, xóa nhân viên sẽ dẫn đến xóa tài khoản. Bạn có muốn xóa?"
-                )
-            ) {
+            if (window.confirm("Nhân viên hiện đang được cấp 1 tài khoản, xóa nhân viên sẽ dẫn đến xóa tài khoản. Bạn có muốn xóa?")) {
                 // perform the delete action
             }
         }
     </script>
-    <script type="module" src="/frontend/mvc/controller/quanly_admin/trong_tai/loai_trong_tai.controller.js"></script>
+    <script type="module" src="/frontend/mvc/controller/quanly_admin/giai_dau/vongDau.controller.js"></script>
     <script type="module" src="/frontend/global/global.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <!-- <script src=" /public/src/styles/resources/quanly/js/scripts.js"></script> -->
