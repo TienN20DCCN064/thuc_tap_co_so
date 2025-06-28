@@ -1,3 +1,4 @@
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -17,7 +18,7 @@ export function getElementIds() {
     };
 }
 
-export async function viewTbody(data, hamChung, onEdit, onDelete) {
+export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody, maGiaiDau_chon_viewbody, maDoiBong_chon_viewbody } = getElementIds();
     if (!data) data = await hamChung.layDanhSach("cau_thu_giai_dau");
     // Lọc theo giải đấu và đội bóng nếu có chọn
@@ -69,7 +70,7 @@ export function fillForm(item) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhSachCauThu(hamChung, maDoiBong) {
+export async function loadDanhSachCauThu( maDoiBong) {
     const selectElement = document.getElementById("maCauThu");
     selectElement.innerHTML = '<option value="">-- Chọn cầu thủ --</option>';
     let data = await hamChung.layDanhSach("cau_thu");
@@ -82,7 +83,7 @@ export async function loadDanhSachCauThu(hamChung, maDoiBong) {
     });
 }
 
-export async function loadDanhSachDoiBong(hamChung, maGiaiDau) {
+export async function loadDanhSachDoiBong( maGiaiDau) {
     const selectElement = document.getElementById("maDoiBong");
     selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>';
     let data = await hamChung.layDanhSach("doi_bong_giai_dau");
@@ -95,7 +96,7 @@ export async function loadDanhSachDoiBong(hamChung, maGiaiDau) {
     });
 }
 
-export async function loadDanhSachGiaiDau(hamChung) {
+export async function loadDanhSachGiaiDau() {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn Giải Đấu --</option>';
     const data = await hamChung.layDanhSach("giai_dau");
@@ -107,7 +108,7 @@ export async function loadDanhSachGiaiDau(hamChung) {
     });
 }
 
-export async function loadDanhSachViTri(hamChung) {
+export async function loadDanhSachViTri() {
     const selectElement = document.getElementById("maViTri");
     selectElement.innerHTML = '<option value="">-- Chọn Vị Trí --</option>';
     const data = await hamChung.layDanhSach("vi_tri_cau_thu");
@@ -119,7 +120,7 @@ export async function loadDanhSachViTri(hamChung) {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewbody(hamChung) {
+export async function loadDanhSachGiaiDau_chon_viewbody() {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
     const data = await hamChung.layDanhSach("giai_dau");
@@ -131,7 +132,7 @@ export async function loadDanhSachGiaiDau_chon_viewbody(hamChung) {
     });
 }
 
-export async function loadDanhSachDoiBongTheoGiaiDau_chon_viewbody(hamChung, maGiaiDau) {
+export async function loadDanhSachDoiBongTheoGiaiDau_chon_viewbody(maGiaiDau) {
     const selectElement = document.getElementById("maDoiBong_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
     let data = await hamChung.layDanhSach("doi_bong_giai_dau");

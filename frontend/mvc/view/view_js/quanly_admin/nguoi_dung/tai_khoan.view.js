@@ -1,3 +1,4 @@
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -21,6 +22,7 @@ export function viewTbody(data, onEdit, onDelete) {
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_nguoi_dung}</td>
             <td style="text-align: center;">${item.ten_dang_nhap}</td>
+            <td style="text-align: center;">${item.mat_khau}</td>
             <td style="text-align: center;">${item.trang_thai == 1 ? "Kích hoạt" : "Khóa"}</td>
             <td style="text-align: center;">${item.ma_vai_tro}</td>
             <td style="text-align: center;">${item.ngay_tao}</td>
@@ -47,7 +49,7 @@ export function fillForm(item) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhSachNguoiDung(hamChung) {
+export async function loadDanhSachNguoiDung() {
     const selectElement = document.getElementById("maNguoiDung");
     selectElement.innerHTML = '<option value="">-- Chọn Người Dùng --</option>';
     const data = await hamChung.layDanhSach("nguoi_dung");
@@ -59,7 +61,7 @@ export async function loadDanhSachNguoiDung(hamChung) {
     });
 }
 
-export async function loadDanhSachVaiTro(hamChung) {
+export async function loadDanhSachVaiTro() {
     const selectElement = document.getElementById("maVaiTro");
     selectElement.innerHTML = '<option value="">-- Chọn Vai Trò --</option>';
     const data = await hamChung.layDanhSach("vai_tro");

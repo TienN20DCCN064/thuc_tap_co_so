@@ -1,3 +1,4 @@
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -17,7 +18,7 @@ export function getElementIds() {
     };
 }
 
-export async function viewTbody(data, hamChung, filter, onEdit, onDelete) {
+export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody, maDoiBong_chon_viewbody } = getElementIds();
     if (!data) data = await hamChung.layDanhSach("cau_thu");
     if (maDoiBong_chon_viewbody && maDoiBong_chon_viewbody.value !== "All") {
@@ -65,7 +66,7 @@ export function fillForm(item) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhSachViTri(hamChung) {
+export async function loadDanhSachViTri() {
     const selectElement = document.getElementById("maViTri");
     selectElement.innerHTML = '<option value="">-- Chọn Vị Trí --</option>';
     const data = await hamChung.layDanhSach("vi_tri_cau_thu");
@@ -77,7 +78,7 @@ export async function loadDanhSachViTri(hamChung) {
     });
 }
 
-export async function loadDanhSachDoiBong(hamChung) {
+export async function loadDanhSachDoiBong() {
     const selectElement = document.getElementById("maDoiBong");
     selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>';
     const data = await hamChung.layDanhSach("doi_bong");
@@ -89,7 +90,7 @@ export async function loadDanhSachDoiBong(hamChung) {
     });
 }
 
-export async function loadDanhSachDoiBong_chon_viewbody(hamChung) {
+export async function loadDanhSachDoiBong_chon_viewbody() {
     const selectElement = document.getElementById("maDoiBong_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
     const data = await hamChung.layDanhSach("doi_bong");

@@ -8,8 +8,8 @@ const {
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachGiaiDau(hamChung);
-    await loadDanhSachGiaiDau_chon_viewBody(hamChung);
+    await loadDanhSachGiaiDau();
+    await loadDanhSachGiaiDau_chon_viewBody();
     await load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
@@ -17,8 +17,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 async function load_viewTbody() {
-    const data = await hamChung.layDanhSach("vong_dau");
-    viewTbody(data, hamChung, handleEdit, handleDelete);
+    let data = await hamChung.layDanhSach("vong_dau");
+    if (maGiaiDau_chon_viewbody.value !== "All") {
+        data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
+    }
+    viewTbody(data, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {

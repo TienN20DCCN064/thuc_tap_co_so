@@ -1,3 +1,5 @@
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+// C:\Users\vanti\Desktop\mvc_project\frontend\mvc\model\global\model.hamChung.js
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -12,13 +14,13 @@ export function getElementIds() {
     };
 }
 
-export async function viewTbody(data, hamChung, onEdit, onDelete) {
-    const { tableBody, maGiaiDau_chon_viewbody } = getElementIds();
-    if (!data) data = await hamChung.layDanhSach("vong_dau");
-    if (maGiaiDau_chon_viewbody && maGiaiDau_chon_viewbody.value !== "All") {
-        data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
-    }
-
+export async function viewTbody(data, onEdit, onDelete) {
+    // const { tableBody, maGiaiDau_chon_viewbody } = getElementIds();
+    // if (!data) data = await hamChung.layDanhSach("vong_dau");
+    // if (maGiaiDau_chon_viewbody && maGiaiDau_chon_viewbody.value !== "All") {
+    //     data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
+    // }
+    const { tableBody } = getElementIds();
     tableBody.innerHTML = "";
     for (const item of data) {
         const data1giaiDau = await hamChung.layThongTinTheo_ID("giai_dau", item.ma_giai_dau);
@@ -46,7 +48,7 @@ export function fillForm(item) {
     maGiaiDau.value = item.ma_giai_dau;
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
-export async function loadDanhSachGiaiDau(hamChung) {
+export async function loadDanhSachGiaiDau() {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn Mã Giải Đấu --</option>';
     const data = await hamChung.layDanhSach("giai_dau");
@@ -58,7 +60,7 @@ export async function loadDanhSachGiaiDau(hamChung) {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewBody(hamChung) {
+export async function loadDanhSachGiaiDau_chon_viewBody() {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
     const data = await hamChung.layDanhSach("giai_dau");

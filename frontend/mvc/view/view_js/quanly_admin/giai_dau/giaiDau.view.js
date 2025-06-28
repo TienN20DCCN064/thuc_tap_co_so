@@ -1,3 +1,4 @@
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -5,7 +6,7 @@ export function getElementIds() {
         btnLocDanhSach: document.getElementById("button_locDanhSach"),
         maGiaiDau: document.getElementById("maGiaiDau"),
         tenGiaiDau: document.getElementById("tenGiaiDau"),
-        tenToChuc: document.getElementById("tenToChuc"),
+        maNguoiTao: document.getElementById("maNguoiTao"),
         ngayBatDau: document.getElementById("ngayBatDau"),
         ngayKetThuc: document.getElementById("ngayKetThuc"),
         ngayHetDangKy: document.getElementById("ngayHetDangKy"),
@@ -22,14 +23,16 @@ export function getElementIds() {
 }
 
 // Hiển thị danh sách giải đấu
-export async function viewTbody(data, hamChung, filterValues, onEdit, onDelete) {
+export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody } = getElementIds();
     tableBody.innerHTML = "";
 
     for (const item of data) {
         let hinh_anh;
-        if (item.hinh_anh === null) {
-            hinh_anh = "/frontend/public/images/cat-2.png";
+        if (item.hinh_anh === null || item.hinh_anh === "") {
+            // hinh_anh = "/frontend/assets/public/images/cat-2.png";
+            hinh_anh = "/frontend/assets/public/images/user-icon.png";
+            // C:\Users\vanti\Desktop\mvc_project\frontend\assets\public\images\cat-2.png
         } else {
             hinh_anh = await hamChung.getImage(item.hinh_anh);
         }
@@ -38,7 +41,7 @@ export async function viewTbody(data, hamChung, filterValues, onEdit, onDelete) 
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_giai_dau}</td>
             <td style="text-align: center;">${item.ten_giai_dau}</td>
-            <td style="text-align: center;">${item.ten_to_chuc}</td>
+            <td style="text-align: center;">${item.ma_nguoi_tao}</td>
             <td style="text-align: center;">${item.ngay_bat_dau}</td>
             <td style="text-align: center;">${item.ngay_ket_thuc}</td>
             <td style="text-align: center;">${item.ngay_ket_thuc_dang_ky_giai}</td>
@@ -58,12 +61,13 @@ export async function viewTbody(data, hamChung, filterValues, onEdit, onDelete) 
 // Điền dữ liệu vào form
 export function fillForm(item) {
     const {
-        maGiaiDau, tenGiaiDau, tenToChuc, ngayBatDau, ngayKetThuc,
+        maGiaiDau, tenGiaiDau, maNguoiTao, ngayBatDau, ngayKetThuc,
         ngayHetDangKy, maGioiTinh, hinhAnh, moTa
     } = getElementIds();
+    // console.log(maNguoiTao);
     maGiaiDau.value = item.ma_giai_dau;
     tenGiaiDau.value = item.ten_giai_dau;
-    tenToChuc.value = item.ten_to_chuc;
+    maNguoiTao.value = item.ma_nguoi_tao;
     ngayBatDau.value = item.ngay_bat_dau;
     ngayKetThuc.value = item.ngay_ket_thuc;
     ngayHetDangKy.value = item.ngay_ket_thuc_dang_ky_giai;
@@ -71,4 +75,16 @@ export function fillForm(item) {
     hinhAnh.value = item.hinh_anh;
     moTa.value = item.mo_ta || "";
     window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+export async function loadDanhSachNguoiTao() {
+    const selectElement = document.getElementById("maNguoiTao");
+    selectElement.innerHTML = '<option value="">-- Chọn Mã Người Tạo --</option>';
+    const data = await hamChung.layDanhSach("nguoi_dung");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_nguoi_dung;
+        option.textContent = `${item.ho_ten}`;
+        selectElement.appendChild(option);
+    });
 }

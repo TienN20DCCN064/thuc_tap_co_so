@@ -27,6 +27,7 @@ function handleEdit(item) {
 async function handleDelete(item) {
     if (confirm(`Bạn có chắc chắn muốn xóa vị trí ${item.ten_vi_tri}?`)) {
         await hamChung.xoa({ ma_vi_tri: item.ma_vi_tri }, "vi_tri_cau_thu");
+        form.reset();
         load_viewTbody();
     }
 }

@@ -3,25 +3,36 @@ import {
     getElementIds,
     viewTbody,
     fillForm,
-    loadDanhSachNguoiDung_quanLyDoiBong
+    loadDanhSachNguoiDung,
+    loadDanhSachQuanLy_view_body
 } from "../../../view/view_js/quanly_admin/doi_bong/doiBong.view.js";
 
 const {
-    btnLuuThayDoi, btnTaiLaiTrang, maDoiBong, tenDoiBong, quocGia, maGioiTinh,
-    hinhAnh, inputFile, form, maQlDoiBong, gioiTinh_chon_viewbody
+    btnLuuThayDoi, btnTaiLaiTrang, maDoiBong, tenDoiBong, maGioiTinh,
+    hinhAnh, maQlDoiBong, ghiChu, inputFile, form, maQlDoiBong_chon_viewbody, gioiTinh_chon_viewbody
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachNguoiDung_quanLyDoiBong(hamChung);
-    await load_viewTbody();
+    await loadDanhSachNguoiDung();
+    await loadDanhSachQuanLy_view_body();
+    load_viewTbody();
+
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
+    maQlDoiBong_chon_viewbody.addEventListener("change", load_viewTbody);
     gioiTinh_chon_viewbody.addEventListener("change", load_viewTbody);
 });
 
 async function load_viewTbody() {
     let data = await hamChung.layDanhSach("doi_bong");
-    await viewTbody(data, hamChung, {}, handleEdit, handleDelete);
+    if (gioiTinh_chon_viewbody.value !== "All") {
+        data = data.filter(item => item.gioi_tinh === gioiTinh_chon_viewbody.value);
+    }
+    if (maQlDoiBong_chon_viewbody.value !== "All") {
+        data = data.filter(item => item.ma_ql_doi_bong === maQlDoiBong_chon_viewbody.value);
+    }
+    console.log( data);
+    await viewTbody(data, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {
@@ -31,6 +42,7 @@ function handleEdit(item) {
 async function handleDelete(item) {
     if (confirm(`Bạn có chắc chắn muốn xóa đội bóng ${item.ten_doi_bong}?`)) {
         await hamChung.xoa({ ma_doi_bong: item.ma_doi_bong }, "doi_bong");
+        form.reset();
         load_viewTbody();
     }
 }
@@ -49,10 +61,10 @@ async function handleLuuThayDoi(event) {
         formData = {
             ma_doi_bong: await hamChung.taoID_theoBang("doi_bong"),
             ten_doi_bong: tenDoiBong.value,
-            quoc_gia: quocGia.value,
             gioi_tinh: maGioiTinh.value,
-            logo: id_Hinh_anh_thay,
-            ma_ql_doi_bong: maQlDoiBong.value
+            hinh_anh: id_Hinh_anh_thay,
+            ma_ql_doi_bong: maQlDoiBong.value,
+            ghi_chu: ghiChu.value
         };
         await hamChung.them(formData, "doi_bong");
         alert("Thêm thành công!");
@@ -60,10 +72,10 @@ async function handleLuuThayDoi(event) {
         formData = {
             ma_doi_bong: maDoiBong.value,
             ten_doi_bong: tenDoiBong.value,
-            quoc_gia: quocGia.value,
             gioi_tinh: maGioiTinh.value,
-            logo: id_Hinh_anh_thay,
-            ma_ql_doi_bong: maQlDoiBong.value
+            hinh_anh: id_Hinh_anh_thay,
+            ma_ql_doi_bong: maQlDoiBong.value,
+            ghi_chu: ghiChu.value
         };
         await hamChung.sua(formData, "doi_bong");
         alert("Sửa thành công!");

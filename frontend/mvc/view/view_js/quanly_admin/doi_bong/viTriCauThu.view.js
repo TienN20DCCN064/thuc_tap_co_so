@@ -1,3 +1,4 @@
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),

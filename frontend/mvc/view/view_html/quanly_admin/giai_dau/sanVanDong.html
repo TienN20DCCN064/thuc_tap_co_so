@@ -58,9 +58,14 @@
                     <form class="row mb-3" id="inputForm">
                         <div class="col-md-4">
                             <label class="font-weight-bold">Mã Sân</label>
-                            <input type="text" class="form-control" id="maSan" required  readonly/>
+                            <input type="text" class="form-control" id="maSan" required readonly />
                         </div>
-
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Giải Đấu</label>
+                            <select class="form-control" id="maGiaiDau">
+                                <option value="">-- Chọn Mã Giải Đấu --</option>
+                            </select>
+                        </div>
                         <div class="col-md-4">
                             <label class="font-weight-bold">Tên Sân</label>
                             <input type="text" class="form-control" id="tenSan" required />
@@ -83,7 +88,7 @@
                             <button id="button_luu" class="btn btn-success" type="submit">Lưu</button>
                             <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
                                 Trang</button>
-                           
+
                         </div>
                     </form>
                 </div>
@@ -91,11 +96,29 @@
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH SÂN VẬN ĐỘNG
                     </div>
+                     <div class="card-header">
+                    <form class="row mb-3" id="inputForm_chon">
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Giải Đấu</label>
+                            <select class="form-control" id="maGiaiDau_chon" required>
+                                <option value="All">Tất Cả</option>
+                            </select>
+                        </div>
+<!-- 
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Đội Bóng</label>
+                            <select class="form-control" id="maDoiBong_chon" required>
+                                <option value="All">Tất Cả</option>
+                            </select>
+                        </div> -->
+                    </form>
+                </div>
                     <div class="card-body">
                         <table id="table">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;">Mã Sân</th>
+                                    <th style="text-align: center;">Mã Giải Đấu</th>
                                     <th style="text-align: center;">Tên Sân</th>
                                     <th style="text-align: center;">Địa Chỉ</th>
                                     <th style="text-align: center;">Sức Chứa</th>
@@ -108,6 +131,7 @@
                             <tfoot>
                                 <tr>
                                     <th style="text-align: center;">Mã Sân</th>
+                                    <th style="text-align: center;">Mã Giải Đấu</th>
                                     <th style="text-align: center;">Tên Sân</th>
                                     <th style="text-align: center;">Địa Chỉ</th>
                                     <th style="text-align: center;">Sức Chứa</th>

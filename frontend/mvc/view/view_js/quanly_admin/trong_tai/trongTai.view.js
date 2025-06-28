@@ -1,5 +1,5 @@
 // frontend/mvc/view/view_js/quanly_admin/trong_tai/trong_tai.view.js
-
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -22,7 +22,7 @@ export function getElementIds() {
     };
 }
 
-export async function viewTbody(data, hamChung, onEdit, onDelete) {
+export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody, gioiTinh_chon_viewbody } = getElementIds();
     tableBody.innerHTML = "";
 

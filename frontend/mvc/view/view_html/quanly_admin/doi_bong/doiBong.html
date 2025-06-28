@@ -64,23 +64,20 @@
                             <label class="font-weight-bold">Tên Đội Bóng</label>
                             <input path="tenDoiBong" type="text" class="form-control" id="tenDoiBong" required />
                         </div>
-                        <div class="col-md-4">
-                            <label class="font-weight-bold">Quốc Gia</label>
-                            <input path="quocGia" type="text" class="form-control" id="quocGia" required />
-                        </div>
+
                         <div class="col-md-4">
                             <label class="font-weight-bold">Giới Tính</label>
                             <select path="maGioiTinh" class="form-control" id="maGioiTinh" required>
-                                <option value="nam">Nam</option>
-                                <option value="nữ">Nữ</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="font-weight-bold">logo</label>
+                            <label class="font-weight-bold">Hình Ảnh</label>
                             <!-- Input hiển thị tên file hoặc URL ảnh -->
-                            <input type="text" class="form-control" id="logo" readonly />
+                            <input type="text" class="form-control" id="hinhAnh" readonly />
                             <!-- Input cho phép người dùng chọn file ảnh -->
-                            <input type="file" class="form-control" id="logoFile" />
+                            <input type="file" class="form-control" id="hinhAnhFile" />
                         </div>
                         <div class="col-md-4">
                             <label class="font-weight-bold">Mã Quản Lý Đội Bóng</label>
@@ -88,6 +85,12 @@
                                 <option value="">-- Chưa Nhập --</option>
                             </select>
                         </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Ghi Chú</label>
+                            <textarea class="form-control" id="ghiChu"></textarea>
+                        </div>
+
+
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
                                 <button id="button_luu" class="btn btn-success" accept="image/*">Lưu</button>
@@ -102,12 +105,20 @@
                         <i class="fas fa-table me-1"></i> DANH SÁCH ĐỘI BÓNG
                     </div>
                     <form:form class="row mb-3" modelAttribute="doiBongTrongBangEntity" action="" method="post">
+
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Người Quản Lý</label>
+                            <select class="form-control" id="maQlDoiBong_chon_viewbody" required>
+                                <option value="All">-- Tất cả --</option>
+                            </select>
+                        </div>
+
                         <div class="col-md-3">
                             <label class="font-weight-bold">Chọn Giới Tính</label>
                             <select class="form-control" id="gioiTinh_chon_viewbody" required>
                                 <option value="All">-- Tất cả --</option>
-                                <option value="nam">Nam</option>
-                                <option value="nữ">Nữ</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
                             </select>
                         </div>
                         <!-- <div class="col-md-3">
@@ -125,10 +136,11 @@
                                 <tr>
                                     <th style="text-align: center;">Mã Đội Bóng</th>
                                     <th style="text-align: center;">Tên Đội Bóng</th>
-                                    <th style="text-align: center;">Quốc Gia</th>
+
                                     <th style="text-align: center;">Giới Tính</th>
                                     <th style="text-align: center;">Logo</th>
                                     <th style="text-align: center;">Mã Quản Lý Đội Bóng</th>
+                                    <th style="text-align: center;">Ghi Chú</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
@@ -137,10 +149,10 @@
                                 <tr>
                                     <th style="text-align: center;">Mã Đội Bóng</th>
                                     <th style="text-align: center;">Tên Đội Bóng</th>
-                                    <th style="text-align: center;">Quốc Gia</th>
                                     <th style="text-align: center;">Giới Tính</th>
                                     <th style="text-align: center;">Logo</th>
                                     <th style="text-align: center;">Mã Quản Lý Đội Bóng</th>
+                                    <th style="text-align: center;">Ghi Chú</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
