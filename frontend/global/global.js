@@ -10,7 +10,7 @@ const IPv4_Address = "192.168.2.99";
 // const linkCongAPI = IPv4_Address +":"+ congAPI + "/api/";
 // C:\Users\vanti\Desktop\5_2\6A _ NMCN Phần Mềm_ Châu Văn Vân\DO_AN\quan_ly_tran_dau\service
 
-const GlobalStore = {
+export const GlobalStore = {
     // Đặt giá trị vào localStorage
     setUsername(username) {
         localStorage.setItem("global_username", username);
@@ -58,7 +58,7 @@ const GlobalStore = {
 
 
 };
-const DoiTuyen = {
+export const DoiTuyen = {
     setDoiTuyen_dangChon(doiTuyen) {
         localStorage.setItem("doiTuyen_dangChon", doiTuyen);
     },
@@ -70,6 +70,6 @@ const DoiTuyen = {
 
 
 // Gắn vào window để có thể truy cập ở mọi nơi
-window.GlobalStore = GlobalStore;
-window.DoiTuyen = DoiTuyen;
+// window.GlobalStore = GlobalStore;
+// window.DoiTuyen = DoiTuyen;
 // window.DanhSach = DanhSach;

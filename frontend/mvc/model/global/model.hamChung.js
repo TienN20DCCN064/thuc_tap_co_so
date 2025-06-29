@@ -1,3 +1,6 @@
+import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
+
+
 import PrimaryKeys from './databaseKey.js';
 
 const hamChung = {

@@ -1,4 +1,4 @@
-import hamChung from "../../../model/global/model.hamChung.js";
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 import {
     getElementIds,
     viewTbody,
