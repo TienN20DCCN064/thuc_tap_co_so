@@ -223,6 +223,7 @@ async function sua(data, table_name) {
             return JSON.parse(text); // Nếu JSON hợp lệ, parse bình thường
         })
         .then(resData => {
+            console.error(`Sửa thành công:`, resData.message);
             //   alert(resData.message || "Sửa dữ liệu thành công.");
             // table();
         })

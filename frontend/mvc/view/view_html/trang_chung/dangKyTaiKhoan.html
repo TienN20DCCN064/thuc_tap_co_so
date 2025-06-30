@@ -193,7 +193,7 @@
 
     <div id="dialog-chon-doi" style="display: none;" class="dialog-overlay">
       <div class="dialog-content">
-        
+
         <h3>Chọn đội bạn muốn quản lý</h3>
         <div id="danhSachDoi"></div>
       </div>
@@ -209,8 +209,31 @@
 
             <div style="width: 100%; margin-left: 120px;">
               <div class="custom-login-box">
-                <h2>Đăng nhập</h2>
-                <form id="loginForm" method="POST">
+                <h2>Đăng ký tài khoản</h2>
+                <form id="dangKyForm" method="POST">
+                  <div class="form-group">
+                    <select class="form-control" id="maTruong" required>
+                      <option value="">-- Chọn Trường Học --</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" id="hoTen" class="form-control custom-login-input" placeholder="Họ tên" required>
+                  </div>
+                  <!-- tôi muốn thêm trường ngày sinh"> -->
+                  <div class="form-group">
+                    <input type="date" id="ngaySinh" class="form-control custom-login-input"
+                      placeholder="Ngày sinh (dd/mm/yyyy)" required>
+
+                  </div>
+                  <!-- <div class="form-group">
+                    <input type="email" id="emailInput" class="form-control custom-login-input"
+                      placeholder="Email đăng ký" required>
+                  </div> -->
+
+                  <div class="form-group">
+                    <input type="email" id="emailInput" class="form-control custom-login-input"
+                      placeholder="Email đăng ký" required>
+                  </div>
                   <div class="form-group">
                     <input type="text" id="taiKhoan" class="form-control custom-login-input" placeholder="Tài khoản"
                       required>
@@ -219,17 +242,23 @@
                     <input type="password" id="matKhau" class="form-control custom-login-input" placeholder="Mật khẩu"
                       required>
                   </div>
-                  <button id="btnDangNhap" type="button" class="btn btn-primary custom-login-button">Đăng nhập</button>
-
+                  <div class="form-group">
+                    <input type="password" id="nhapLaiMatKhau" class="form-control custom-login-input"
+                      placeholder="Nhập lại mật khẩu" required>
+                  </div>
+                  <button id="btnDangKy" type="submit" class="btn btn-primary custom-login-button">Đăng ký</button>
                 </form>
+
                 <div class="custom-login-links">
                   <p><a href="/frontend/mvc/view/view_html/trang_chung/quyenMatKhau.html">Quên mật khẩu ?</a></p>
-                  <p>Không có tài khoản? <a href="/frontend/mvc/view/view_html/trang_chung/dangKyTaiKhoan.html">Đăng ký</a></p>
+                  <p>Chưa có tài khoản? <a href="/frontend/mvc/view/view_html/trang_chung/dangNhap.html">Đăng nhập</a>
+                  </p>
                 </div>
               </div>
             </div>
 
-<!-- 
+
+            <!-- 
 C:\Users\vanti\Desktop\mvc_project\frontend\mvc\view\view_html\trang_chung\quyenMatKhau.html -->
           </div>
         </div>
@@ -380,8 +409,7 @@ C:\Users\vanti\Desktop\mvc_project\frontend\mvc\view\view_html\trang_chung\quyen
 
   <script src="/frontend/mvc/view/view_js/nguoihammo/main.js"></script>
 
-  <script type="module" src="/frontend/mvc/controller/trang_chung/dangNhap.controller.js"></script>
-
+  <script type="module" src="/frontend/mvc/controller/trang_chung/dangKyTaiKhoan.controller.js"></script>
   <!-- <script type="module" src="/backend/services/global/global.js"></script>
   <script type="module" src="/backend/services/global/hamChiTiet.js"></script> -->
 
