@@ -40,6 +40,14 @@ async function handleLuuThayDoi(event) {
     }
     let formData = {};
     if (maViTri.value === "") {
+        // kiểm tra tên vị trí đã tồn tại
+        const dataViTri = await hamChung.layDanhSach("vi_tri_cau_thu");
+        const tenViTriDaTonTai = dataViTri.some(item => item.ten_vi_tri === tenViTri.value);
+        if (tenViTriDaTonTai) {
+            alert("Tên vị trí đã tồn tại. Vui lòng chọn tên khác.");
+            return;
+        }
+
         formData = {
             ma_vi_tri: await hamChung.taoID_theoBang("vi_tri_cau_thu"),
             ten_vi_tri: tenViTri.value

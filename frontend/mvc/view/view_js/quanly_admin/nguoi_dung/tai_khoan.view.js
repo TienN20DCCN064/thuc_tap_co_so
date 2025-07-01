@@ -23,7 +23,7 @@ export function viewTbody(data, onEdit, onDelete) {
             <td style="text-align: center;">${item.ma_nguoi_dung}</td>
             <td style="text-align: center;">${item.ten_dang_nhap}</td>
             <td style="text-align: center;">${item.mat_khau}</td>
-            <td style="text-align: center;">${item.trang_thai == 1 ? "Kích hoạt" : "Khóa"}</td>
+            <td style="text-align: center;">${item.trang_thai == "Hoạt động" ? "Hoạt Động" : "Bị Khóa"}</td>
             <td style="text-align: center;">${item.ma_vai_tro}</td>
             <td style="text-align: center;">${item.ngay_tao}</td>
             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
@@ -36,8 +36,9 @@ export function viewTbody(data, onEdit, onDelete) {
     }
 }
 
-export function fillForm(item) {
+export async function fillForm(item) {
     const { maNguoiDung, tenDangNhap, matKhau, trangThai, maVaiTro, ngayTao } = getElementIds();
+    await loadDanhSachNguoiDung();
     maNguoiDung.value = item.ma_nguoi_dung;
     tenDangNhap.value = item.ten_dang_nhap;
     matKhau.value = item.mat_khau;
@@ -54,6 +55,22 @@ export async function loadDanhSachNguoiDung() {
     selectElement.innerHTML = '<option value="">-- Chọn Người Dùng --</option>';
     const data = await hamChung.layDanhSach("nguoi_dung");
     data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_nguoi_dung;
+        option.textContent = `${item.ma_nguoi_dung} - ${item.ho_ten}`;
+        selectElement.appendChild(option);
+    });
+}
+export async function loadDanhSachNguoiDung_chuaCo_taiKhoan() {
+    const selectElement = document.getElementById("maNguoiDung");
+    selectElement.innerHTML = '<option value="">-- Chọn Người Dùng --</option>';
+    const data = await hamChung.layDanhSach("nguoi_dung");
+    const dataTaiKhoan = await hamChung.layDanhSach("tai_khoan");
+    // Lọc ra những người dùng đã có tài khoản
+    const maNguoiDungDaCoTaiKhoan = dataTaiKhoan.map(item => item.ma_nguoi_dung);
+    const dataChuaCoTaiKhoan = data.filter(item => !maNguoiDungDaCoTaiKhoan.includes(item.ma_nguoi_dung));
+    // Lọc ra những người dùng chưa có tài khoản
+    dataChuaCoTaiKhoan.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_nguoi_dung;
         option.textContent = `${item.ma_nguoi_dung} - ${item.ho_ten}`;

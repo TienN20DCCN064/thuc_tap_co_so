@@ -12,7 +12,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "bongda_27",
+    database: "bong_da",
 });
 
 // Kiểm tra kết nối

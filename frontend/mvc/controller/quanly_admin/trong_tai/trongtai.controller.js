@@ -1,7 +1,7 @@
 // frontend/mvc/controller/view/quanly_admin/trong_tai.controller.js
 
 import hamChung from "../../../model/global/model.hamChung.js";
-import { getElementIds, viewTbody, fillForm } from "../../../view/view_js/quanly_admin/trong_tai/trong_tai.view.js";
+import { getElementIds, viewTbody, fillForm, loadDanhSachGiaiDau, loadDanhSachLoaiTrongTai, loadDanhSachGiaiDau_chon_viewbody } from "../../../view/view_js/quanly_admin/trong_tai/trongTai.view.js";
 
 
 const {
@@ -16,16 +16,20 @@ const {
     maLoaiTrongTai,
     hinhAnh,
     inputFile,
-    gioiTinh_chon_viewbody
+    giaiDau_chon_viewbody
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await load_viewTbody();
+    await loadDanhSachGiaiDau();
+    await loadDanhSachLoaiTrongTai();
+    await loadDanhSachGiaiDau_chon_viewbody();
+
+    load_viewTbody();
 
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
 
-    gioiTinh_chon_viewbody.addEventListener("change", load_viewTbody);
+    giaiDau_chon_viewbody.addEventListener("change", load_viewTbody);
 });
 
 async function handleLuuThayDoi(event) {
@@ -42,10 +46,12 @@ async function handleLuuThayDoi(event) {
     idHinhAnh = hamChung.doiKhoangTrangThanhGachDuoi(idHinhAnh);
 
     const formData = {
+        ma_giai_dau: maGiaiDau.value,
         ma_trong_tai: maTrongTai.value || await hamChung.taoID_theoBang("trong_tai"),
         ho_ten: hoTen.value,
         ngay_sinh: ngaySinh.value,
         gioi_tinh: maGioiTinh.value,
+        ma_loai_trong_tai: maLoaiTrongTai.value,
         hinh_anh: idHinhAnh,
     };
 
@@ -71,7 +77,7 @@ function handleTaiLaiTrang(event) {
 
 async function load_viewTbody() {
     const data = await hamChung.layDanhSach("trong_tai");
-    viewTbody(data, hamChung, handleEdit, handleDelete);
+    viewTbody(data, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {

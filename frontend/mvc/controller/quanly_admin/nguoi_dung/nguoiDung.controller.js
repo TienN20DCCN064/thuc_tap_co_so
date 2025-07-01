@@ -1,21 +1,21 @@
 import hamChung from "../../../model/global/model.hamChung.js";
-import { getElementIds, viewTbody, fillForm, loadDanhSachTaiKhoan } from "../../../view/view_js/quanly_admin/nguoi_dung/nguoiDung.view.js";
+import { getElementIds, viewTbody, fillForm, loadDanhSachTruong } from "../../../view/view_js/quanly_admin/nguoi_dung/nguoiDung.view.js";
 
 const {
     btnLuuThayDoi,
     btnTaiLaiTrang,
     maNguoiDung,
-    taiKhoan,
+    maTruong,
     hoTen,
     gioiTinh,
     email,
     soDienThoai,
-    ngayTao,
+    ngaySinh,
     form
 } = getElementIds();
 
-document.addEventListener("DOMContentLoaded", function () {
-    loadDanhSachTaiKhoan();
+document.addEventListener("DOMContentLoaded", async function () {
+    await loadDanhSachTruong();
     load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
@@ -33,6 +33,7 @@ function handleEdit(item) {
 async function handleDelete(item) {
     if (confirm(`Bạn có chắc chắn muốn xóa người dùng ${item.tai_khoan}?`)) {
         await hamChung.xoa({ ma_nguoi_dung: item.ma_nguoi_dung }, "nguoi_dung");
+        form.reset();
         load_viewTbody();
     }
 }
@@ -48,34 +49,51 @@ async function handleLuuThayDoi(event) {
     if (maNguoiDung.value === "") {
         formData = {
             ma_nguoi_dung: await hamChung.taoID_theoBang("nguoi_dung"),
+            ma_truong: maTruong.value,
             ho_ten: hoTen.value,
             gioi_tinh: gioiTinh.value,
             email: email.value,
             so_dien_thoai: soDienThoai.value,
-            ngay_tao: ngayTao.value
+            ngay_sinh: ngaySinh.value
         };
     } else {
         formData = {
             ma_nguoi_dung: maNguoiDung.value,
+            ma_truong: maTruong.value,
             ho_ten: hoTen.value,
             gioi_tinh: gioiTinh.value,
             email: email.value,
             so_dien_thoai: soDienThoai.value,
-            ngay_tao: ngayTao.value
+            ngay_sinh: ngaySinh.value
         };
     }
 
-    if (taiKhoan.value.trim() !== "") {
-        formData.tai_khoan = taiKhoan.value;
-    }
+    console.log(formData);
 
     if (maNguoiDung.value === "") {
+        // check gmail đã tồn tại chưa
+        const dataNguoiDung = await hamChung.layDanhSach("nguoi_dung");
+        const isEmailExists = dataNguoiDung.some(item => item.email === formData.email);
+        if (isEmailExists) {
+            alert("Email đã tồn tại!");
+            return;
+        }
+
         await hamChung.them(formData, "nguoi_dung");
         alert("Thêm thành công!");
     } else {
+        // check gmail đã tồn tại chưa  // nếu là sửa thì không cần kiểm tra trùng với chính nó
+        const dataNguoiDung = await hamChung.layDanhSach("nguoi_dung");
+        const isEmailExists = dataNguoiDung.some(item => item.email === formData.email && item.ma_nguoi_dung !== formData.ma_nguoi_dung);
+        if (isEmailExists) {
+            alert("Email đã tồn tại!");
+            return;
+        }
+
         await hamChung.sua(formData, "nguoi_dung");
         alert("Sửa thành công!");
     }
+
     load_viewTbody();
 }
 

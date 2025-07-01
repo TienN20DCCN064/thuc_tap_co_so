@@ -21,6 +21,7 @@ function handleEdit(item) {
 async function handleDelete(item) {
     if (confirm(`Bạn có chắc chắn muốn xóa trường "${item.ten_truong}"?`)) {
         await hamChung.xoa({ ma_truong: item.ma_truong }, "truong");
+        form.reset();
         load_viewTbody();
     }
 }

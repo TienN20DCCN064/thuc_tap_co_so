@@ -58,9 +58,9 @@
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
                         <!-- <div class="col-md-4">
-                            <label class="font-weight-bold">Mã Cầu Thủ</label>
-                            <input path="maCauThu" type="text" class="form-control" id="maCauThu" required readonly />
-                        </div> -->
+                                <label class="font-weight-bold">Mã Cầu Thủ</label>
+                                <input path="maCauThu" type="text" class="form-control" id="maCauThu" required readonly />
+                            </div> -->
                         <div class="col-md-3">
                             <label class="font-weight-bold">Giải Đấu</label>
                             <select class="form-control" id="maGiaiDau" required>
@@ -84,39 +84,57 @@
                             <label class="font-weight-bold">Tên Trong Giải</label>
                             <input path="tenDoiBong" type="text" class="form-control" id="tenDoiBong" required />
                         </div>
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Quốc Gia</label>
-                            <input path="quocGia" type="text" class="form-control" id="quocGia" required />
-                        </div>
 
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Hạt Gióng</label>
-                            <select class="form-control" id="hatGiong" required>
-                                <option value="khong">khong</option>
-                                <option value="co">co</option>
+                            <label class="font-weight-bold">Thời Gian Đăng Ký</label>
+                            <input type="datetime-local" class="form-control" id="thoiGianDangKy" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Trạng Thái</label>
+                            <select class="form-control" id="trangThai">
+                                <option value="Chờ duyệt">Chờ Duyệt</option>
+                                <option value="Đã duyệt">Đã Duyệt</option>
+                                <option value="Từ chối">Từ Chối</option>
                             </select>
                         </div>
 
 
+
                         <div class="col-md-3">
-                            <label class="font-weight-bold">logo</label>
-                            <!-- Input hiển thị tên file hoặc URL ảnh -->
-                            <input type="text" class="form-control" id="logo" readonly />
-                            <!-- Input cho phép người dùng chọn file ảnh -->
-                            <input type="file" class="form-control" id="logoFile" />
+                            <label class="font-weight-bold">Hạt Giống</label>
+                            <select class="form-control" id="hatGiong" required>
+                                <option value="khong">Không</option>
+                                <option value="co">Có</option>
+                            </select>
                         </div>
 
-                        <!-- <div class="col-md-4">
-                            <label class="font-weight-bold">Mã Giải Đấu</label>
-                            <input path="maGiaiDau" type="text" class="form-control" id="maGiaiDau" required />
-                        </div> -->
 
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Hình Ảnh</label>
+                            <!-- Input hiển thị tên file hoặc URL ảnh -->
+                            <input type="text" class="form-control" id="hinhAnh" readonly />
+                            <!-- Input cho phép người dùng chọn file ảnh -->
+                            <input type="file" class="form-control" id="hinhAnhFile" />
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Lý do từ chối</label>
+                            <textarea class="form-control" id="lyDoTuChoi"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Ghi Chú</label>
+                            <textarea class="form-control" id="ghiChu"></textarea>
+                        </div>
                         <div class='col-md-12 mt-3'>
                             <button id="button_luu" class="btn btn-success">Lưu</button>
                             <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
                                 Trang</button>
 
                         </div>
+
+
+
+
                         </form:form>
                 </div>
                 <div class="card mb-4">
@@ -149,13 +167,14 @@
                                 <tr>
                                     <th style="text-align: center;">Giải Đấu</th>
                                     <th style="text-align: center;">Bảng Đấu</th>
-                                    <th style="text-align: center;">Tên Hiện Tại</th>
+                                    <th style="text-align: center;">Mã Đội Bóng</th>
                                     <th style="text-align: center;">Tên Trong Giải</th>
-                                    <th style="text-align: center;">Quốc Gia</th>
-
+                                    <th style="text-align: center;">Thời Gian Đăng Ký</th>
+                                    <th style="text-align: center;">Trạng Thái</th>
                                     <th style="text-align: center;">Hạt Giống</th>
-                                    <th style="text-align: center;">Logo</th>
-
+                                    <th style="text-align: center;">Hình Ảnh</th>
+                                    <th style="text-align: center;">Lý do từ chối</th>
+                                    <th style="text-align: center;">Ghi Chú</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
@@ -164,13 +183,14 @@
                                 <tr>
                                     <th style="text-align: center;">Giải Đấu</th>
                                     <th style="text-align: center;">Bảng Đấu</th>
-                                    <th style="text-align: center;">Tên Hiện Tại</th>
+                                    <th style="text-align: center;">Mã Đội Bóng</th>
                                     <th style="text-align: center;">Tên Trong Giải</th>
-                                    <th style="text-align: center;">Quốc Gia</th>
-
+                                    <th style="text-align: center;">Thời Gian Đăng Ký</th>
+                                    <th style="text-align: center;">Trạng Thái</th>
                                     <th style="text-align: center;">Hạt Giống</th>
-                                    <th style="text-align: center;">Logo</th>
-
+                                    <th style="text-align: center;">Hình Ảnh</th>
+                                    <th style="text-align: center;">Lý do từ chối</th>
+                                    <th style="text-align: center;">Ghi Chú</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
@@ -314,7 +334,8 @@
             }
         }
     </script>
-       <script type="module" src="/frontend/mvc/controller/quanly_admin/trong_mot_giai_dau/doiBong_giaiDau.controller.js"></script>
+    <script type="module"
+        src="/frontend/mvc/controller/quanly_admin/trong_mot_giai_dau/doiBong_giaiDau.controller.js"></script>
     <script type="module" src="/frontend/global/global.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

@@ -8,35 +8,52 @@ import {
     loadDanhSachGiaiDau_chon_viewbody,
     loadDanhSachBangDau,
     loadDanhSachBangDau_chon_viewbody,
-    // ... các hàm view khác
+    loadDanhSachGiaiDau_chon_popup,
+    loadDanhSachDoiBong_chon_popup,
+    viewTbody_chon
 } from "../../../view/view_js/quanly_admin/trong_mot_giai_dau/doiBong_giaiDau.view.js";
 
-const {
-    btnLuuThayDoi, btnTaiLaiTrang, maDoiBong, maGiaiDau, tenDoiBong, hinhAnh, inputFile, form, quocGia, hatGiong, maBangDau,
-    maGiaiDau_chon_viewbody, maBangDau_chon_viewbody, btnLocDanhSach, popupOverlay, closePopup, tableBody
-} = getElementIds();
+const ids = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
     await loadDanhSachDoiBong(hamChung);
     await loadDanhSachGiaiDau(hamChung);
     await loadDanhSachGiaiDau_chon_viewbody(hamChung);
     await load_viewTbody();
-    btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
-    btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
-    maGiaiDau.addEventListener("change", () => loadDanhSachBangDau(hamChung));
-    btnLocDanhSach.addEventListener("click", handle_view_locDanhSach);
-    maGiaiDau_chon_viewbody.addEventListener("change", async function () {
-        await loadDanhSachBangDau_chon_viewbody(hamChung, maGiaiDau_chon_viewbody.value);
-        const data = await hamChung.layDanhSach("doi_bong_giai_dau");
-        await load_viewTbody(data);
+
+    ids.btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
+    ids.btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
+    ids.maGiaiDau.addEventListener("change", () => loadDanhSachBangDau(hamChung));
+    ids.btnLocDanhSach.addEventListener("click", handle_view_locDanhSach);
+
+    ids.maGiaiDau_chon_viewbody.addEventListener("change", async function () {
+        await loadDanhSachBangDau_chon_viewbody(hamChung, ids.maGiaiDau_chon_viewbody.value);
+        await load_viewTbody();
     });
-    maBangDau_chon_viewbody.addEventListener("change", async function () {
-        const data = await hamChung.layDanhSach("doi_bong_giai_dau");
-        await load_viewTbody(data);
+    ids.maBangDau_chon_viewbody.addEventListener("change", async function () {
+        await load_viewTbody();
+    });
+
+    // Popup filter
+    ids.closePopup.addEventListener("click", () => {
+        ids.popupOverlay.classList.add("hidden");
+    });
+    ids.maGiaiDau_chon.addEventListener("change", async function () {
+        await loadDanhSachDoiBong_chon_popup(hamChung, ids.maGiaiDau_chon.value);
+        await load_viewTbody_chon_popup();
+    });
+    ids.maDoiBong_chon.addEventListener("change", async function () {
+        await load_viewTbody_chon_popup();
     });
 });
 
-async function load_viewTbody(data) {
+async function load_viewTbody() {
+    let data = await hamChung.layDanhSach("doi_bong_giai_dau");
+    // Lọc theo filter viewbody
+    const maGiaiDau = ids.maGiaiDau_chon_viewbody.value;
+    const maBangDau = ids.maBangDau_chon_viewbody.value;
+    if (maGiaiDau && maGiaiDau !== "All") data = data.filter(d => d.ma_giai_dau === maGiaiDau);
+    if (maBangDau && maBangDau !== "All") data = data.filter(d => d.ma_bang_dau === maBangDau);
     await viewTbody(data, hamChung, {}, handleEdit, handleDelete);
 }
 
@@ -53,37 +70,43 @@ async function handleDelete(item) {
 
 async function handleLuuThayDoi(event) {
     event.preventDefault();
-    if (!form.checkValidity()) {
-        form.reportValidity();
+    if (!ids.form.checkValidity()) {
+        ids.form.reportValidity();
         return;
     }
     let id_Hinh_anh_thay = "";
-    if (inputFile.value === "")
-        id_Hinh_anh_thay = hinhAnh.value;
+    if (ids.inputFile.value === "")
+        id_Hinh_anh_thay = ids.hinhAnh.value;
     else
-        id_Hinh_anh_thay = inputFile.files[0].name;
+        id_Hinh_anh_thay = ids.inputFile.files[0].name;
     id_Hinh_anh_thay = hamChung.doiKhoangTrangThanhGachDuoi(id_Hinh_anh_thay);
 
     let formData = {
-        ma_doi_bong: maDoiBong.value,
-        ma_giai_dau: maGiaiDau.value,
-        ma_bang_dau: maBangDau.value,
-        ten_doi_bong: tenDoiBong.value,
-        quoc_gia: quocGia.value,
-        hat_giong: hatGiong.value,
-        logo: id_Hinh_anh_thay
+        ma_doi_bong: ids.maDoiBong.value,
+        ma_giai_dau: ids.maGiaiDau.value,
+        ma_bang_dau: ids.maBangDau.value,
+        ten_doi_bong: ids.tenDoiBong.value,
+        hat_giong: ids.hatGiong.value,
+        logo: id_Hinh_anh_thay,
+        thoi_gian_dang_ky: ids.thoiGianDangKy.value,
+        trang_thai: ids.trangThai.value,
+        ly_do_tu_choi: ids.lyDoTuChoi.value,
+        ghi_chu: ids.ghiChu.value
     };
-    if (maBangDau.value === "") delete formData.ma_bang_dau;
-    if (maDoiBong.disabled && maGiaiDau.disabled) {
+    if (ids.maBangDau.value === "") delete formData.ma_bang_dau;
+    if (ids.maDoiBong.disabled && ids.maGiaiDau.disabled) {
         await hamChung.sua(formData, "doi_bong_giai_dau");
         alert("Sửa thành công!");
     } else {
         await hamChung.them(formData, "doi_bong_giai_dau");
         alert("Thêm thành công!");
     }
-    if (inputFile.value != "") {
-        await hamChung.uploadImage(inputFile.files[0]);
+    if (ids.inputFile.value != "") {
+        await hamChung.uploadImage(ids.inputFile.files[0]);
     }
+    ids.maDoiBong.disabled = false;
+    ids.maGiaiDau.disabled = false;
+    ids.form.reset();
     await load_viewTbody();
 }
 
@@ -92,6 +115,23 @@ function handleTaiLaiTrang(event) {
     location.reload();
 }
 
-function handle_view_locDanhSach(event) {
-    // Copy logic lọc danh sách popup từ file cũ vào đây
+// Xử lý popup lọc danh sách
+async function handle_view_locDanhSach(event) {
+    event.preventDefault();
+    const ids = getElementIds();
+    ids.popupOverlay.classList.remove("hidden");
+    await loadDanhSachGiaiDau_chon_popup(hamChung);
+    await loadDanhSachDoiBong_chon_popup(hamChung, ids.maGiaiDau_chon.value);
+    await load_viewTbody_chon_popup();
+}
+
+// Load bảng popup lọc
+async function load_viewTbody_chon_popup() {
+    const ids = getElementIds();
+    let data = await hamChung.layDanhSach("doi_bong_giai_dau");
+    const maGiaiDau = ids.maGiaiDau_chon.value;
+    const maDoiBong = ids.maDoiBong_chon.value;
+    if (maGiaiDau && maGiaiDau !== "All") data = data.filter(d => d.ma_giai_dau === maGiaiDau);
+    if (maDoiBong && maDoiBong !== "All") data = data.filter(d => d.ma_doi_bong === maDoiBong);
+    await viewTbody_chon(data);
 }

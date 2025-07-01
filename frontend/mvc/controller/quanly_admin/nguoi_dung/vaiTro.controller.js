@@ -27,6 +27,7 @@ function handleEdit(item) {
 async function handleDelete(item) {
     if (confirm(`Bạn có chắc chắn muốn xóa vai trò "${item.ten_vai_tro}"?`)) {
         await hamChung.xoa({ ma_vai_tro: item.ma_vai_tro }, "vai_tro");
+        form.reset();
         load_viewTbody();
     }
 }

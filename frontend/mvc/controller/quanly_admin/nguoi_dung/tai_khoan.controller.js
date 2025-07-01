@@ -4,6 +4,7 @@ import {
     viewTbody,
     fillForm,
     loadDanhSachNguoiDung,
+    loadDanhSachNguoiDung_chuaCo_taiKhoan,
     loadDanhSachVaiTro
 } from "../../../view/view_js/quanly_admin/nguoi_dung/tai_khoan.view.js";
 
@@ -12,8 +13,9 @@ const {
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachNguoiDung(hamChung);
-    await loadDanhSachVaiTro(hamChung);
+    // await loadDanhSachNguoiDung();
+    await loadDanhSachVaiTro();
+    await loadDanhSachNguoiDung_chuaCo_taiKhoan();
     await load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
@@ -31,6 +33,7 @@ function handleEdit(item) {
 async function handleDelete(item) {
     if (confirm(`Bạn có chắc chắn muốn xóa tài khoản của người dùng "${item.ma_nguoi_dung}"?`)) {
         await hamChung.xoa({ ma_nguoi_dung: item.ma_nguoi_dung }, "tai_khoan");
+        form.reset();
         load_viewTbody();
     }
 }
@@ -49,6 +52,14 @@ async function handleLuuThayDoi(event) {
         ma_vai_tro: maVaiTro.value,
         ngay_tao: ngayTao.value
     };
+    // Kiểm tra nếu tên đăng nhâp đã tồn tại
+    const dataTaiKhoan = await hamChung.layDanhSach("tai_khoan");
+    const tenDangNhapDaTonTai = dataTaiKhoan.some(item => item.ten_dang_nhap === tenDangNhap.value);
+    if (tenDangNhapDaTonTai) {
+        alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+        return;
+    }
+
     if (maNguoiDung.disabled && tenDangNhap.disabled) {
         await hamChung.sua(formData, "tai_khoan");
         alert("Sửa thành công!");

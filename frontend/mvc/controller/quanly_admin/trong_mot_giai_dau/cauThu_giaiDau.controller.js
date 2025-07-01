@@ -17,18 +17,20 @@ const {
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachGiaiDau(hamChung);
-    await loadDanhSachViTri(hamChung);
-    await loadDanhSachGiaiDau_chon_viewbody(hamChung);
+    await loadDanhSachGiaiDau();
+    await loadDanhSachViTri();
+    await loadDanhSachGiaiDau_chon_viewbody();
 
     maGiaiDau.addEventListener("change", async function () {
-        await loadDanhSachDoiBong(hamChung, maGiaiDau.value);
+        await loadDanhSachDoiBong(maGiaiDau.value);
+        await loadDanhSachCauThu();
     });
     maDoiBong.addEventListener("change", async function () {
-        await loadDanhSachCauThu(hamChung, maDoiBong.value);
+        await loadDanhSachCauThu(maDoiBong.value);
+
     });
     maGiaiDau_chon_viewbody.addEventListener("change", async function () {
-        await loadDanhSachDoiBongTheoGiaiDau_chon_viewbody(hamChung, maGiaiDau_chon_viewbody.value);
+        await loadDanhSachDoiBongTheoGiaiDau_chon_viewbody(maGiaiDau_chon_viewbody.value);
         await load_viewTbody();
     });
     maDoiBong_chon_viewbody.addEventListener("change", async function () {
@@ -42,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function load_viewTbody() {
     const data = await hamChung.layDanhSach("cau_thu_giai_dau");
-    await viewTbody(data, hamChung, handleEdit, handleDelete);
+    await viewTbody(data, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {

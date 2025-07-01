@@ -17,21 +17,21 @@ export function getElementIds() {
         hinhAnh: document.getElementById("hinhAnh"),
         inputFile: document.getElementById("hinhAnhFile"),
 
-        gioiTinh_chon_viewbody: document.getElementById("gioiTinh_chon_viewbody"),
+        giaiDau_chon_viewbody: document.getElementById("giaiDau_chon_viewbody"),
         tableBody: document.getElementById("dataTable"),
     };
 }
 
 export async function viewTbody(data, onEdit, onDelete) {
-    const { tableBody, gioiTinh_chon_viewbody } = getElementIds();
+    const { tableBody, giaiDau_chon_viewbody } = getElementIds();
     tableBody.innerHTML = "";
 
-    if (!data) {
-        data = await hamChung.layDanhSach("trong_tai");
-    }
+    // if (!data) {
+    //     data = await hamChung.layDanhSach("trong_tai");
+    // }
 
-    if (gioiTinh_chon_viewbody.value !== "All") {
-        data = data.filter(item => item.gioi_tinh === gioiTinh_chon_viewbody.value);
+    if (giaiDau_chon_viewbody.value !== "All") {
+        data = data.filter(item => item.giai_dau === giaiDau_chon_viewbody.value);
     }
 
     for (const item of data) {
@@ -78,4 +78,39 @@ export function fillForm(data) {
     elementIDs.hinhAnh.value = data.hinh_anh;
 
     window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+export async function loadDanhSachGiaiDau() {
+    const selectElement = document.getElementById("maGiaiDau");
+    selectElement.innerHTML = '<option value="">-- Chọn Giải Đấu --</option>';
+    const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ten_giai_dau}`;
+        selectElement.appendChild(option);
+    });
+}
+export async function loadDanhSachLoaiTrongTai() {
+    const selectElement = document.getElementById("maLoaiTrongTai");
+    selectElement.innerHTML = '<option value="">-- Chọn Loại Trọng Tài --</option>';
+    const data = await hamChung.layDanhSach("loai_trong_tai");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_loai_trong_tai;
+        option.textContent = `${item.ten_loai_trong_tai}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachGiaiDau_chon_viewbody() {
+    const selectElement = document.getElementById("giaiDau_chon_viewbody");
+    selectElement.innerHTML = '<option value="All">-- Chọn Giải Đấu --</option>';
+    const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ten_giai_dau}`;
+        selectElement.appendChild(option);
+    });
 }

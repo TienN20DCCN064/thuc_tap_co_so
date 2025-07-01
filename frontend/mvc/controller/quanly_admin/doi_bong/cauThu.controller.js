@@ -14,9 +14,9 @@ const {
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachViTri(hamChung);
-    await loadDanhSachDoiBong(hamChung);
-    await loadDanhSachDoiBong_chon_viewbody(hamChung);
+    await loadDanhSachViTri();
+    await loadDanhSachDoiBong();
+    await loadDanhSachDoiBong_chon_viewbody();
     await load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function load_viewTbody() {
     let data = await hamChung.layDanhSach("cau_thu");
-    await viewTbody(data, hamChung, {}, handleEdit, handleDelete);
+    await viewTbody(data, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {

@@ -70,11 +70,20 @@ export function fillForm(item) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhSachCauThu( maDoiBong) {
+export async function loadDanhSachCauThu(maDoiBong) {
     const selectElement = document.getElementById("maCauThu");
     selectElement.innerHTML = '<option value="">-- Chọn cầu thủ --</option>';
+
+    // Nếu mã đội bóng không hợp lệ thì dừng lại
+    if (!maDoiBong || maDoiBong === "") {
+        return; // Không làm gì thêm, không in cầu thủ nào
+    }
+
     let data = await hamChung.layDanhSach("cau_thu");
-    if (maDoiBong) data = data.filter(item => item.ma_doi_bong === maDoiBong);
+
+    // Ép kiểu về chuỗi để so sánh chính xác
+    data = data.filter(item => `${item.ma_doi_bong}` === `${maDoiBong}`);
+
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_cau_thu;
@@ -88,6 +97,7 @@ export async function loadDanhSachDoiBong( maGiaiDau) {
     selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>';
     let data = await hamChung.layDanhSach("doi_bong_giai_dau");
     if (maGiaiDau) data = data.filter(item => item.ma_giai_dau === maGiaiDau);
+    console.log(data);
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_doi_bong;
