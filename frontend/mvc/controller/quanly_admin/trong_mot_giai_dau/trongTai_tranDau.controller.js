@@ -17,16 +17,16 @@ const {
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhTranDau(hamChung);
-    await loadDanhSachTrongTai(hamChung);
-    await loadDanhSachLoaiTrongTai(hamChung);
-    await loadDanhSachGiaiDau_chon_viewbody(hamChung);
+    await loadDanhTranDau();
+    await loadDanhSachTrongTai();
+    await loadDanhSachLoaiTrongTai();
+    await loadDanhSachGiaiDau_chon_viewbody();
     await load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
 
     maGiaiDau_chon_viewbody.addEventListener("change", async function () {
-        await loadDanhSachTranDauTheoGiaiDau_chon_viewbody(hamChung, maGiaiDau_chon_viewbody.value);
+        await loadDanhSachTranDauTheoGiaiDau_chon_viewbody( maGiaiDau_chon_viewbody.value);
         let data = await hamChung.layDanhSach("trong_tai_tran_dau");
         await load_viewTbody(data);
     });
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 async function load_viewTbody(data) {
-    await viewTbody(data, hamChung, {}, handleEdit, handleDelete);
+    await viewTbody(data, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {

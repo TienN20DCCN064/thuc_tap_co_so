@@ -18,15 +18,17 @@ const {
 
 document.addEventListener("DOMContentLoaded", async function () {
     await loadDanhSachGiaiDau();
+    await loadDanhSachDoiBong();
+    await loadDanhSachCauThu();
     await loadDanhSachViTri();
     await loadDanhSachGiaiDau_chon_viewbody();
 
     maGiaiDau.addEventListener("change", async function () {
-        await loadDanhSachDoiBong(maGiaiDau.value);
+        await loadDanhSachDoiBong();
         await loadDanhSachCauThu();
     });
     maDoiBong.addEventListener("change", async function () {
-        await loadDanhSachCauThu(maDoiBong.value);
+        await loadDanhSachCauThu();
 
     });
     maGiaiDau_chon_viewbody.addEventListener("change", async function () {
