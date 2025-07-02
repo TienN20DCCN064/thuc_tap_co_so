@@ -103,6 +103,32 @@ Object.entries(tables).forEach(([table, keys]) => {
         }
         return dateString; // Nếu không hợp lệ, giữ nguyên
     }
+    // Chuyển ISO string hoặc Date về dạng datetime-local (YYYY-MM-DDTHH:mm)
+    function convertToDatetimeLocal(dateInput) {
+        let date = dateInput;
+        if (typeof dateInput === "string" && !isNaN(Date.parse(dateInput))) {
+            date = new Date(dateInput);
+        }
+        if (date instanceof Date && !isNaN(date)) {
+            // Lấy phần YYYY-MM-DDTHH:mm
+            return date.toISOString().slice(0, 16);
+        }
+        return dateInput;
+    }// ...existing code...
+    // Chuyển từ dạng datetime-local (YYYY-MM-DDTHH:mm) sang timestamp MySQL (YYYY-MM-DD HH:mm:ss)
+    function convertToMySQLTimestamp(datetimeLocal) {
+        if (typeof datetimeLocal === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(datetimeLocal)) {
+            // Thêm :00 cho giây
+            return datetimeLocal.replace("T", " ") + ":00";
+        }
+        // Nếu là dạng đầy đủ ISO, cắt lấy phần ngày giờ
+        if (typeof datetimeLocal === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(datetimeLocal)) {
+            const d = new Date(datetimeLocal);
+            return d.toISOString().replace("T", " ").slice(0, 19).replace("Z", "");
+        }
+        return datetimeLocal;
+    }
+    // ...existing code...
     app.get("/api", (req, res) => {
         const apiList = Object.entries(tables).map(([table, columns]) => {
             const idParams = columns.map((_, i) => `id${i + 1}`).join(":");
@@ -173,7 +199,7 @@ Object.entries(tables).forEach(([table, keys]) => {
                     console.log(`Trước: ${key} =`, value); // Debug giá trị trước khi sửa
 
                     if (typeof value === "string" && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
-                        row[key] = convertToYYYYMMDD(moment.utc(value).add(1, 'day').toISOString());
+                        row[key] = convertToDatetimeLocal(moment.utc(value).add(1, 'day').toISOString());
                         console.log(`Sau: ${key} =`, row[key]); // Debug giá trị sau khi sửa
                     }
                 });
@@ -204,7 +230,7 @@ Object.entries(tables).forEach(([table, keys]) => {
                 console.log(`Trước: ${key} =`, value); // Debug giá trị trước khi sửa
 
                 if (typeof value === "string" && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
-                    row[key] = convertToYYYYMMDD(moment.utc(value).add(1, 'day').toISOString());
+                    row[key] = convertToDatetimeLocal(moment.utc(value).add(1, 'day').toISOString());
                     console.log(`Sau: ${key} =`, row[key]); // Debug giá trị sau khi sửa
                 }
             });
@@ -235,7 +261,7 @@ Object.entries(tables).forEach(([table, keys]) => {
 
         // Chuyển đổi dữ liệu ngày tháng sang định dạng MySQL (YYYY-MM-DD)
         Object.keys(req.body).forEach(key => {
-            req.body[key] = convertToMySQLDate(req.body[key]);
+            req.body[key] = convertToMySQLTimestamp(req.body[key]);
         });
 
         const updates = Object.keys(req.body).map(key => `\`${key}\` = ?`).join(", ");
@@ -261,7 +287,7 @@ Object.entries(tables).forEach(([table, keys]) => {
     app.post(`/api/${table}`, (req, res) => {
         // Chuyển đổi dữ liệu ngày tháng sang định dạng MySQL (YYYY-MM-DD)
         Object.keys(req.body).forEach(key => {
-            req.body[key] = convertToMySQLDate(req.body[key]); // Chuyển đổi nếu là ngày hợp lệ
+            req.body[key] = convertToMySQLTimestamp(req.body[key]); // Chuyển đổi nếu là ngày hợp lệ
         });
 
         const columns = Object.keys(req.body);
