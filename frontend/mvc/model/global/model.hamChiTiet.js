@@ -13,6 +13,9 @@ const hamChiTiet = {
     async danhSachTrongTai_theoGiai(maGiaiDau) {
         return await danhSachTrongTai_theoGiai(maGiaiDau);
     },
+    async danhSachTrongTai_theo_1tranDau(maTranDau) {
+        return await danhSachTrongTai_theo_1tranDau(maTranDau);
+    },
 
 
 };
@@ -61,22 +64,16 @@ async function layDoiBongTheoQL(ma_ql_doi_bong) {
     return dataDoiBong_theoIdQuanLy;
 }
 async function danhSachTrongTai_theoGiai(maGiaiDau) {
-    const danhSachTrongTaiTranDau = await hamChung.layDanhSach("trong_tai_tran_dau");
-    const danhSachTranDau = await hamChung.layDanhSach("tran_dau");
-
-    // Tạo một Map để tra cứu nhanh tran_dau theo mã
-    const mapTranDau = new Map();
-    for (const tran of danhSachTranDau) {
-        mapTranDau.set(tran.ma_tran_dau, tran);
-    }
-
-    // Lọc danh sách theo ma_giai_dau
-    const ketQua = danhSachTrongTaiTranDau.filter(item => {
-        const tran = mapTranDau.get(item.ma_tran_dau);
-        return tran && tran.ma_giai_dau === maGiaiDau;
-    });
-
-    return ketQua;
+    const danhSachTrongTai = await hamChung.layDanhSach("trong_tai");
+    const danhSachTrongTai_theoGiai = danhSachTrongTai.filter((item) => item.ma_giai_dau === maGiaiDau);
+    return danhSachTrongTai_theoGiai;
 }
+async function danhSachTrongTai_theo_1tranDau(maTranDau) {
+    const danhSachTrongTaiTranDau = await hamChung.layDanhSach("trong_tai_tran_dau");
+    const danhSachTrongTai_theo_1tranDau = danhSachTrongTaiTranDau.filter((item) => item.ma_tran_dau === maTranDau);
+    return danhSachTrongTai_theo_1tranDau;
+
+}
+
 
 export default hamChiTiet;

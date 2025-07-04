@@ -1,207 +1,394 @@
-// import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 
-// export function getElementIds() {
-//     return {
-//         btnLuuThayDoi: document.getElementById("button_luu"),
-//         btnTaiLaiTrang: document.getElementById("button_taiLaiTrang"),
-//         button_xepLich: document.getElementById("button_xepLich"),
-//         maTranDau: document.getElementById("maTranDau"),
-//         maGiaiDau: document.getElementById("maGiaiDau"),
-//         maDoi1: document.getElementById("maDoi1"),
-//         maDoi2: document.getElementById("maDoi2"),
-//         ngayDienRa: document.getElementById("ngayDienRa"),
-//         gioDienRa: document.getElementById("gioDienRa"),
-//         sanVanDong: document.getElementById("sanVanDong"),
-//         button_xem_ds_trongTai: document.getElementById("button_xem_ds_trongTai"),
-//         button_luu_danhSachTranDau: document.getElementById("bt_luuDanhSachTranDau_tuDong"),
-//         trangThai: document.getElementById("trangThai"),
-//         maVongDau: document.getElementById("maVongDau"),
-//         maGiaiDau_chon_viewbody: document.getElementById("maGiaiDau_chon_viewbody"),
-//         maVongDau_chon_viewbody: document.getElementById("maVongDau_chon_viewbody"),
-//         form: document.getElementById("inputForm"),
-//         tableBody: document.getElementById("dataTable"),
-//     };
-// }
+export function getElementIds() {
+    return {
+        btnLuuThayDoi: document.getElementById("button_luu"),
+        btnTaiLaiTrang: document.getElementById("button_taiLaiTrang"),
 
-// // Hiển thị danh sách trận đấu
-// export async function viewTbody(data, onEdit, onDelete, onEditKQ, onXemTrongTai) {
-//     const {
-//         maGiaiDau_chon_viewbody,
-//         maVongDau_chon_viewbody,
-//         tableBody
-//     } = getElementIds();
+        button_xepLich: document.getElementById("button_xepLich"),
+        button_xem_ds_trongTaiformInput: document.getElementById("button_xem_ds_trongTaiformInput"),
+        button_luu_danhSachTranDau: document.getElementById("bt_luuDanhSachTranDau_tuDong"),
 
-//     if (!data) data = await hamChung.layDanhSach("tran_dau");
-//     if (maGiaiDau_chon_viewbody && maGiaiDau_chon_viewbody.value !== "All") {
-//         data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
-//     }
-//     if (maVongDau_chon_viewbody && maVongDau_chon_viewbody.value !== "All") {
-//         data = data.filter(item => item.ma_vong_dau === maVongDau_chon_viewbody.value);
-//     }
-//     tableBody.innerHTML = "";
+        maGiaiDau: document.getElementById("maGiaiDau"),
+        maVongDau: document.getElementById("maVongDau"),
+        maTranDau: document.getElementById("maTranDau"),
+        maDoi1: document.getElementById("maDoi1"),
+        maDoi2: document.getElementById("maDoi2"),
+        maDoiThang: document.getElementById("maDoiThang"),
+        soBanDoi1: document.getElementById("soBanDoi1"),
+        soBanDoi2: document.getElementById("soBanDoi2"),
+        thoiGianDienRa: document.getElementById("thoiGianDienRa"),
+        sanVanDong: document.getElementById("sanVanDong"),
+        trangThai: document.getElementById("trangThai"),
+        ghiChu: document.getElementById("ghiChu"),
 
-//     for (let i = 0; i < data.length; i++) {
-//         const item = data[i];
-//         const ketQua = await layKetQua(item.ma_tran_dau);
-//         const row = document.createElement("tr");
-//         const dataGiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", item.ma_giai_dau);
-//         const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
-//         const dd1 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_1 && dd.ma_giai_dau === item.ma_giai_dau);
-//         const dd2 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_2 && dd.ma_giai_dau === item.ma_giai_dau);
-//         const dataVongDau = await hamChung.layThongTinTheo_ID("vong_dau", item.ma_vong_dau);
-//         const data1SVD = await hamChung.layThongTinTheo_ID("san_van_dong", item.ma_san);
-//         row.innerHTML = `
-//             <td style="text-align: center;">${dataGiaiDau?.ten_giai_dau || ""}</td>
-//             <td style="text-align: center;">${dataVongDau?.ten_vong || ""}</td>
-//             <td style="text-align: center;">${item.ma_tran_dau}</td>
-//             <td style="text-align: center;">${dd1?.ten_doi_bong || ""}</td>
-//             <td style="text-align: center;">${dd2?.ten_doi_bong || ""}</td>
-//             <td style="text-align: center;">${item.ngay_dien_ra}</td>
-//             <td style="text-align: center;">${item.gio_dien_ra}</td>
-//             <td style="text-align: center;">${data1SVD?.ten_san || ""}</td>
-//             <td style="text-align: center;"><button class="xemTrongTai-btn btn btn-warning btn-sm">Xem ds</button></td>
-//             <td style="text-align: center;">${item.trang_thai}</td>
-//             <td style="text-align: center;">${ketQua}</td>
-//             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa thông tin</button></td>
-//             <td style="text-align: center;"><button class="edit-kq-btn btn btn-warning btn-sm">Sửa kết quả</button></td>
-//             <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
-//         `;
-//         tableBody.appendChild(row);
+        
+        modalXemTrongTai: document.getElementById("modalXemTrongTai"),
+        danh_sach_trong_tai_tran_dau: document.getElementById("danh_sach_trong_tai_tran_dau"),
 
-//         row.querySelector(".edit-btn").addEventListener("click", () => onEdit(item));
-//         row.querySelector(".delete-btn").addEventListener("click", () => onDelete(item));
-//         row.querySelector(".edit-kq-btn").addEventListener("click", () => onEditKQ(item));
-//         row.querySelector(".xemTrongTai-btn").addEventListener("click", () => onXemTrongTai(item));
-//     }
-// }
 
-// // Điền dữ liệu vào form
-// export function fillForm(item) {
-//     const {
-//         maTranDau, maGiaiDau, maDoi1, maDoi2, ngayDienRa, gioDienRa, sanVanDong, trangThai, maVongDau
-//     } = getElementIds();
-//     maTranDau.value = item.ma_tran_dau;
-//     maGiaiDau.value = item.ma_giai_dau;
-//     maDoi1.value = item.ma_doi_1;
-//     maDoi2.value = item.ma_doi_2;
-//     ngayDienRa.value = item.ngay_dien_ra;
-//     gioDienRa.value = item.gio_dien_ra;
-//     sanVanDong.value = item.ma_san;
-//     trangThai.value = item.trang_thai;
-//     maVongDau.value = item.ma_vong_dau;
-//     window.scrollTo({ top: 0, behavior: "smooth" });
-// }
+        maGiaiDau_chon_viewbody: document.getElementById("maGiaiDau_chon_viewbody"),
+        maVongDau_chon_viewbody: document.getElementById("maVongDau_chon_viewbody"),
+        form: document.getElementById("inputForm"),
 
-// // Các hàm load select option
-// export async function loadDanhSachGiaiDau() {
-//     const selectElement = document.getElementById("maGiaiDau");
-//     selectElement.innerHTML = '<option value="">-- Chọn Giải Đấu --</option>';
-//     const data = await hamChung.layDanhSach("giai_dau");
-//     data.forEach(item => {
-//         const option = document.createElement("option");
-//         option.value = item.ma_giai_dau;
-//         option.textContent = `${item.ten_giai_dau}`;
-//         selectElement.appendChild(option);
-//     });
-// }
+        chon_hinhThuc_tao_tran: document.getElementById("chon_hinhThuc_tao_tran"),
+        maGiaiDau_chon: document.getElementById("maGiaiDau_chon"),
+        maVongDau_chon: document.getElementById("maVongDau_chon"),
+        chon_ngayBatDau: document.getElementById("chon_ngayBatDau"),
+        chon_gioBatDau: document.getElementById("chon_gioBatDau"),
+        button_tao_tran: document.getElementById("button_tao_tran"),
+        button_chon_tat_ca: document.getElementById("button_chon_tat_ca"),
+        btnCloseBangTaoTran: document.getElementById("btnCloseBangTaoTran"),
+        tableBody: document.getElementById("dataTable")
+    };
+}
 
-// export async function loadDanhSachDoiBong_maDoi1_end(maGiaiDau) {
-//     const selectElement = document.getElementById("maDoi1");
-//     selectElement.innerHTML = '<option value="">-- Chọn Đội 1 --</option>';
-//     const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
-//     let data = [];
-//     if (maGiaiDau != "") {
-//         data = dataDoiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau);
-//     }
-//     data.forEach(item => {
-//         const option = document.createElement("option");
-//         option.value = item.ma_doi_bong;
-//         option.textContent = `${item.ten_doi_bong}`;
-//         selectElement.appendChild(option);
-//     });
-// }
+export async function viewTableBody(data, onXemTrongTai, onXemGhiChu, onEdit, onDelete) {
+    const { tableBody, maGiaiDau_chon_viewbody, maVongDau_chon_viewbody } = getElementIds();
+    if (data === undefined || data == null) {
+        data = await hamChung.layDanhSach("tran_dau");
+    }
+    if (maGiaiDau_chon_viewbody.value !== "All" && maGiaiDau_chon_viewbody.value !== "") {
+        data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
+    }
+    if (maVongDau_chon_viewbody.value !== "All" && maVongDau_chon_viewbody.value !== "") {
+        data = data.filter(item => item.ma_vong_dau === maVongDau_chon_viewbody.value);
+    }
+    if (maGiaiDau_chon_viewbody.value === "All" && maVongDau_chon_viewbody.value === "All") {
+        data = data.slice(0, 20);
+    }
+    tableBody.innerHTML = "";
+    for (let i = 0; i < data.length; i++) {
+        const item = data[i];
 
-// export async function loadDanhSachDoiBong_maDoi2_end(maGiaiDau) {
-//     const selectElement = document.getElementById("maDoi2");
-//     selectElement.innerHTML = '<option value="">-- Chọn Đội 2 --</option>';
-//     const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
-//     let data = [];
-//     if (maGiaiDau != "") {
-//         data = dataDoiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau);
-//     }
-//     data.forEach(item => {
-//         const option = document.createElement("option");
-//         option.value = item.ma_doi_bong;
-//         option.textContent = `${item.ten_doi_bong}`;
-//         selectElement.appendChild(option);
-//     });
-// }
+        const row = document.createElement("tr");
+        const data1GiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", item.ma_giai_dau);
+        const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
 
-// export async function loadDanhSachVongDau() {
-//     const selectElement = document.getElementById("maVongDau");
-//     selectElement.innerHTML = '<option value="">-- Chọn Vòng Đấu --</option>';
-//     const data = await hamChung.layDanhSach("vong_dau");
-//     data.forEach(item => {
-//         const option = document.createElement("option");
-//         option.value = item.ma_vong_dau;
-//         option.textContent = `${item.ma_vong_dau} - ${item.ten_vong}`;
-//         selectElement.appendChild(option);
-//     });
-// }
+        const db1 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_1 && dd.ma_giai_dau === item.ma_giai_dau);
+        const db2 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_2 && dd.ma_giai_dau === item.ma_giai_dau);
+        const dbWin = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_thang && dd.ma_giai_dau === item.ma_giai_dau);
+        let tenDoiThang = "---";
+        if (dbWin && dbWin.ten_doi_bong) {
+            tenDoiThang = dbWin.ten_doi_bong;
+        }
+        const dataVongDau = await hamChung.layThongTinTheo_ID("vong_dau", item.ma_vong_dau);
+        const data1SVD = await hamChung.layThongTinTheo_ID("san_van_dong", item.ma_san);
+        //  console.log(data[i]);
+        row.innerHTML = `
+            <td style="text-align: center;">${data1GiaiDau.ten_giai_dau}</td>
+            <td style="text-align: center;">${dataVongDau.ten_vong_dau}</td>
+            <td style="text-align: center;">${item.ma_tran_dau}</td>
+            <td style="text-align: center;">${db1.ten_doi_bong}</td>
+            <td style="text-align: center;">${item.so_ban_doi_1}:${item.so_ban_doi_2}</td>
+            <td style="text-align: center;">${db2.ten_doi_bong}</td>
+            <td style="text-align: center;">${tenDoiThang}</td>
 
-// export async function loadDanhSachSanVanDong() {
-//     const selectElement = document.getElementById("sanVanDong");
-//     selectElement.innerHTML = '<option value="">-- Chọn Sân Vận Động --</option>';
-//     const data = await hamChung.layDanhSach("san_van_dong");
-//     data.forEach(item => {
-//         const option = document.createElement("option");
-//         option.value = item.ma_san;
-//         option.textContent = `${item.ten_san}`;
-//         selectElement.appendChild(option);
-//     });
-// }
+            <td style="text-align: center;">${item.thoi_gian_dien_ra}</td>
+            <td style="text-align: center;">${data1SVD.ten_san}</td>
+            <td style="text-align: center;">${item.trang_thai}</td>
 
-// export async function loadDanhSachGiaiDau_chon_viewbody() {
-//     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
-//     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-//     const data = await hamChung.layDanhSach("giai_dau");
-//     data.forEach(item => {
-//         const option = document.createElement("option");
-//         option.value = item.ma_giai_dau;
-//         option.textContent = `${item.ten_giai_dau}`;
-//         selectElement.appendChild(option);
-//     });
-// }
+            <td style="text-align: center;"><button class="xemTrongTai-btn btn btn-warning btn-sm">Xem</button></td>
+            <td style="text-align: center;"><button class="xemGhiChu-btn btn btn-warning btn-sm">Xem</button></td>
+            <td style="text-align: center;"><button class="edit-btn btn-warning btn-sm">Sửa</button></td>
+            <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
+        `;
+        tableBody.appendChild(row);
 
-// export async function loadDanhSachVongDau_chon_viewbody() {
-//     const selectElement = document.getElementById("maVongDau_chon_viewbody");
-//     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-//     const data = await hamChung.layDanhSach("vong_dau");
-//     data.forEach(item => {
-//         const option = document.createElement("option");
-//         option.value = item.ma_vong_dau;
-//         option.textContent = `${item.ten_vong}`;
-//         selectElement.appendChild(option);
-//     });
-// }
+        row.querySelector(".xemTrongTai-btn").addEventListener("click", () => onXemTrongTai(item));
+        row.querySelector(".xemGhiChu-btn").addEventListener("click", () => onXemGhiChu(item));
+        row.querySelector(".edit-btn").addEventListener("click", () => onEdit(item));
+        row.querySelector(".delete-btn").addEventListener("click", () => onDelete(item));
+    }
+}
 
-// // Hàm lấy kết quả trận đấu
-// export async function layKetQua(ma_tran_dau) {
-//     let stringKetQua = "---";
-//     let tenDoiThang = "";
-//     const data_kqTranDau = await hamChung.layDanhSach("ket_qua_tran_dau");
-//     const dataTranDau = await hamChung.layDanhSach("tran_dau");
-//     const checkTranDau_coKq_chua = data_kqTranDau.find(data => data.ma_tran_dau === ma_tran_dau);
-//     if (!checkTranDau_coKq_chua) {
-//         return stringKetQua;
-//     } else {
-//         const data1KqTranDau = await hamChung.layThongTinTheo_ID("ket_qua_tran_dau", ma_tran_dau);
-//         const data1TranDau = await hamChung.layThongTinTheo_ID("tran_dau", ma_tran_dau);
-//         if (data1KqTranDau.ma_doi_thang != null) {
-//             const data_doiThang = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", data1KqTranDau.ma_doi_thang, data1TranDau.ma_giai_dau);
-//             tenDoiThang = data_doiThang.ten_doi_bong;
-//         }
-//         stringKetQua = tenDoiThang + " " + data1KqTranDau.so_ban_doi_1 + ":" + data1KqTranDau.so_ban_doi_2;
-//     }
-//     return stringKetQua;
-// }
+export async function viewTbody_chon(data_doiBong_giaiDau) {
+    const tableBody = document.getElementById("dataTable_chon").getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = "";
+    for (let i = 0; i < data_doiBong_giaiDau.length; i++) {
+        const item = data_doiBong_giaiDau[i];
+        const checked = item.hat_giong === "co" ? "checked" : "";
+        const row = document.createElement("tr");
+        const data1doiBongTrongGiai = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", item.ma_doi_bong, item.ma_giai_dau);
+        row.innerHTML = `
+            <td style="text-align: center;">
+                <input type="checkbox" class="checkbox-chon" value="${item.ma_doi_bong}">
+            </td>
+            <td style="text-align: center;">
+                <input type="checkbox" class="checkbox-hatGiong" value="${item.ma_doi_bong}" ${checked}>
+            </td>
+            <td style="text-align: center;">${data1doiBongTrongGiai.ten_doi_bong}</td>
+            <td style="text-align: center;">${item.logo}</td>
+            <td style="text-align: center;">${item.quoc_gia}</td>
+        `;
+        tableBody.appendChild(row);
+    }
+}
+
+export async function view_danhSachTranDau_duocTao(danhSanhTranDau_theoBang) {
+    const tbody = document.getElementById("bodyBangTaoTran");
+    tbody.innerHTML = "";
+    const dataSanVanDong = await hamChung.layDanhSach("san_van_dong");
+    const dataVongDau = await hamChung.layDanhSach("vong_dau");
+    const hinhThucTaoTran = document.getElementById("chon_hinhThuc_tao_tran");
+    const maGiaiDau = document.getElementById("maGiaiDau_chon");
+    for (let i = 0; i < danhSanhTranDau_theoBang.length; i++) {
+        const bangData = danhSanhTranDau_theoBang[i];
+        const indexBang = i;
+        const bang = bangData.bang;
+        const lichThiDau = bangData.lich_thi_dau;
+        for (let j = 0; j < lichThiDau.length; j++) {
+            const tran = lichThiDau[j];
+            const indexTran = j;
+            const row = document.createElement("tr");
+            const datadoi1_end = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", tran.doi1, maGiaiDau.value);
+            const datadoi2_end = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", tran.doi2, maGiaiDau.value);
+            row.innerHTML = `
+                <td>${bangData.bang.ten_bang_dau || '---'}</td>
+                <td>${tran.tran}</td>
+                <td data-value="${tran.doi1}">${datadoi1_end.ten_doi_bong}</td>
+                <td data-value="${tran.doi2}">${datadoi2_end.ten_doi_bong}</td>
+                <td><input type="date" value="${tran.ngay || ''}" data-field="ngay" data-index="${indexBang}-${indexTran}"></td>
+                <td><input type="time" value="${tran.gio || ''}" data-field="gio" data-index="${indexBang}-${indexTran}"></td>
+                <td>
+                    <select data-field="san" data-index="${indexBang}-${indexTran}">
+                        ${dataSanVanDong.map(san => `
+                        <option value="${san.ma_san}" ${tran.san === san.ma_san ? 'selected' : ''}>
+                            ${san.ma_san} - ${san.ten_san}
+                        </option>
+                        `).join('')}
+                    </select>
+                </td>
+                <td>
+                    <select data-field="vong" data-index="${indexBang}-${indexTran}">
+                        ${dataVongDau.map(vong => `
+                        <option value="${vong.ma_vong_dau}">
+                            ${vong.ten_vong}
+                        </option>
+                        `).join('')}
+                    </select>
+                </td>
+            `;
+            if (hinhThucTaoTran.value === "chia-bang") {
+                const selectVongHtml = `
+                <select data-field="vong" data-index="${indexBang}-${indexTran}" disabled>
+                    ${dataVongDau.map(vong => `
+                        <option value="${vong.ma_vong_dau}" ${vong.ma_vong_dau === "V1" ? 'selected' : ''}>
+                            ${vong.ten_vong}
+                        </option>
+                    `).join('')}
+                </select>
+                `;
+                const tdVong = row.querySelector('td:last-child');
+                tdVong.innerHTML = selectVongHtml;
+            } else {
+                const chonVongDauDaDa = document.getElementById("maVongDau_chon");
+                let chonVong = "";
+                if (chonVongDauDaDa.value === "All") {
+                    chonVong = "V4";
+                } else if (chonVongDauDaDa.value === "V1") {
+                    chonVong = "V2";
+                } else if (chonVongDauDaDa.value === "V2") {
+                    chonVong = "V3";
+                } else if (chonVongDauDaDa.value === "V3") {
+                    chonVong = "V4";
+                }
+                const selectVongHtml = `
+                <select data-field="vong" data-index="${indexBang}-${indexTran}">
+                    ${dataVongDau.map(vong => `
+                        <option value="${vong.ma_vong_dau}" ${vong.ma_vong_dau === chonVong ? 'selected' : ''}>
+                            ${vong.ten_vong}
+                        </option>
+                    `).join('')}
+                </select>
+                `;
+                const tdVong = row.querySelector('td:last-child');
+                tdVong.innerHTML = selectVongHtml;
+            }
+            row.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('change', function () {
+                    const field = input.getAttribute('data-field');
+                    const [indexBang, indexTran] = input.getAttribute('data-index').split('-').map(Number);
+                    danhSanhTranDau_theoBang[indexBang].lich_thi_dau[indexTran][field] = input.value;
+                });
+            });
+            tbody.appendChild(row);
+        }
+    }
+}
+
+export async function fillForm(item) {
+    console.log("fillForm", item);
+    const idS = getElementIds();
+    await loadDanhSachDoiBong_maDoi1_end(item.ma_giai_dau);
+    await loadDanhSachDoiBong_maDoi2_end(item.ma_giai_dau);
+    await loadDanhSachSanVanDong(item.ma_giai_dau);
+    await loadDanhSachVongDau(item.ma_giai_dau);
+
+    idS.maGiaiDau.value = item.ma_giai_dau;
+    idS.maVongDau.value = item.ma_vong_dau;
+    idS.maTranDau.value = item.ma_tran_dau;
+    idS.maDoi1.value = item.ma_doi_1;
+    idS.maDoi2.value = item.ma_doi_2;
+    await loadDanhSachDoiBong_maDoiThang_end(item.ma_giai_dau);
+    idS.maDoiThang.value = item.ma_doi_thang;
+    idS.soBanDoi1.value = item.so_ban_doi_1;
+    idS.soBanDoi2.value = item.so_ban_doi_2;
+
+    idS.thoiGianDienRa.value = item.thoi_gian_dien_ra;
+    idS.sanVanDong.value = item.ma_san;
+    idS.trangThai.value = item.trang_thai;
+    idS.ghiChu.value = item.ghi_chu;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+export async function loadDanhSachGiaiDau() {
+    const selectElement = document.getElementById("maGiaiDau");
+    selectElement.innerHTML = '<option value="">-- Chọn Giải Đấu --</option>';
+    const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ten_giai_dau}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachDoiBong_maDoi1_end(maGiaiDau) {
+    const selectElement = document.getElementById("maDoi1");
+    selectElement.innerHTML = '<option value="">-- Chọn Đội 1 --</option>';
+    const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
+    let data = maGiaiDau ? dataDoiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau) : [];
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_doi_bong;
+        option.textContent = `${item.ten_doi_bong}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachDoiBong_maDoi2_end(maGiaiDau) {
+    const selectElement = document.getElementById("maDoi2");
+    selectElement.innerHTML = '<option value="">-- Chọn Đội 2 --</option>';
+    const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
+    let data = maGiaiDau ? dataDoiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau) : [];
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_doi_bong;
+        option.textContent = `${item.ten_doi_bong}`;
+        selectElement.appendChild(option);
+    });
+}
+export async function loadDanhSachDoiBong_maDoiThang_end(maGiaiDau) {
+    const selectElement = document.getElementById("maDoiThang");
+    const madoi1 = document.getElementById("maDoi1");
+    const madoi2 = document.getElementById("maDoi2");
+    selectElement.innerHTML = '<option value="">-- Chọn Đội Thắng --</option>';
+
+    const data = await hamChung.layDanhSach("doi_bong_giai_dau");
+    const ds = maGiaiDau ? data.filter(d => d.ma_giai_dau === maGiaiDau) : [];
+
+    [madoi1.value, madoi2.value].forEach(val => {
+        if (val) {
+            const doi = ds.find(d => d.ma_doi_bong === val);
+            if (doi) {
+                const option = document.createElement("option");
+                option.value = doi.ma_doi_bong;
+                option.textContent = doi.ten_doi_bong;
+                selectElement.appendChild(option);
+            }
+        }
+    });
+}
+
+
+export async function loadDanhSachVongDau(maGiaiDau) {
+    const selectElement = document.getElementById("maVongDau");
+    selectElement.innerHTML = '<option value="">-- Chọn Vòng Đấu --</option>';
+    const dataVongDau = await hamChung.layDanhSach("vong_dau");
+    let data = maGiaiDau ? dataVongDau.filter(item => item.ma_giai_dau === maGiaiDau) : [];
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_vong_dau;
+        option.textContent = `${item.ma_vong_dau} - ${item.ten_vong_dau}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachSanVanDong(maGiaiDau) {
+    const selectElement = document.getElementById("sanVanDong");
+    selectElement.innerHTML = '<option value="">-- Chọn Sân Vận Động --</option>';
+    const dataSanBong = await hamChung.layDanhSach("san_van_dong");
+    let data = maGiaiDau ? dataSanBong.filter(item => item.ma_giai_dau === maGiaiDau) : [];
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_san;
+        option.textContent = `${item.ten_san}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachTrongTai(id, maGiaiDau) {
+    const selectElement = document.getElementById(id);
+    selectElement.innerHTML = '<option value="">-- Chọn--</option>';
+    let data = await hamChung.layDanhSach("trong_tai");
+    data = maGiaiDau ? data.filter(item => item.ma_giai_dau === maGiaiDau) : data;
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_trong_tai;
+        option.textContent = `${item.ho_ten}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachHinhThucXepTranDau() {
+    const selectElement = document.getElementById("chon_hinhThuc_tao_tran");
+    selectElement.innerHTML = '';
+    const data_tao = await hamChung.taoTranDau_getHinhThucTaoDoi();
+    if (!data_tao) return;
+    sessionStorage.setItem("hinh_thuc_tao_tran", JSON.stringify(data_tao));
+    Object.entries(data_tao).forEach(([ten, duong_dan]) => {
+        const option = document.createElement("option");
+        option.value = ten;
+        option.textContent = `${duong_dan.ten}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachGiaiDau_chon() {
+    const selectElement = document.getElementById("maGiaiDau_chon");
+    selectElement.innerHTML = '<option value="All">Tất Cả</option>';
+    const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ten_giai_dau}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachGiaiDau_chon_viewbody() {
+    const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
+    selectElement.innerHTML = '<option value="All">Tất Cả</option>';
+    const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ten_giai_dau}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachVongDau_chon_viewbody(maGiaiDau) {
+    const selectElement = document.getElementById("maVongDau_chon_viewbody");
+    selectElement.innerHTML = '<option value="All">Tất Cả</option>';
+    let data = await hamChung.layDanhSach("vong_dau");
+    data = maGiaiDau ? data.filter(item => item.ma_giai_dau === maGiaiDau) : data;
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_vong_dau;
+        option.textContent = `${item.ten_vong_dau}`;
+        selectElement.appendChild(option);
+    });
+}
+

@@ -1,7 +1,8 @@
 // frontend/mvc/controller/view/quanly_admin/trong_tai.controller.js
 
 import hamChung from "../../../model/global/model.hamChung.js";
-import { getElementIds, viewTbody, fillForm, loadDanhSachGiaiDau, loadDanhSachLoaiTrongTai, loadDanhSachGiaiDau_chon_viewbody } from "../../../view/view_js/quanly_admin/trong_tai/trongTai.view.js";
+import { getElementIds, viewTbody, fillForm, loadDanhSachGiaiDau, loadDanhSachLoaiTrongTai, loadDanhSachGiaiDau_chon_viewbody }
+    from "../../../view/view_js/quanly_admin/trong_tai/trongTai.view.js";
 
 
 const {

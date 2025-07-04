@@ -73,7 +73,7 @@ export function fillForm(item) {
 export async function loadDanhSachCauThu() {
     const selectElement = document.getElementById("maCauThu");
     selectElement.innerHTML = '<option value="">-- Chọn cầu thủ --</option>';
-    const  data = await hamChung.layDanhSach("cau_thu");
+    const data = await hamChung.layDanhSach("cau_thu");
 
     data.forEach(item => {
         const option = document.createElement("option");
@@ -83,7 +83,7 @@ export async function loadDanhSachCauThu() {
     });
 }
 
-export async function loadDanhSachDoiBong( ) {
+export async function loadDanhSachDoiBong() {
     const selectElement = document.getElementById("maDoiBong");
     selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>';
     const data = await hamChung.layDanhSach("doi_bong_giai_dau");

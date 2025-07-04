@@ -31,7 +31,7 @@ export async function viewTbody(data, onEdit, onDelete) {
     // }
 
     if (giaiDau_chon_viewbody.value !== "All") {
-        data = data.filter(item => item.giai_dau === giaiDau_chon_viewbody.value);
+        data = data.filter(item => item.ma_giai_dau === giaiDau_chon_viewbody.value);
     }
 
     for (const item of data) {
@@ -39,9 +39,9 @@ export async function viewTbody(data, onEdit, onDelete) {
         const hinhAnh = item.hinh_anh
             ? await hamChung.getImage(item.hinh_anh)
             : "/frontend/public/images/cat-2.png";
-
+        const data1GiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", item.ma_giai_dau);
         row.innerHTML = `
-            <td style="text-align: center;">${item.ma_giai_dau}</td>
+            <td style="text-align: center;">${data1GiaiDau.ten_giai_dau}</td>
             <td style="text-align: center;">${item.ho_ten}</td>
             <td style="text-align: center;">${item.ngay_sinh}</td>
             <td style="text-align: center;">${item.gioi_tinh}</td>
@@ -105,7 +105,7 @@ export async function loadDanhSachLoaiTrongTai() {
 
 export async function loadDanhSachGiaiDau_chon_viewbody() {
     const selectElement = document.getElementById("giaiDau_chon_viewbody");
-    selectElement.innerHTML = '<option value="All">-- Chọn Giải Đấu --</option>';
+    selectElement.innerHTML = '<option value="All">-- ALL --</option>';
     const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");

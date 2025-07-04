@@ -1,3 +1,4 @@
+import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 const btnLuuThayDoi = document.getElementById("button_luu");
 const btnTaiLaiTrang = document.getElementById("button_taiLaiTrang");
 const button_xepLich = document.getElementById("button_xepLich");
@@ -26,15 +27,13 @@ let currentTranDauId = null;
 let danhSach_doiBong_theoBang;
 
 document.addEventListener("DOMContentLoaded", async function () {
-    loadDanhSachGiaiDau();
-
-    // loadDanhSachDoiBong_maDoi2();
-    // loadDanhSachTrongTai();
-    loadDanhSachVongDau();
-    loadDanhSachSanVanDong();
-    loadDanhSach_hinhThuc_xepTranDau();
-    loadDanhSachGiaiDau_chon_viewbody();
-    loadDanhSachVongDau_chon_viewbody();
+    console.log("Trang quản lý trận đấu đã được tải");
+    await loadDanhSachGiaiDau();
+    await loadDanhSachVongDau();
+    await loadDanhSachSanVanDong();
+    await loadDanhSach_hinhThuc_xepTranDau();
+    await loadDanhSachGiaiDau_chon_viewbody();
+    await loadDanhSachVongDau_chon_viewbody();
 
     viewTbody();
     // hiện thị danh sách trận đấu có kq
@@ -1626,3 +1625,26 @@ async function capNhat_bangDau_doi_bong_giai_dau(danhSach_doiBong_theoBang) {
 }
 
 
+// //import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+// import hamChiTiet from "/frontend/mvc/model/global/model.hamChiTiet.js";
+// export function getElementIds() {
+//     return {
+//         btnLuuThayDoi: document.getElementById("button_luu"),
+//         btnTaiLaiTrang: document.getElementById("button_taiLaiTrang"),
+//         maGiaiDau: document.getElementById("maGiaiDau"),
+//         maVongDau: document.getElementById("maVongDau"),
+//         maTranDau: document.getElementById("maTranDau"),
+//         maDoi1: document.getElementById("maDoi1"),
+//         maDoi2: document.getElementById("maDoi2"),
+//         maDoiThang: document.getElementById("maDoiThang"),
+//         banThangDoi1: document.getElementById("banThangDoi1"),
+//         banThangDoi2: document.getElementById("banThangDoi2"),
+//         thoiGianDienRa: document.getElementById("thoiGianDienRa"),
+//         maSanVanDong: document.getElementById("maSanVanDong"),
+//         trangThai: document.getElementById("trangThai"),
+//         ghiChu: document.getElementById("ghiChu"),
+//         button_xem_ds_trongTai: document.getElementById("button_xem_ds_trongTai"),
+//         form: document.getElementById("inputForm"),
+//         tableBody: document.getElementById("dataTable"),
+//     };
+// }
