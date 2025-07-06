@@ -1,5 +1,6 @@
 import hamChung from "../../../model/global/model.hamChung.js";
-import thongBao from "/frontend/assets/public/src/common/chung_thongBao/thongBao.js";
+import thongBao from "/frontend/assets/components/thongBao.js";
+//C:\Users\vanti\Desktop\mvc_project\frontend\assets\components\thongBao.js
 import {
     getElementIds,
     viewTbody,

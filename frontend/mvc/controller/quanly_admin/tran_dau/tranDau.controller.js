@@ -1,6 +1,6 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 import hamChiTiet from "/frontend/mvc/model/global/model.hamChiTiet.js";
-import thongBao from "/frontend/assets/public/src/common/chung_thongBao/thongBao.js";
+import thongBao from "/frontend/assets/components/thongBao.js";
 import {
     getElementIds,
     viewTableBody,
@@ -363,28 +363,7 @@ async function handleDelete(item) {
     }
 }
 
-
-
-async function thongBao_tonTaiTranDau() {
-    document.getElementById("thong_bao").innerText = "";
-    if (chon_hinhThuc_tao_tran.value === "chia-bang") {
-        const tonTai = await check_giaiDau_coTrong_tranDau(maGiaiDau_chon.value);
-        if (tonTai) {
-            document.getElementById("thong_bao").innerText = "Đã tồn tại trận đấu trong giải!";
-        }
-    }
-}
-
-async function check_giaiDau_coTrong_tranDau(ma_giai_dau) {
-    const data_tranDau = await hamChung.layDanhSach("tran_dau");
-    return data_tranDau.some(tranDau => tranDau.ma_giai_dau === ma_giai_dau);
-}
-
-
-
-
-
-
+////////////////////// xếp lịch ////////////////////
 async function handleXepLich(event) {
     event.preventDefault();
     await loadDanhSachGiaiDau_chon();
@@ -442,6 +421,23 @@ async function handleXepLich(event) {
         });
     });
 }
+async function thongBao_tonTaiTranDau() {
+    document.getElementById("thong_bao").innerText = "";
+    if (chon_hinhThuc_tao_tran.value === "chia-bang") {
+        const tonTai = await check_giaiDau_coTrong_tranDau(maGiaiDau_chon.value);
+        if (tonTai) {
+            document.getElementById("thong_bao").innerText = "Đã tồn tại trận đấu trong giải!";
+        }
+    }
+}
+
+async function check_giaiDau_coTrong_tranDau(ma_giai_dau) {
+    const data_tranDau = await hamChung.layDanhSach("tran_dau");
+    return data_tranDau.some(tranDau => tranDau.ma_giai_dau === ma_giai_dau);
+}
+
+
+
 
 async function taoTranDau(hinhThucTaoTran) {
     btnCloseBangTaoTran.addEventListener("click", function (event) {
