@@ -8,9 +8,10 @@ export function getElementIds() {
         diemThang: document.getElementById("diemThang"),
         diemHoa: document.getElementById("diemHoa"),
         diemThua: document.getElementById("diemThua"),
+        banThang: document.getElementById("banThang"),
         truTheVang: document.getElementById("truTheVang"),
-        truTheDoGianTiep: document.getElementById("truTheDoGianTiep"),
-        truTheDoTrucTiep: document.getElementById("truTheDoTrucTiep"),
+        truTheDo: document.getElementById("truTheDo"),
+
         ghiChu: document.getElementById("ghiChu"),
         maGiaiDau_chon_viewbody: document.getElementById("maGiaiDau_chon_viewbody"),
         maVongDau_chon_viewbody: document.getElementById("maVongDau_chon_viewbody"),
@@ -40,9 +41,9 @@ export async function viewTbody(data, xemBXH, onEdit, onDelete) {
             <td>${item.diem_thang}</td>
             <td>${item.diem_hoa}</td>
             <td>${item.diem_thua}</td>
+            <td>${item.diem_ban_thang}</td>
             <td>${item.tru_the_vang}</td>
-            <td>${item.tru_the_do_gian_tiep}</td>
-            <td>${item.tru_the_do_truc_tiep}</td>
+            <td>${item.tru_the_do}</td>
             <td>${item.ghi_chu || ""}</td>
             <td><button class="view-btn btn btn-info btn-sm">Xem BXH</button></td>
             <td><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
@@ -105,16 +106,16 @@ export async function loadDanhSachVongDau_chon_viewbody(maGiaiDau) {
 }
 
 export async function fillForm(item) {
-    const { maGiaiDau, maVongDau, diemThang, diemHoa, diemThua, truTheVang, truTheDoGianTiep, truTheDoTrucTiep, ghiChu } = getElementIds();
+    const { maGiaiDau, maVongDau, diemThang, diemHoa, diemThua, banThang, truTheVang, truTheDo, ghiChu } = getElementIds();
     maGiaiDau.value = item.ma_giai_dau;
     await loadDanhSachVongDau(maGiaiDau.value);
     maVongDau.value = item.ma_vong_dau;
     diemThang.value = item.diem_thang;
     diemHoa.value = item.diem_hoa;
     diemThua.value = item.diem_thua;
+    banThang.value = item.diem_ban_thang;
     truTheVang.value = item.tru_the_vang;
-    truTheDoGianTiep.value = item.tru_the_do_gian_tiep;
-    truTheDoTrucTiep.value = item.tru_the_do_truc_tiep;
+    truTheDo.value = item.tru_the_do;
     ghiChu.value = item.ghi_chu || "";
     maGiaiDau.setAttribute("disabled", true);
     maVongDau.setAttribute("disabled", true);

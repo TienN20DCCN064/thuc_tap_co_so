@@ -78,6 +78,7 @@
                                 <option value="">-- Chọn vòng đấu --</option>
                             </select>
                         </div>
+                        <div class="col-md-4"> </div>
                         <div class="col-md-2">
                             <label>Điểm Thắng</label>
 
@@ -92,17 +93,18 @@
                             <input type="number" class="form-control" id="diemThua" required value="0">
                         </div>
                         <div class="col-md-2">
+                            <label>Bàn Thắng</label>
+                            <input type="number" class="form-control" id="banThang" required value="0">
+                        </div>
+                        <div class="col-md-2">
                             <label>Trừ Thẻ Vàng</label>
                             <input type="number" class="form-control" id="truTheVang" required value="0">
                         </div>
                         <div class="col-md-2">
-                            <label>Trừ Thẻ Đỏ Gián Tiếp</label>
-                            <input type="number" class="form-control" id="truTheDoGianTiep" required value="0">
+                            <label>Trừ Thẻ Đỏ</label>
+                            <input type="number" class="form-control" id="truTheDo" required value="0">
                         </div>
-                        <div class="col-md-2">
-                            <label>Trừ Thẻ Đỏ Trực Tiếp</label>
-                            <input type="number" class="form-control" id="truTheDoTrucTiep" required value="0">
-                        </div>
+
                         <div class="col-md-4">
                             <label>Ghi Chú</label>
                             <input type="text" class="form-control" id="ghiChu">
@@ -148,9 +150,9 @@
                                     <th style="text-align: center;">Thắng</th>
                                     <th style="text-align: center;">Hòa</th>
                                     <th style="text-align: center;">Thua</th>
+                                    <th style="text-align: center;">Bàn Thắng</th>
                                     <th style="text-align: center;">Thẻ Vàng</th>
-                                    <th style="text-align: center;">Thẻ Đỏ GT</th>
-                                    <th style="text-align: center;">Thẻ Đỏ TT</th>
+                                    <th style="text-align: center;">Thẻ Đỏ</th>
                                     <th style="text-align: center;">Ghi Chú</th>
                                     <th style="text-align: center;">Xem BXH</th>
                                     <th style="text-align: center;">Sửa</th>
@@ -164,9 +166,9 @@
                                     <th style="text-align: center;">Thắng</th>
                                     <th style="text-align: center;">Hòa</th>
                                     <th style="text-align: center;">Thua</th>
+                                    <th style="text-align: center;">Bàn Thắng</th>
                                     <th style="text-align: center;">Thẻ Vàng</th>
-                                    <th style="text-align: center;">Thẻ Đỏ GT</th>
-                                    <th style="text-align: center;">Thẻ Đỏ TT</th>
+                                    <th style="text-align: center;">Thẻ Đỏ</th>
                                     <th style="text-align: center;">Ghi Chú</th>
                                     <th style="text-align: center;">Xem BXH</th>
                                     <th style="text-align: center;">Sửa</th>
@@ -213,32 +215,48 @@
                                     <th style="text-align: center;">Thắng</th>
                                     <th style="text-align: center;">Hòa</th>
                                     <th style="text-align: center;">Thua</th>
+                                    <th style="text-align: center;">Bàn Thắng</th>
                                     <th style="text-align: center;">Thẻ Vàng</th>
-                                    <th style="text-align: center;">Thẻ Đỏ GT</th>
-                                    <th style="text-align: center;">Thẻ Đỏ TT</th>
+                                    <th style="text-align: center;">Thẻ Đỏ</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th id="diemThang_BXH" style="text-align: center;">1</th>
-                                    <th id="diemHoa_BXH" style="text-align: center;">2</th>
-                                    <th id="diemThua_BXH" style="text-align: center;">0</th>
-                                    <th id="truTheVang_BXH" style="text-align: center;">0</th>
-                                    <th id="truTheDoGianTiep_BXH" style="text-align: center;">0</th>
-                                    <th id="truTheDoTrucTiep_BXH" style="text-align: center;">0</th>
+                                    <td style="text-align: center;"><input type="number" id="diemThang_BXH"
+                                            class="form-control"></td>
+                                    <td style="text-align: center;"><input type="number" id="diemHoa_BXH"
+                                            class="form-control"></td>
+                                    <td style="text-align: center;"><input type="number" id="diemThua_BXH"
+                                            class="form-control"></td>
+                                    <td style="text-align: center;"><input type="number" id="diemBanThang_BXH"
+                                            class="form-control"></td>
+                                    <td style="text-align: center;"><input type="number" id="truTheVang_BXH"
+                                            class="form-control"></td>
+                                    <td style="text-align: center;"><input type="number" id="truTheDo_BXH"
+                                            class="form-control"></td>
+
                                 </tr>
                             </tbody>
+
                         </table>
                     </div>
                     <div class="card mb-4" style="padding-top: 10px;">
                         <table id="dataTable_chon_BXH">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;">Giải Đấu</th>
-                                    <th style="text-align: center;">Vòng Đấu</th>
+                                    <!-- <th style="text-align: center;">Giải Đấu</th>
+                                    <th style="text-align: center;">Vòng Đấu</th> -->
                                     <th style="text-align: center;">Đội Bóng</th>
+                                    <th style="text-align: center;">Số Trận Thắng</th>
+                                    <th style="text-align: center;">Số Trận Hòa</th>
+                                    <th style="text-align: center;">Số Trận Thua</th>
+                                    <th style="text-align: center;">Số Bàn Thắng</th>
+                                    <th style="text-align: center;">Số Thẻ Vàng</th>
+                                    <th style="text-align: center;">Số Thẻ Đỏ</th>
+
                                     <th style="text-align: center;">Điểm</th>
-                    
+
                                 </tr>
                             </thead>
                             <tbody>

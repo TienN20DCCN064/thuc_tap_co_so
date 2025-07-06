@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<c:set var="root" value="${pageContext.servletContext.contextPath}" />
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Quản lý Sự kiện Trận đấu</title>
+    <style>
+        label {
+            display: block;
+            font: 1rem 'Fira Sans', sans-serif;
+        }
+
+        input,
+        label {
+            margin: 0.4rem 0;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="/frontend/assets/public/src/styles/resources/quanly/css/styles.css" rel="stylesheet" />
+
+    <link href="/frontend/assets/public/src/styles/resources/table/table.css" rel="stylesheet" />
+    <link href="/frontend/assets/public/src/styles/resources/table/time.css" rel="stylesheet" />
+    <link rel="icon" href="/frontend/assets/public/src/styles/resources/img/logowebsite.png" type="image/png" />
+
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="sb-nav-fixed">
+
+    <div id="chen"></div>
+    <script>
+        // Sử dụng Fetch API để tải nội dung file HTML và chèn vào vị trí div
+        fetch('/frontend/assets/public/src/common/quanly/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('chen').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading HTML:', error));
+    </script>
+    <style>
+        #layoutSidenav_content {
+            margin-left: 200px;
+            margin-top: 100px;
+        }
+    </style>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="card-header">
+                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ TRỌNG TÀI</label>
+                </div>
+                <div class="card-header">
+                    <form id="inputForm" class="row g-3 mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Mã Sự Kiện</label>
+                            <input type="text" class="form-control" id="maSuKien" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Trận Đấu</label>
+                            <select class="form-control" id="maTranDau" required>
+                                <option value="All">-- Chọn trận đấu--</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Đội Bóng</label>
+                            <select class="form-control" id="maDoiBong" required>
+                                <option value="All">-- Chọn đội bóng--</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Thời Điểm</label>
+                            <input type="text" class="form-control" id="thoiDiem" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Loại Sự Kiện</label>
+                            <select class="form-control" id="loaiSuKien" required>
+                                <option value="">--Chọn--</option>
+                                <option value="Bàn thắng">Bàn thắng</option>
+                                <option value="Thẻ đỏ">Thẻ đỏ</option>
+                                <option value="Thẻ vàng">Thẻ vàng</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Cầu Thủ</label>
+                            <select class="form-control" id="maCauThu" required>
+                                <option value="All">-- Chọn cầu thủ--</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Ghi chú</label>
+                            <input type="text" class="form-control" id="ghiChu">
+                        </div>
+                        <div class="col-12">
+                            <button id="button_luu" class="btn btn-success">Lưu</button>
+                            <button id="button_taiLaiTrang" class="btn btn-secondary" type="button">Tải lại</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i> TRỌNG TÀI TRONG TRẬN ĐẤU
+                    </div>
+                    <div style="margin-left: 100px;">
+                        <form:form class="row mb-3" modelAttribute="doiBongTrongBangEntity" action="" method="post">
+                            <div class="col-md-3">
+                                <label class="font-weight-bold">Giải Đấu</label>
+                                <select class="form-control" id="maGiaiDau_chon_viewbody" required>
+                                    <option value="All">-- Chọn giải đấu--</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="font-weight-bold">Vòng Đấu</label>
+                                <select class="form-control" id="maVongDau_chon_viewbody" required>
+                                    <option value="All">-- Chọn vòng đấu--</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="font-weight-bold">Trận Đấu</label>
+                                <select class="form-control" id="maTranDau_chon_viewbody" required>
+                                    <option value="All">-- Chọn trận đấu--</option>
+                                </select>
+                            </div>
+
+                        </form:form>
+                    </div>
+                    <div class="card-body">
+                        <table id="table">
+                            <thead>
+                                <tr>
+                                    <th>Mã Sự Kiện</th>
+                                    <th>Trận Đấu</th>
+                                    <th>Thời Điểm</th>
+                                    <th>Loại</th>
+                                    <th>Cầu Thủ</th>
+                                    <th>Ghi chú</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Mã Sự Kiện</th>
+                                    <th>Trận Đấu</th>
+                                    <th>Thời Điểm</th>
+                                    <th>Loại</th>
+                                    <th>Cầu Thủ</th>
+                                    <th>Ghi chú</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="dataTable">
+                                <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Your Website 2024</div>
+                    <div>
+                        <a href="#">Privacy Policy</a> &middot; <a href="#">Terms
+                            &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script>
+        function confirmDelete() {
+            if (window.confirm("Nhân viên hiện đang được cấp 1 tài khoản, xóa nhân viên sẽ dẫn đến xóa tài khoản. Bạn có muốn xóa?")) {
+                // perform the delete action
+            }
+        }
+    </script>
+    <script type="module"
+        src="/frontend/mvc/controller/quanly_admin/trong_mot_tran_dau/suKienTranDau.controller.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <!-- <script src=" /public/src/styles/resources/quanly/js/scripts.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+
+    <script src="/frontend/assets/public/src/styles/resources/quanly/js/datatables-simple-demo.js"></script>
+</body>
+
+</html>

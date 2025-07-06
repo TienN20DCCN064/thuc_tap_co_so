@@ -16,6 +16,16 @@ const hamChiTiet = {
     async danhSachTrongTai_theo_1tranDau(maTranDau) {
         return await danhSachTrongTai_theo_1tranDau(maTranDau);
     },
+    async danhSachTranDau_theoGiai_vongDau(maGiaiDau, maVongDau) {
+        return await danhSachTranDau_theoGiai_vongDau(maGiaiDau, maVongDau);
+    },
+    async danhSachDoiBong_theoGiai_vongDau(maGiaiDau, maVongDau) {
+        return await danhSachDoiBong_theoGiai_vongDau(maGiaiDau, maVongDau);
+    },
+    async danhSachSukien_trong_1_tranDau(maTranDau) {
+        return await danhSachSukien_trong_1_tranDau(maTranDau);
+    },
+    
 
 
 };
@@ -40,7 +50,7 @@ async function dangNhap(formData) {
 
         if (!response.ok) {
             console.error("Đăng nhập thất bại:", data.message);
-        //    alert("Sai tên đăng nhập hoặc mật khẩu");
+            //    alert("Sai tên đăng nhập hoặc mật khẩu");
             return null;
         }
 
@@ -74,6 +84,34 @@ async function danhSachTrongTai_theo_1tranDau(maTranDau) {
     return danhSachTrongTai_theo_1tranDau;
 
 }
+async function danhSachTranDau_theoGiai_vongDau(maGiaiDau, maVongDau) {
+    const danhSachTranDau = await hamChung.layDanhSach("tran_dau");
+    const danhSachTranDau_theoGiai_vongDau = danhSachTranDau.filter((item) => item.ma_giai_dau === maGiaiDau && item.ma_vong_dau === maVongDau);
+    return danhSachTranDau_theoGiai_vongDau;
+}
+async function danhSachDoiBong_theoGiai_vongDau(maGiaiDau, maVongDau) {
+    const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
+    if (maVongDau === "All") {
+        return dataDoiBongGiaiDau
+    }
+    const danhSachTranDau_theoGiai_vongDau = await hamChiTiet.danhSachTranDau_theoGiai_vongDau(maGiaiDau, maVongDau);
+    const doiBongIds = danhSachTranDau_theoGiai_vongDau.flatMap(tran => [tran.ma_doi_1, tran.ma_doi_2]);
+    let data = [];
+    for (const id of doiBongIds) {
+        const doiBong = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", id, maGiaiDau);
+        if (doiBong) {
+            data = data || [];
+            data.push(doiBong);
+        }
+    }
+    return data;
 
+}
+// hãy ví dụ đầu vào và đầu ra từ layDanhSachDoiBong_theoGiai_vongDau
+async function danhSachSukien_trong_1_tranDau(maTranDau) {
+    const danhSachSuKien = await hamChung.layDanhSach("su_kien_tran_dau");
+    const danhSachSuKien_theoTranDau = danhSachSuKien.filter((item) => item.ma_tran_dau === maTranDau);
+    return danhSachSuKien_theoTranDau;
+}
 
 export default hamChiTiet;
