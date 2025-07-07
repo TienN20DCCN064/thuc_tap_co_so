@@ -52,86 +52,41 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="card-header">
-                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ KẾT QUẢ TRẬN
-                        ĐẤU</label>
-                </div>
-                <div class="card-header">
-
-                    <!-- <div class="col-md-3">
-                        <label class="font-weight-bold">Mã Vòng Đấu</label>
-                        <select class="form-control" id="maVongDau" required>
-                            <option value="">-- Chọn Vòng Đấu --</option>
-                        </select>
-                    </div> -->
+                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ TRỌNG TÀI</label>
                 </div>
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
-                        <!-- <div class="col-md-3">
-                            <label class="font-weight-bold">Mã Kết Quả</label>
-                            <input path="maKetQua" type="text" class="form-control" id="maKetQua" readonly required />
-                        </div> -->
-                        <!-- <div class="col-md-3">
-                            <label class="font-weight-bold">Mã Trận Đấu</label>
-                            <input path="maTranDau" type="text" class="form-control" id="maTranDau" required />
-                        </div> -->
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Chọn Giải Đâu</label>
-                            <select class="form-control" id="maGiaiDau" required>
-                                <option value="">-- Chọn Giải Đấu --</option>
-                            </select>
-                        </div>
+
                         <div class="col-md-3">
                             <label class="font-weight-bold">Trận Đấu</label>
                             <select class="form-control" id="maTranDau" required>
-                                <option value="">-- Chọn Trận Đấu --</option>
+                                <option value="">-- Chọn trận đấu --</option>
                             </select>
                         </div>
-
-                        <!-- <div class="col-md-3">
-                            <label class="font-weight-bold">Mã Đội Thắng</label>
-                            <input path="maDoiThang" type="text" class="form-control" id="maDoiThang" required />
-                        </div> -->
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Đội Thắng</label>
-                            <select class="form-control" id="maDoiThang" >
-                                <option value="">-- Chọn Đội Thắng --</option>
+                            <label class="font-weight-bold">Trọng Tài</label>
+                            <select class="form-control" id="maTrongTai" required>
+                                <option value="">-- Chọn trọng tài --</option>
                             </select>
                         </div>
-
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Số Bàn Đội 1</label>
-                            <input path="soBanDoi1" type="number" class="form-control" min="0" id="soBanDoi1" value="0"
-                                required />
+                            <label class="font-weight-bold">Chức Vụ Trong Trận</label>
+                            <select class="form-control" id="maLoaiTrongTai" required>
+                                <option value="">-- Chọn chức vụ--</option>
+                            </select>
                         </div>
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Số Bàn Đội 2</label>
-                            <input path="soBanDoi2" type="number" class="form-control" min="0" id="soBanDoi2" value="0"
-                                required />
-                        </div>
-
-
-
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Ghi Chú</label>
-                            <input path="ghiChu" type="text" class="form-control" id="ghiChu" />
-                        </div>
-
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
-                                <button id="button_luu" class="btn btn-success">Lưu</button>
+                                <button id="button_luu" class="btn btn-success" accept="image/*">Lưu</button>
                                 <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
                                     Trang</button>
-
                             </div>
                         </div>
-                    </form>
+                        </form:form>
                 </div>
-
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> DANH SÁCH KẾT QUẢ TRẬN ĐẤU
-
+                        <i class="fas fa-table me-1"></i> TRỌNG TÀI TRONG TRẬN ĐẤU
                     </div>
                     <div style="margin-left: 100px;">
                         <form:form class="row mb-3" modelAttribute="doiBongTrongBangEntity" action="" method="post">
@@ -141,13 +96,12 @@
                                     <option value="All">-- Chọn giải đấu--</option>
                                 </select>
                             </div>
-                            <!-- <div class="col-md-3">
-                                <label class="font-weight-bold">Chọn Kết Quả</label>
-                                <select class="form-control" id="checkKetQua_chon_viewbody" required>
-                                    <option value="co_kq">Có kết quả</option>
-                                    <option value="chua_kq">Chưa kết quả</option>
+                            <div class="col-md-3">
+                                <label class="font-weight-bold">Trận Đấu</label>
+                                <select class="form-control" id="maTranDau_chon_viewbody" required>
+                                    <option value="All">-- Chọn trận đấu--</option>
                                 </select>
-                            </div> -->
+                            </div>
 
                         </form:form>
                     </div>
@@ -155,30 +109,24 @@
                         <table id="table">
                             <thead>
                                 <tr>
-                                    <!-- <th style="text-align: center;">Mã Kết Quả</th> -->
                                     <th style="text-align: center;">Giải Đấu</th>
                                     <th style="text-align: center;">Trận Đấu</th>
+                                    <th style="text-align: center;">Trọng Tài</th>
 
-                                    <th style="text-align: center;">Đội Thắng</th>
-                                    <th style="text-align: center;">Số Bàn Đội 1</th>
-                                    <th style="text-align: center;">Số Bàn Đội 2</th>
+                                    <th style="text-align: center;">Chức Vụ</th>
 
-                                    <th style="text-align: center;">Ghi Chú</th>
-                                    <th style="text-align: center;">Sửa thông tin</th>
+                                    <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <!-- <th style="text-align: center;">Mã Kết Quả</th> -->
                                     <th style="text-align: center;">Giải Đấu</th>
                                     <th style="text-align: center;">Trận Đấu</th>
+                                    <th style="text-align: center;">Trọng Tài</th>
 
-                                    <th style="text-align: center;">Đội Thắng</th>
-                                    <th style="text-align: center;">Số Bàn Đội 1</th>
-                                    <th style="text-align: center;">Số Bàn Đội 2</th>
+                                    <th style="text-align: center;">Chức Vụ</th>
 
-                                    <th style="text-align: center;">Ghi Chú</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
@@ -191,6 +139,8 @@
                 </div>
             </div>
         </main>
+
+
 
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
@@ -211,9 +161,9 @@
             }
         }
     </script>
-      <script type="module" src="/frontend/mvc/controller/quanly_admin/tran_dau/ketQuaTranDau.controller.js"></script>
+    <script type="module"
+        src="/frontend/mvc/controller/quanly_admin/tran_dau/trongTai_tranDau.controller.js"></script>
     <script type="module" src="/frontend/global/global.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <!-- <script src=" /public/src/styles/resources/quanly/js/scripts.js"></script> -->

@@ -9,7 +9,7 @@ import {
     loadDanhSachGiaiDau_chon_viewbody,
     loadDanhSachVongDau_chon_viewbody,
     loadDanhSachTranDau_chon_viewbody
-} from "../../../view/view_js/quanly_admin/trong_mot_tran_dau/suKienTranDau.view.js";
+} from "../../../view/view_js/quanly_admin/tran_dau/suKienTranDau.view.js";
 
 const {
     btnLuuThayDoi, btnTaiLaiTrang, maSuKien, maTranDau, maDoiBong, thoiDiem, loaiSuKien, maCauThu, ghiChu,

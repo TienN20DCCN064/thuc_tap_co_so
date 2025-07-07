@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Quản lý nhân viên</title>
+    <title>Quản lý Sự kiện Trận đấu</title>
     <style>
         label {
             display: block;
@@ -55,34 +55,51 @@
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ TRỌNG TÀI</label>
                 </div>
                 <div class="card-header">
-                    <form class="row mb-3" id="inputForm">
-
+                    <form id="inputForm" class="row g-3 mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Mã Sự Kiện</label>
+                            <input type="text" class="form-control" id="maSuKien" readonly>
+                        </div>
                         <div class="col-md-3">
                             <label class="font-weight-bold">Trận Đấu</label>
                             <select class="form-control" id="maTranDau" required>
-                                <option value="">-- Chọn trận đấu --</option>
+                                <option value="All">-- Chọn trận đấu--</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Trọng Tài</label>
-                            <select class="form-control" id="maTrongTai" required>
-                                <option value="">-- Chọn trọng tài --</option>
+                            <label class="font-weight-bold">Đội Bóng</label>
+                            <select class="form-control" id="maDoiBong" required>
+                                <option value="All">-- Chọn đội bóng--</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Chức Vụ Trong Trận</label>
-                            <select class="form-control" id="maLoaiTrongTai" required>
-                                <option value="">-- Chọn chức vụ--</option>
+                            <label class="form-label">Thời Điểm</label>
+                            <input type="text" class="form-control" id="thoiDiem" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Loại Sự Kiện</label>
+                            <select class="form-control" id="loaiSuKien" required>
+                                <option value="">--Chọn--</option>
+                                <option value="Bàn thắng">Bàn thắng</option>
+                                <option value="Thẻ đỏ">Thẻ đỏ</option>
+                                <option value="Thẻ vàng">Thẻ vàng</option>
                             </select>
                         </div>
-                        <div class='parent col-md-12 mt-3'>
-                            <div class='child float-left-child'>
-                                <button id="button_luu" class="btn btn-success" accept="image/*">Lưu</button>
-                                <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
-                                    Trang</button>
-                            </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Cầu Thủ</label>
+                            <select class="form-control" id="maCauThu" required>
+                                <option value="All">-- Chọn cầu thủ--</option>
+                            </select>
                         </div>
-                        </form:form>
+                        <div class="col-md-3">
+                            <label class="form-label">Ghi chú</label>
+                            <input type="text" class="form-control" id="ghiChu">
+                        </div>
+                        <div class="col-12">
+                            <button id="button_luu" class="btn btn-success">Lưu</button>
+                            <button id="button_taiLaiTrang" class="btn btn-secondary" type="button">Tải lại</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="card mb-4">
                     <div class="card-header">
@@ -94,6 +111,12 @@
                                 <label class="font-weight-bold">Giải Đấu</label>
                                 <select class="form-control" id="maGiaiDau_chon_viewbody" required>
                                     <option value="All">-- Chọn giải đấu--</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="font-weight-bold">Vòng Đấu</label>
+                                <select class="form-control" id="maVongDau_chon_viewbody" required>
+                                    <option value="All">-- Chọn vòng đấu--</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -109,26 +132,26 @@
                         <table id="table">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;">Giải Đấu</th>
-                                    <th style="text-align: center;">Trận Đấu</th>
-                                    <th style="text-align: center;">Trọng Tài</th>
-
-                                    <th style="text-align: center;">Chức Vụ</th>
-
-                                    <th style="text-align: center;">Sửa</th>
-                                    <th style="text-align: center;">Xóa</th>
+                                    <th>Mã Sự Kiện</th>
+                                    <th>Trận Đấu</th>
+                                    <th>Thời Điểm</th>
+                                    <th>Loại</th>
+                                    <th>Cầu Thủ</th>
+                                    <th>Ghi chú</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th style="text-align: center;">Giải Đấu</th>
-                                    <th style="text-align: center;">Trận Đấu</th>
-                                    <th style="text-align: center;">Trọng Tài</th>
-
-                                    <th style="text-align: center;">Chức Vụ</th>
-
-                                    <th style="text-align: center;">Sửa</th>
-                                    <th style="text-align: center;">Xóa</th>
+                                    <th>Mã Sự Kiện</th>
+                                    <th>Trận Đấu</th>
+                                    <th>Thời Điểm</th>
+                                    <th>Loại</th>
+                                    <th>Cầu Thủ</th>
+                                    <th>Ghi chú</th>
+                                    <th>Sửa</th>
+                                    <th>Xóa</th>
                                 </tr>
                             </tfoot>
                             <tbody id="dataTable">
@@ -162,8 +185,7 @@
         }
     </script>
     <script type="module"
-        src="/frontend/mvc/controller/quanly_admin/trong_mot_giai_dau/trongTai_tranDau.controller.js"></script>
-    <script type="module" src="/frontend/global/global.js"></script>
+        src="/frontend/mvc/controller/quanly_admin/tran_dau/suKienTranDau.controller.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <!-- <script src=" /public/src/styles/resources/quanly/js/scripts.js"></script> -->

@@ -8,18 +8,28 @@ import {
     loadDanhSachGiaiDau,
     loadDanhSachVongDau,
     loadDanhSachVongDau_chon_viewbody,
-    loadDanhSachGiaiDau_chon_viewbody
-} from "../../../view/view_js/quanly_admin/quy_tac_tinh_diem/quy_tac_tinh_diem.view.js";
+    loadDanhSachGiaiDau_chon_viewbody,
+    loadDanhSachGiaiDau_chon_BXH,
+    loadDanhSachVongDau_chon_BXH,
+    hienThi_bangQuyTacTinhDiem,
+    hienThi_bangXepHang,
+    reset_BangQuyTacTinhDiem_bangXepHang,
+    get_form_diemBXH,
+} from "../../../view/view_js/quanly_admin/giai_dau/quy_tac_tinh_diem.view.js";
 
 const {
     btnLuuThayDoi, btnTaiLaiTrang, maGiaiDau, maVongDau, diemThang, diemHoa, diemThua, banThang,
-    truTheVang, truTheDo, ghiChu, maGiaiDau_chon_viewbody, maVongDau_chon_viewbody, form, tableBody
+    truTheVang, truTheDo, ghiChu, maGiaiDau_chon_viewbody, maVongDau_chon_viewbody,
+    maGiaiDau_chon_BXH, maVongDau_chon_BXH, dataTable_chon_BXH,
+    diemThang_BXH, diemHoa_BXH, diemThua_BXH, diemBanThang_BXH, truTheVang_BXH, truTheDo_BXH,
+    form, tableBody
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
     await loadDanhSachGiaiDau();
-
     await loadDanhSachGiaiDau_chon_viewbody();
+    await loadDanhSachGiaiDau_chon_BXH();
+
     // await loadDanhSachVongDau_chon_viewbody();
     await load_viewTbody();
     maGiaiDau.addEventListener("change", async () => await loadDanhSachVongDau(maGiaiDau.value));
@@ -31,20 +41,30 @@ document.addEventListener("DOMContentLoaded", async function () {
         await load_viewTbody();
     });
 
+
+    maGiaiDau_chon_BXH.addEventListener("change", async function () {
+        await loadDanhSachVongDau_chon_BXH(maGiaiDau_chon_BXH.value);
+        reset_BangQuyTacTinhDiem_bangXepHang();
+        //  hienBangQuyTacTinhDiem_bangXepHang(maGiaiDau_chon_BXH.value, maVongDau_chon_BXH.value);
+    });
+    maVongDau_chon_BXH.addEventListener("change", async function () {
+        // await hienBangXepHang(maGiaiDau_chon_BXH.value, maVongDau_chon_BXH.value);
+        console.log("maGiaiDau_chon_BXH.value", maGiaiDau_chon_BXH.value);
+        console.log("maVongDau_chon_BXH.value", maVongDau_chon_BXH.value);
+        hienBangQuyTacTinhDiem_bangXepHang(maGiaiDau_chon_BXH.value, maVongDau_chon_BXH.value);
+    });
+
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
-    // document.getElementById("button_xemBangXepHang").addEventListener("click", async function (e) {
-    //     await hienBangXepHang(maGiaiDau, maVongDau);
-    // });
+
 });
 
 async function load_viewTbody(data) {
     await viewTbody(data, handleXemBXH, handleEdit, handleDelete);
 }
-function handleXemBXH(item) {
-    const maGiaiDau = item.ma_giai_dau;
-    const maVongDau = item.ma_vong_dau;
-    hienBangXepHang(maGiaiDau, maVongDau);
+async function handleXemBXH(item) {
+    await loadDanhSachVongDau_chon_BXH(item.ma_giai_dau);
+    hienBangQuyTacTinhDiem_bangXepHang(item.ma_giai_dau, item.ma_vong_dau);
 }
 
 function handleEdit(item) {
@@ -103,51 +123,51 @@ function handleTaiLaiTrang(event) {
     location.reload();
 }
 
-async function hienBangXepHang(maGiaiDau, maVongDau) {
-    const dataTable_chon_quyTacTinhDiem = document.getElementById("dataTable_chon_quyTacTinhDiem");
+async function hienBangQuyTacTinhDiem_bangXepHang(maGiaiDau, maVongDau) {
     document.getElementById("overbangXepHang").classList.remove("hidden");
     document.getElementById("close_BXH").addEventListener("click", function () {
         document.getElementById("overbangXepHang").classList.add("hidden");
     });
+    hienBangQuyTacTinhDiem(maGiaiDau, maVongDau);
+    hienBangXepHang(maGiaiDau, maVongDau);
+    suKien_thayDoiQuyTacTinhDiem(maGiaiDau, maVongDau);
+
+}
+async function hienBangQuyTacTinhDiem(maGiaiDau, maVongDau) {
     const data1quyTacTinhDiem = await hamChung.layThongTinTheo_2_ID("quy_tac_tinh_diem", maGiaiDau, maVongDau);
-    document.getElementById("maGiaiDau_chon_BXH").value = maGiaiDau;
-    document.getElementById("maVongDau_chon_BXH").value = maVongDau;
+    maGiaiDau_chon_BXH.value = maGiaiDau;
+    maVongDau_chon_BXH.value = maVongDau;
     console.log(data1quyTacTinhDiem);
     if (!data1quyTacTinhDiem) {
         thongBao.thongBao_error("Chưa có quy tắc tính điểm cho giải đấu và vòng đấu này!", 3000, "error");
+        reset_BangQuyTacTinhDiem_bangXepHang();
         return;
     }
-    document.getElementById("diemThang_BXH").value = data1quyTacTinhDiem.diem_thang;
-    document.getElementById("diemHoa_BXH").value = data1quyTacTinhDiem.diem_hoa;
-    document.getElementById("diemThua_BXH").value = data1quyTacTinhDiem.diem_thua;
-    document.getElementById("diemBanThang_BXH").value = data1quyTacTinhDiem.diem_ban_thang;
-    document.getElementById("truTheVang_BXH").value = data1quyTacTinhDiem.tru_the_vang;
-    document.getElementById("truTheDo_BXH").value = data1quyTacTinhDiem.tru_the_do;
+    hienThi_bangQuyTacTinhDiem(data1quyTacTinhDiem);
+}
+async function hienBangXepHang(maGiaiDau, maVongDau) {
+    console.log("hienBangXepHang", maGiaiDau, maVongDau);
+    if (maGiaiDau === "All" || maVongDau === "All") {
+        reset_BangQuyTacTinhDiem_bangXepHang();
+        return;
+    }
+    // const dataTable_chon_quyTacTinhDiem = document.getElementById("dataTable_chon_quyTacTinhDiem");
+
     const danhSachDoiBong_theoGiai_vongDau = await hamChiTiet.danhSachDoiBong_theoGiai_vongDau(maGiaiDau, maVongDau);
     console.log(danhSachDoiBong_theoGiai_vongDau);
     // show lên    <table id="dataTable_chon_BXH">
-    const dataTable = document.getElementById("dataTable_chon_BXH");
-    const tbody = dataTable.querySelector("tbody");
-    tbody.innerHTML = ""; // Xóa dữ liệu cũ nếu có
-    for (let i = 0; i < danhSachDoiBong_theoGiai_vongDau.length; i++) {
-        const doiBong = danhSachDoiBong_theoGiai_vongDau[i];
+    // const lay1QuyTacTinhDiem = await hamChung.layThongTinTheo_2_ID("quy_tac_tinh_diem", maGiaiDau, maVongDau);
+    // này là lấy dữ liệu từ form html
+    const lay1QuyTacTinhDiem = get_form_diemBXH();
 
+    console.log("lay1QuyTacTinhDiem", lay1QuyTacTinhDiem);
+    const tbody = dataTable_chon_BXH.querySelector("tbody");
+    tbody.innerHTML = ""; // Xóa dữ liệu cũ nếu có
+    for (const doiBong of danhSachDoiBong_theoGiai_vongDau) {
         const thongSoDoiBong = await demThongSoDoiBong_theoGiai_vongDau(doiBong.ma_doi_bong, maGiaiDau, maVongDau);
-        const lay1QuyTacTinhDiem = await hamChung.layThongTinTheo_2_ID("quy_tac_tinh_diem", maGiaiDau, maVongDau);
         const tongDiem = tinhDiem(thongSoDoiBong, lay1QuyTacTinhDiem);
         console.log(tongDiem);
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td style="text-align: center;">${doiBong.ten_doi_bong}</td>
-            <td style="text-align: center;">${thongSoDoiBong.so_tran_thang}</td>
-            <td style="text-align: center;">${thongSoDoiBong.so_tran_hoa}</td>
-            <td style="text-align: center;">${thongSoDoiBong.so_tran_thua}</td>
-            <td style="text-align: center;">${thongSoDoiBong.so_ban_thang}</td>
-            <td style="text-align: center;">${thongSoDoiBong.so_the_vang}</td>
-            <td style="text-align: center;">${thongSoDoiBong.so_the_do}</td>
-            <td style="text-align: center;">${tongDiem}</td>
-        `;
-        tbody.appendChild(row);
+        hienThi_bangXepHang(tbody, doiBong, thongSoDoiBong, tongDiem);
     }
 
 }
@@ -238,5 +258,33 @@ function tinhDiem(thongSoDoiBong, form_quyTacTinhDiem) {
         + (thongSoDoiBong.so_the_vang * form_quyTacTinhDiem.tru_the_vang)
         + (thongSoDoiBong.so_the_do * form_quyTacTinhDiem.tru_the_do);
     return sum;
+
+}
+
+async function suKien_thayDoiQuyTacTinhDiem(maGiaiDau, maVongDau) {
+    diemThang_BXH.addEventListener("change", async function () {
+        console.log("Thay đổi điểm thắng BXH");
+        hienBangXepHang(maGiaiDau, maVongDau)
+    });
+    diemHoa_BXH.addEventListener("change", async function () {
+        console.log("Thay đổi điểm hòa BXH");
+        hienBangXepHang(maGiaiDau, maVongDau)
+    });
+    diemThua_BXH.addEventListener("change", async function () {
+        console.log("Thay đổi điểm thua BXH");
+        hienBangXepHang(maGiaiDau, maVongDau)
+    });
+    diemBanThang_BXH.addEventListener("change", async function () {
+        console.log("Thay đổi điểm bàn thắng BXH");
+        hienBangXepHang(maGiaiDau, maVongDau)
+    });
+    truTheVang_BXH.addEventListener("change", async function () {
+        console.log("Thay đổi trừ thẻ vàng BXH");
+        hienBangXepHang(maGiaiDau, maVongDau)
+    });
+    truTheDo_BXH.addEventListener("change", async function () {
+        console.log("Thay đổi trừ thẻ đỏ BXH");
+        hienBangXepHang(maGiaiDau, maVongDau)
+    });
 
 }

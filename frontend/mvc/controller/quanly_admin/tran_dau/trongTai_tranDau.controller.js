@@ -9,7 +9,7 @@ import {
     loadDanhSachGiaiDau_chon_viewbody,
     loadDanhSachTranDauTheoGiaiDau_chon_viewbody,
     // ... các hàm view khác
-} from "../../../view/view_js/quanly_admin/trong_mot_giai_dau/trongTai_tranDau.view.js";
+} from "../../../view/view_js/quanly_admin/tran_dau/trongTai_tranDau.view.js";
 
 const {
     btnLuuThayDoi, btnTaiLaiTrang, maTranDau, maTrongTai, maLoaiTrongTai, form,
