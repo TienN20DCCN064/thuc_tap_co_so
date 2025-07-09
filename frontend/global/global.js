@@ -39,21 +39,21 @@ export const GlobalStore = {
     getLinkCongApi_gmail() {
         return "http://" + IPv4_Address + ":" + congAPI_gmail + "/api/";
     },
-    // tôi muốn lấy api của phần tạo trận đấu ấy
-    setToken(token){
-        localStorage.setItem("access_token", token);
+    // // tôi muốn lấy api của phần tạo trận đấu ấy
+    // setToken(token){
+    //     localStorage.setItem("access_token", token);
 
-    },
-    getToken(){
-        return localStorage.getItem("access_token");
-    },
-    setRole(role){
-        localStorage.setItem("role", role);
+    // },
+    // getToken(){
+    //     return localStorage.getItem("access_token");
+    // },
+    // setRole(role){
+    //     localStorage.setItem("role", role);
 
-    },
-    getRole(){
-        return localStorage.getItem("role");
-    }
+    // },
+    // getRole(){
+    //     return localStorage.getItem("role");
+    // }
     
 
 

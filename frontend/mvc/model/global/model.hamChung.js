@@ -2,9 +2,14 @@ import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
 
 
 import PrimaryKeys from './databaseKey.js';
+const token = localStorage.getItem("token"); // hoặc nơi bạn lưu token
+
 
 const hamChung = {
     PrimaryKeys, // 👈 cho phép gọi ở nơi khác: hamChung.primaryKeys["cau_thu"]
+    async dangNhap(formData) {
+        return await dangNhap(formData);
+    },
     async layDanhSach(table) {
         return await layDanhSach(table);
     },
@@ -66,11 +71,55 @@ const hamChung = {
 
 
 };
+async function fetchCoToken(url, options = {}) {
+    const token = localStorage.getItem("token");
+    return await fetch(url, {
+        ...options,
+        headers: {
+            ...options.headers,
+            "Authorization": `Bearer ${token}`
+        }
+    });
+}
+
+async function dangNhap(formData) {
+    const { tenDangNhap, matKhau } = formData;
+    const url = GlobalStore.getLinkCongAPI() + 'dang-nhap';
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                ten_dang_nhap: tenDangNhap,
+                mat_khau: matKhau
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Đăng nhập thất bại:", data.message);
+            //    alert("Sai tên đăng nhập hoặc mật khẩu");
+            return null;
+        }
+
+        console.log("Đăng nhập thành công:", data);
+        return data; // Trả về thông tin người dùng nếu thành công
+    } catch (error) {
+        console.error("Lỗi khi gọi API đăng nhập:", error);
+        alert("Lỗi kết nối tới máy chủ");
+        return null;
+    }
+}
+
+
 
 async function layDanhSach(table) {
-    console.log(GlobalStore.getLinkCongAPI() + table);
+    const url = GlobalStore.getLinkCongAPI() + table;
     try {
-        const response = await fetch(GlobalStore.getLinkCongAPI() + table);
+        const response = await fetchCoToken(url);
         return await response.json();
     } catch (error) {
         console.error(`Lỗi khi lấy danh sách ${table}:`, error);
@@ -78,19 +127,33 @@ async function layDanhSach(table) {
     }
 }
 
-// Hàm lấy chi tiết theo ID
+
+// // Hàm lấy chi tiết theo ID
+// async function layThongTinTheo_ID(table, id) {
+//     try {
+//         const response = await fetch(GlobalStore.getLinkCongAPI() + table + "/" + id);
+//         return await response.json();
+//     } catch (error) {
+//         console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
+//         return null;
+//     }
+// }
+// Hàm lấy chi tiết theo ID (1 khóa chính)
 async function layThongTinTheo_ID(table, id) {
+    const url = GlobalStore.getLinkCongAPI() + table + "/" + id;
     try {
-        const response = await fetch(GlobalStore.getLinkCongAPI() + table + "/" + id);
+        const response = await fetchCoToken(url); // ✅ gửi token kèm theo
         return await response.json();
     } catch (error) {
         console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
         return null;
     }
 }
+
 async function layThongTinTheo_2_ID(table, id, id2) {
+    const url = GlobalStore.getLinkCongAPI() + table + "/" + id + "/" + id2;
     try {
-        const response = await fetch(GlobalStore.getLinkCongAPI() + table + "/" + id + "/" + id2);
+        const response = await fetchCoToken(url);
         return await response.json();
     } catch (error) {
         console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
@@ -103,7 +166,8 @@ async function layThongTinTheo_2_ID(table, id, id2) {
 async function taoID_theoBang(table) {
     const primaryKeys = PrimaryKeys;
     try {
-        const response = await fetch(GlobalStore.getLinkCongAPI() + table);
+        const url = GlobalStore.getLinkCongAPI() + table;
+        const response = await fetchCoToken(url);
         const danhSach = await response.json();
 
         // Lấy khóa chính cho bảng từ đối tượng ánh xạ
@@ -143,6 +207,42 @@ async function taoID_theoBang(table) {
 
 
 
+// async function them(data, table_name) {
+//     if (!data) {
+//         console.error("Dữ liệu không hợp lệ!");
+//         alert("Dữ liệu không hợp lệ!");
+//         return;
+//     }
+
+//     const url = `${GlobalStore.getLinkCongAPI()}${table_name}`;
+
+//     // console.log("Gửi POST request tới:", url);
+//     // console.log("Dữ liệu gửi đi:", data);
+
+//     fetch(url, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(data),
+//     })
+//         .then(async response => {
+//             const text = await response.text();
+//             if (!text.trim().startsWith("{") && !text.trim().startsWith("[")) {
+//                 //      console.log("Phản hồi từ server:", text);
+//                 return { message: text };
+//             }
+//             return JSON.parse(text);
+//         })
+//         .then(resData => {
+//             // alert(resData.message || "Thêm dữ liệu thành công.");
+//             console.log("Thêm thành công:", resData.message);
+//             //  table();
+//         })
+//         .catch(error => {
+//             console.error("Có lỗi xảy ra khi thêm:", error.message);
+//             alert(`Lỗi: ${error.message}`);
+//         });
+// }
+
 async function them(data, table_name) {
     if (!data) {
         console.error("Dữ liệu không hợp lệ!");
@@ -152,34 +252,81 @@ async function them(data, table_name) {
 
     const url = `${GlobalStore.getLinkCongAPI()}${table_name}`;
 
-    // console.log("Gửi POST request tới:", url);
-    // console.log("Dữ liệu gửi đi:", data);
-
-    fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-    })
-        .then(async response => {
-            const text = await response.text();
-            if (!text.trim().startsWith("{") && !text.trim().startsWith("[")) {
-                //      console.log("Phản hồi từ server:", text);
-                return { message: text };
-            }
-            return JSON.parse(text);
-        })
-        .then(resData => {
-            // alert(resData.message || "Thêm dữ liệu thành công.");
-            console.log("Thêm thành công:", resData.message);
-            //  table();
-        })
-        .catch(error => {
-            console.error("Có lỗi xảy ra khi thêm:", error.message);
-            alert(`Lỗi: ${error.message}`);
+    try {
+        const response = await fetchCoToken(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
         });
-}
-async function sua(data, table_name) {
 
+        const text = await response.text();
+        const resData = (text.trim().startsWith("{") || text.trim().startsWith("[")) ? JSON.parse(text) : { message: text };
+
+        console.log("Thêm thành công:", resData.message || "Thành công");
+        // alert(resData.message || "Thêm dữ liệu thành công.");
+    } catch (error) {
+        console.error("Có lỗi xảy ra khi thêm:", error.message);
+        alert(`Lỗi: ${error.message}`);
+    }
+}
+
+// async function sua(data, table_name) {
+
+//     const primaryKeys = PrimaryKeys[table_name];
+
+//     if (!data) {
+//         console.error("Dữ liệu không hợp lệ!");
+//         alert("Dữ liệu không hợp lệ!");
+//         return;
+//     }
+//     if (!primaryKeys) {
+//         console.error(`Bảng ${table_name} không hợp lệ.`);
+//         alert("Bảng không hợp lệ!");
+//         return;
+//     }
+
+//     const keyValues = primaryKeys.map(key => data[key]);
+//     if (keyValues.some(value => value === undefined)) {
+//         console.error("Thiếu thông tin khóa chính!", data);
+//         alert("Thiếu thông tin khóa chính!");
+//         return;
+//     }
+
+//     const idPath = keyValues.join("/");
+//     const url = `${GlobalStore.getLinkCongAPI()}${table_name}/${idPath}`;
+
+//     // console.log("Gửi PUT request tới:", url);
+//     // console.log("Dữ liệu gửi đi:", data);
+
+//     fetch(url, {
+//         method: 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(data),
+//     })
+//         .then(async response => {
+//             const text = await response.text();
+
+//             // Kiểm tra nếu phản hồi trống hoặc không phải JSON
+//             if (!text.trim().startsWith("{") && !text.trim().startsWith("[")) {
+//                 //     console.log("Phản hồi từ server:", text);
+//                 return { message: text }; // Trả về một object chứa message
+//             }
+
+//             return JSON.parse(text); // Nếu JSON hợp lệ, parse bình thường
+//         })
+//         .then(resData => {
+//             console.error(`Sửa thành công:`, resData.message);
+//             //   alert(resData.message || "Sửa dữ liệu thành công.");
+//             // table();
+//         })
+//         .catch(error => {
+//             console.error("Có lỗi xảy ra khi sửa:", error.message);
+//             alert(`Lỗi: ${error.message}`);
+//         });
+// }
+async function sua(data, table_name) {
     const primaryKeys = PrimaryKeys[table_name];
 
     if (!data) {
@@ -187,6 +334,7 @@ async function sua(data, table_name) {
         alert("Dữ liệu không hợp lệ!");
         return;
     }
+
     if (!primaryKeys) {
         console.error(`Bảng ${table_name} không hợp lệ.`);
         alert("Bảng không hợp lệ!");
@@ -203,82 +351,118 @@ async function sua(data, table_name) {
     const idPath = keyValues.join("/");
     const url = `${GlobalStore.getLinkCongAPI()}${table_name}/${idPath}`;
 
-    // console.log("Gửi PUT request tới:", url);
-    // console.log("Dữ liệu gửi đi:", data);
-
-    fetch(url, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-    })
-        .then(async response => {
-            const text = await response.text();
-
-            // Kiểm tra nếu phản hồi trống hoặc không phải JSON
-            if (!text.trim().startsWith("{") && !text.trim().startsWith("[")) {
-                //     console.log("Phản hồi từ server:", text);
-                return { message: text }; // Trả về một object chứa message
-            }
-
-            return JSON.parse(text); // Nếu JSON hợp lệ, parse bình thường
-        })
-        .then(resData => {
-            console.error(`Sửa thành công:`, resData.message);
-            //   alert(resData.message || "Sửa dữ liệu thành công.");
-            // table();
-        })
-        .catch(error => {
-            console.error("Có lỗi xảy ra khi sửa:", error.message);
-            alert(`Lỗi: ${error.message}`);
+    try {
+        const response = await fetchCoToken(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
         });
-}
-async function xoa(keys, table_name) {
-    const primaryKeysMap = PrimaryKeys;
 
-    // Kiểm tra xem bảng có hợp lệ không
-    const primaryKeys = primaryKeysMap[table_name];
+        const text = await response.text();
+        const resData = text.trim().startsWith("{") || text.trim().startsWith("[")
+            ? JSON.parse(text)
+            : { message: text };
+
+        console.log("Sửa thành công:", resData.message || "Thành công");
+        // alert(resData.message || "Sửa dữ liệu thành công.");
+    } catch (error) {
+        console.error("Có lỗi xảy ra khi sửa:", error.message);
+        alert(`Lỗi: ${error.message}`);
+    }
+}
+
+// async function xoa(keys, table_name) {
+//     const primaryKeysMap = PrimaryKeys;
+
+//     // Kiểm tra xem bảng có hợp lệ không
+//     const primaryKeys = primaryKeysMap[table_name];
+//     if (!primaryKeys) {
+//         console.error(`Bảng ${table_name} không hợp lệ.`);
+//         alert("Bảng không hợp lệ!");
+//         return;
+//     }
+
+//     // Kiểm tra `keys` có hợp lệ không
+//     if (!keys || typeof keys !== "object") {
+//         console.error("Thiếu thông tin khóa chính để xóa!", keys);
+//         alert("Thiếu thông tin khóa chính để xóa!");
+//         return;
+//     }
+
+//     // Lấy danh sách giá trị của khóa chính
+//     const keyValues = primaryKeys.map(key => keys[key]);
+
+//     // Kiểm tra xem tất cả giá trị của khóa chính đã có chưa
+//     if (keyValues.some(value => value === undefined || value === null)) {
+//         console.error("Thiếu thông tin khóa chính!", keys);
+//         alert("Thiếu thông tin khóa chính!");
+//         return;
+//     }
+
+//     // Tạo đường dẫn DELETE từ khóa chính
+//     const idPath = keyValues.join("/");
+//     const url = `${GlobalStore.getLinkCongAPI()}${table_name}/${idPath}`;
+
+//     console.log("Gửi DELETE request tới:", url);
+
+//     try {
+//         const response = await fetch(url, { method: 'DELETE' });
+
+//         if (!response.ok) {
+//             console.error(`Lỗi HTTP ${response.status}: ${response.statusText}`);
+//             alert(`Lỗi xóa: ${response.statusText}`);
+//             return;
+//         }
+
+//         const text = await response.text();
+//         const resData = text.trim().startsWith("{") || text.trim().startsWith("[") ? JSON.parse(text) : { message: text };
+
+//         //  alert(resData.message || "Xóa dữ liệu thành công.");
+//     } catch (error) {
+//         console.error("Có lỗi xảy ra khi xóa:", error.message);
+//         alert(`Lỗi: ${error.message}`);
+//     }
+// }
+async function xoa(keys, table_name) {
+    const primaryKeys = PrimaryKeys[table_name];
+
     if (!primaryKeys) {
         console.error(`Bảng ${table_name} không hợp lệ.`);
         alert("Bảng không hợp lệ!");
         return;
     }
 
-    // Kiểm tra `keys` có hợp lệ không
     if (!keys || typeof keys !== "object") {
         console.error("Thiếu thông tin khóa chính để xóa!", keys);
         alert("Thiếu thông tin khóa chính để xóa!");
         return;
     }
 
-    // Lấy danh sách giá trị của khóa chính
     const keyValues = primaryKeys.map(key => keys[key]);
 
-    // Kiểm tra xem tất cả giá trị của khóa chính đã có chưa
     if (keyValues.some(value => value === undefined || value === null)) {
         console.error("Thiếu thông tin khóa chính!", keys);
         alert("Thiếu thông tin khóa chính!");
         return;
     }
 
-    // Tạo đường dẫn DELETE từ khóa chính
     const idPath = keyValues.join("/");
     const url = `${GlobalStore.getLinkCongAPI()}${table_name}/${idPath}`;
 
-    console.log("Gửi DELETE request tới:", url);
-
     try {
-        const response = await fetch(url, { method: 'DELETE' });
-
-        if (!response.ok) {
-            console.error(`Lỗi HTTP ${response.status}: ${response.statusText}`);
-            alert(`Lỗi xóa: ${response.statusText}`);
-            return;
-        }
+        const response = await fetchCoToken(url, {
+            method: 'DELETE'
+        });
 
         const text = await response.text();
-        const resData = text.trim().startsWith("{") || text.trim().startsWith("[") ? JSON.parse(text) : { message: text };
+        const resData = text.trim().startsWith("{") || text.trim().startsWith("[")
+            ? JSON.parse(text)
+            : { message: text };
 
-        //  alert(resData.message || "Xóa dữ liệu thành công.");
+        console.log("Xóa thành công:", resData.message || "Thành công");
+        // alert(resData.message || "Xóa dữ liệu thành công.");
     } catch (error) {
         console.error("Có lỗi xảy ra khi xóa:", error.message);
         alert(`Lỗi: ${error.message}`);

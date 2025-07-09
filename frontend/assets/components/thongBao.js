@@ -107,8 +107,11 @@ function thongBao_error(message, duration, type = "default") {
 }
 
 function thongBao_xemThongTin(message, duration, type = "default") {
+  if (duration === null) {
+    duration = 3000; // Mặc định là 3 giây nếu không có duration
+  }
   messageSpan.textContent = message;
-
+  
   // Reset class
   notif.className = "notification";
   if (type) notif.classList.add(type); // thêm lớp error / success / warning
