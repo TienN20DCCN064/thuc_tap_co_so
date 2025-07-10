@@ -25,7 +25,7 @@ async function load_viewTbody() {
     if (maGiaiDau_chon_viewbody.value !== "All") {
         data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
     }
-    await viewTbody(data, hamChung, handleEdit, handleDelete);
+    await viewTbody(data, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {

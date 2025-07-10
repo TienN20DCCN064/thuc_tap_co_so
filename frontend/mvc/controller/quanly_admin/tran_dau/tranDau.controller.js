@@ -12,6 +12,8 @@ import {
     loadDanhSachSanVanDong,
     loadDanhSachHinhThucXepTranDau,
     loadDanhSachGiaiDau_chon,
+    loadDanhSachVongDau_chon,
+    loadDanhSachVongDau_cho_all_tran,
     loadDanhSachGiaiDau_chon_viewbody,
     loadDanhSachVongDau_chon_viewbody,
     loadDanhSachDoiBong_maDoi1_end,
@@ -26,11 +28,12 @@ const {
     thoiGianDienRa, sanVanDong, trangThai, ghiChu,
     modalXemTrongTai, danh_sach_trong_tai_tran_dau,
     maGiaiDau_chon_viewbody, maVongDau_chon_viewbody, form, chon_hinhThuc_tao_tran, maGiaiDau_chon,
-    maVongDau_chon, chon_ngayBatDau, chon_gioBatDau, button_tao_tran,
+    maVongDau_chon, chon_ngayBatDau, chon_gioBatDau, chon_vongDau_cho_all_tran, button_tao_tran,
     button_chon_tat_ca, btnCloseBangTaoTran
 } = getElementIds();
 
 let danhSach_doiBong_theoBang;
+const SOGIOTANGTHEM = 1;
 
 document.addEventListener("DOMContentLoaded", async function () {
     console.log("Trang quản lý trận đấu đã được tải");
@@ -50,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     button_xem_ds_trongTaiformInput.addEventListener("click", handleXemDanhSachTrongTai_formInput);
     button_xepLich.addEventListener("click", handleXepLich);
 
-    // button_luu_danhSachTranDau.addEventListener("click", themDanhSachTranDau_vaoDaTa);
+    button_luu_danhSachTranDau.addEventListener("click", themDanhSachTranDau_vaoDaTa);
 
     maGiaiDau.addEventListener("change", async function () {
         console.log("Chọn giải đấu:", maGiaiDau.value);
@@ -366,7 +369,9 @@ async function handleDelete(item) {
 ////////////////////// xếp lịch ////////////////////
 async function handleXepLich(event) {
     event.preventDefault();
+
     await loadDanhSachGiaiDau_chon();
+
     const vongDauTruocDiv = document.getElementById("vongDauTruocContainer");
     const hinhThucTaoTran = chon_hinhThuc_tao_tran.value;
     if (hinhThucTaoTran === "chia-bang") {
@@ -378,14 +383,20 @@ async function handleXepLich(event) {
     document.getElementById("closePopup").addEventListener("click", function () {
         document.getElementById("popupOverlay").classList.add("hidden");
     });
+
+    // load bảng đấu của giải đấu nó là chia-bang
     maGiaiDau_chon.addEventListener("change", async function () {
         await thongBao_tonTaiTranDau();
+        await loadDanhSachVongDau_chon(maGiaiDau_chon.value);
+
         if (chon_hinhThuc_tao_tran.value === "chia-bang") {
             document.getElementById("danhSachBangContainer").style.display = "block";
             const danhSachBang = document.getElementById("danhSachBang");
             const data_bangDau = await hamChung.layDanhSach("bang_dau");
+            // const data_bangDau_theoGiai = data_bangDau.filter(item=>item.ma)
             const data_bangDau_giaiDau = data_bangDau.filter(item => item.ma_giai_dau === maGiaiDau_chon.value);
-            const danhSachBangTen = data_bangDau_giaiDau.map(item => item.ten_bang_dâu);
+            console.log(data_bangDau_giaiDau);
+            const danhSachBangTen = data_bangDau_giaiDau.map(item => item.ten_bang_dau);
             danhSachBang.innerHTML = '';
             danhSachBangTen.forEach(bang => {
                 const li = document.createElement('li');
@@ -393,9 +404,11 @@ async function handleXepLich(event) {
                 danhSachBang.appendChild(li);
             });
         }
-        await handleSelectionChange();
+        await load_dataTable_chon();
     });
-    maVongDau_chon.addEventListener("change", handleSelectionChange);
+
+    //////// phải xem lại
+    maVongDau_chon.addEventListener("change", load_dataTable_chon);
     chon_hinhThuc_tao_tran.addEventListener("change", async function () {
         const vongDauTruocDiv = document.getElementById("vongDauTruocContainer");
         const danhSachBangContainer = document.getElementById("danhSachBangContainer");
@@ -406,13 +419,7 @@ async function handleXepLich(event) {
             vongDauTruocDiv.style.display = "block";
             danhSachBangContainer.style.display = "none";
         }
-        await handleSelectionChange();
-    });
-    button_tao_tran.addEventListener("click", async function () {
-        document.getElementById("popupOverlay").classList.add("disabled-overlay");
-        const tbody = document.getElementById("bodyBangTaoTran");
-        tbody.innerHTML = '';
-        await taoTranDau(chon_hinhThuc_tao_tran.value);
+        await load_dataTable_chon();
     });
     button_chon_tat_ca.addEventListener("click", function () {
         const checkboxes = document.querySelectorAll('.checkbox-chon');
@@ -420,7 +427,31 @@ async function handleXepLich(event) {
             checkbox.checked = true;
         });
     });
+
+    button_tao_tran.addEventListener("click", async function () {
+        await loadDanhSachVongDau_cho_all_tran(maGiaiDau_chon.value);
+        console.log("tao_tran_dau");
+        console.log(getSelectedCheckboxes());
+        const dataBangDau = await hamChung.layDanhSach("bang_dau");
+        const dataBangDau_theoGiai = dataBangDau.filter(item => item.ma_giai_dau === maGiaiDau_chon.value);
+        if (dataBangDau_theoGiai.length === 0) {
+            thongBao.thongBao_error("Chưa có bảng đấu nào", 3000, "error");
+            return;
+        }
+        if (getSelectedCheckboxes().length === 0) {
+            thongBao.thongBao_error("Chưa chọn đội bóng", 3000, "error");
+            return;
+        }
+
+
+        document.getElementById("popupOverlay").classList.add("disabled-overlay");
+        const tbody = document.getElementById("bodyBangTaoTran");
+        tbody.innerHTML = '';
+        await taoTranDau(chon_hinhThuc_tao_tran.value);
+    });
+
 }
+// ok
 async function thongBao_tonTaiTranDau() {
     document.getElementById("thong_bao").innerText = "";
     if (chon_hinhThuc_tao_tran.value === "chia-bang") {
@@ -428,6 +459,23 @@ async function thongBao_tonTaiTranDau() {
         if (tonTai) {
             document.getElementById("thong_bao").innerText = "Đã tồn tại trận đấu trong giải!";
         }
+    }
+}
+// load danh sách dataTable_chon
+async function load_dataTable_chon() {
+    const data_doiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
+    let data_doiBong_giaiDau;
+    if (maGiaiDau_chon.value !== "All") {
+        if (maVongDau_chon.value === "All" || chon_hinhThuc_tao_tran.value === "chia-bang") {
+            data_doiBong_giaiDau = data_doiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau_chon.value);
+            await viewTbody_chon(data_doiBong_giaiDau);
+        } else {
+            const data11 = await lay_data_doiBong_vong_giaiDau(maGiaiDau_chon.value, maVongDau_chon.value);
+            await viewTbody_chon(data11);
+        }
+    } else {
+        const tableBody = document.getElementById("dataTable_chon").getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = "";
     }
 }
 
@@ -448,7 +496,9 @@ async function taoTranDau(hinhThucTaoTran) {
     console.log("Hình thức tạo trận đấu: " + hinhThucTaoTran);
     const maGiaiDau = maGiaiDau_chon.value;
     const dataSanVanDong = await hamChung.layDanhSach("san_van_dong");
-    const danhSachSan = dataSanVanDong.map(item => item.ma_san);
+    // const danhSachSan = dataSanVanDong.map(item => item.ma_san);
+    const danhSachSan = dataSanVanDong.filter(item => item.ma_giai_dau === maGiaiDau_chon.value);
+    console.log(danhSachSan);
     let bangDau_tranDau;
     if (hinhThucTaoTran === "chia-bang") {
         const data_bangDau = await hamChung.layDanhSach("bang_dau");
@@ -482,6 +532,8 @@ async function taoTranDau(hinhThucTaoTran) {
     }
     const danhSachDoiBong_theoBang = bangDau_tranDau.bangs;
     let danhSanhTranDau_theoBang;
+
+    /// xem lại 2 hình thức khác
     if (hinhThucTaoTran === "loai-truc-tiep") {
         danhSanhTranDau_theoBang = await taoTranDau_theo_loaiTrucTiep(danhSachDoiBong_theoBang);
     } else {
@@ -490,7 +542,10 @@ async function taoTranDau(hinhThucTaoTran) {
     const danhSachTranDau_theoBang_coNgayGio = await themNgayGioSan_choData(danhSanhTranDau_theoBang);
     const ngayBatDau = chon_ngayBatDau.value;
     const gioBatDau = chon_gioBatDau.value;
+
     const danhSach_LichThiDauTuDong = await taoLichThiDauTuDong(danhSachTranDau_theoBang_coNgayGio, ngayBatDau, gioBatDau, danhSachSan);
+
+    // thông báo đội được miễn // ok
     if (hinhThucTaoTran === "loai-truc-tiep" && danhSach_LichThiDauTuDong[0].doi_duoc_mien) {
         const dataDoiDuocMien = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", danhSach_LichThiDauTuDong[0].doi_duoc_mien, maGiaiDau);
         document.getElementById("doi_duoc_mien_dau").value = "Đội được miễn đá : " + dataDoiDuocMien.ten_doi_bong;
@@ -498,7 +553,9 @@ async function taoTranDau(hinhThucTaoTran) {
     } else {
         document.getElementById("wrap_doi_duoc_mien").style.display = "none";
     }
+
     await view_danhSachTranDau_duocTao(danhSach_LichThiDauTuDong);
+
     chon_ngayBatDau.addEventListener("change", async function () {
         const ngayBatDau = chon_ngayBatDau.value;
         const gioBatDau = chon_gioBatDau.value;
@@ -511,9 +568,34 @@ async function taoTranDau(hinhThucTaoTran) {
         const danhSach_LichThiDauTuDong = await taoLichThiDauTuDong(danhSachTranDau_theoBang_coNgayGio, ngayBatDau, gioBatDau, danhSachSan);
         await view_danhSachTranDau_duocTao(danhSach_LichThiDauTuDong);
     });
+    chon_vongDau_cho_all_tran.addEventListener("change", async function () {
+        const ngayBatDau = chon_ngayBatDau.value;
+        const gioBatDau = chon_gioBatDau.value;
+        const danhSach_LichThiDauTuDong = await taoLichThiDauTuDong(danhSachTranDau_theoBang_coNgayGio, ngayBatDau, gioBatDau, danhSachSan);
+        await view_danhSachTranDau_duocTao(danhSach_LichThiDauTuDong);
+    });
     document.getElementById("bangTaoTran").classList.remove("hidden");
 }
-
+// ok
+// tạo trận đấu có thêm thông tin với danh sách ban đầu là chỉ có danh sách 2 trận đá vôis nhau
+async function taoLichThiDauTuDong(danhSachTranDau_theoBang, ngayBatDau, gioBatDau, danhSachSan) {
+    let currentDate = new Date(ngayBatDau);
+    let currentTime = gioBatDau;
+    let currentSanIndex = 0;
+    danhSachTranDau_theoBang.forEach((bangData) => {
+        const lichThiDau = bangData.lich_thi_dau;
+        lichThiDau.forEach((tran, indexTran) => {
+            tran.ngay = currentDate.toISOString().split('T')[0];
+            tran.gio = currentTime;
+            tran.san = danhSachSan[currentSanIndex].ma_san || "Chưa xác định";
+            currentSanIndex = (currentSanIndex + 1) % danhSachSan.length;
+            if (currentSanIndex === 0) {
+                currentTime = incrementTime(currentTime, 2);
+            }
+        });
+    });
+    return danhSachTranDau_theoBang;
+}
 async function taoTranDau_theoNhieuBang(danhSachDoiBong_theoBang) {
     let danhSanhTranDau_theoBang = [];
     for (let i = 0; i < danhSachDoiBong_theoBang.length; i++) {
@@ -549,26 +631,8 @@ async function themNgayGioSan_choData(danhSachTranDau_theoBang) {
     return danhSachTranDau_theoBang;
 }
 
-async function taoLichThiDauTuDong(danhSachTranDau_theoBang, ngayBatDau, gioBatDau, danhSachSan) {
-    let currentDate = new Date(ngayBatDau);
-    let currentTime = gioBatDau;
-    let currentSanIndex = 0;
-    danhSachTranDau_theoBang.forEach((bangData) => {
-        const lichThiDau = bangData.lich_thi_dau;
-        lichThiDau.forEach((tran, indexTran) => {
-            tran.ngay = currentDate.toISOString().split('T')[0];
-            tran.gio = currentTime;
-            tran.san = danhSachSan[currentSanIndex] || "Chưa xác định";
-            currentSanIndex = (currentSanIndex + 1) % danhSachSan.length;
-            if (currentSanIndex === 0) {
-                currentTime = incrementTime(currentTime, 2);
-            }
-        });
-    });
-    return danhSachTranDau_theoBang;
-}
-
-function incrementTime(time, soGioTangThem = 1) {
+// ok
+function incrementTime(time, soGioTangThem = SOGIOTANGTHEM) {
     let [hours, minutes] = time.split(':').map(Number);
     hours += soGioTangThem;
     if (hours >= 24) {
@@ -577,29 +641,8 @@ function incrementTime(time, soGioTangThem = 1) {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
 
-async function handleSelectionChange() {
-    const maGiaiDau = maGiaiDau_chon.value;
-    const maVongDau = maVongDau_chon.value;
-    console.log("Giải đấu:", maGiaiDau);
-    console.log("Vòng đấu:", maVongDau);
-    const data_doiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
-    let data_doiBong_giaiDau;
-    if (maGiaiDau !== "All") {
-        if (maVongDau === "All" || chon_hinhThuc_tao_tran.value === "chia-bang") {
-            data_doiBong_giaiDau = data_doiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau);
-            await viewTbody_chon(data_doiBong_giaiDau);
-        } else {
-            const data11 = await lay_data_doiBong_vong_giaiDau(maGiaiDau, maVongDau);
-            await viewTbody_chon(data11);
-        }
-    } else {
-        const tableBody = document.getElementById("dataTable_chon").getElementsByTagName('tbody')[0];
-        tableBody.innerHTML = "";
-    }
-}
-
+// ok
 async function lay_data_doiBong_vong_giaiDau(maGiaiDau, maVongDau) {
-    const data_doiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
     let dataDoiBongTrongVong = [];
     const dataTranDau = await hamChung.layDanhSach("tran_dau");
     const dataTranDau_theoVong = dataTranDau.filter(item => item.ma_vong_dau === maVongDau);
@@ -615,7 +658,7 @@ async function lay_data_doiBong_vong_giaiDau(maGiaiDau, maVongDau) {
     }
     return dataDoiBongTrongVong;
 }
-
+//ok
 function getSelectedCheckboxes() {
     const checkboxes = document.querySelectorAll('.checkbox-chon');
     const selectedTeams = [];
@@ -626,7 +669,7 @@ function getSelectedCheckboxes() {
     });
     return selectedTeams;
 }
-
+//ok
 function getSelectedCheckboxes_hatGiong() {
     const checkboxes = document.querySelectorAll('.checkbox-hatGiong');
     const selectedTeams = [];
@@ -652,8 +695,11 @@ async function themDanhSachTranDau_vaoDaTa() {
         const ma_doi_1 = cells[2]?.dataset.value?.trim();
         const ma_doi_2 = cells[3]?.dataset.value?.trim();
         const ngay_dien_ra = cells[4]?.querySelector("input")?.value || null;
-        const gio_dien_ra_raw = cells[5]?.querySelector("input")?.value || null;
-        const gio_dien_ra = gio_dien_ra_raw ? gio_dien_ra_raw + ":00" : null;
+        const gio_dien_ra = cells[5]?.querySelector("input")?.value || null;
+        const thoi_gian_dien_ra = `${ngay_dien_ra}T${gio_dien_ra}`;
+        // console.log(ngay_dien_ra);
+        // console.log(gio_dien_ra_raw);
+        // const gio_dien_ra = gio_dien_ra_raw ? gio_dien_ra_raw + ":00" : null;
         const ma_san = cells[6]?.querySelector("select")?.value || null;
         const selectVong = cells[7]?.querySelector('select[data-field="vong"]');
         const ma_vong_dau = selectVong?.value || null;
@@ -662,15 +708,14 @@ async function themDanhSachTranDau_vaoDaTa() {
             ma_giai_dau: ma_giai_dau,
             ma_doi_1: ma_doi_1,
             ma_doi_2: ma_doi_2,
-            ngay_dien_ra: ngay_dien_ra,
-            gio_dien_ra: gio_dien_ra,
+            thoi_gian_dien_ra: thoi_gian_dien_ra,
             ma_san: ma_san,
             ma_vong_dau: ma_vong_dau
         };
         console.log("index " + (i + 1));
         console.log("👉 Đang thêm trận:", formData);
         if (i !== 1) {
-            await hamChung.them(formData, "tran_dau");
+            //await hamChung.them(formData, "tran_dau");
         } else {
             formData_so_batDongBo_index1 = formData;
         }
@@ -682,10 +727,10 @@ async function themDanhSachTranDau_vaoDaTa() {
         formData_so_batDongBo_index1.ma_tran_dau = ma_tran_dau_2;
     }
     if (chon_hinhThuc_tao_tran.value === "chia-bang") {
-        await capNhat_bangDau_doi_bong_giai_dau(danhSach_doiBong_theoBang);
+        //  await capNhat_bangDau_doi_bong_giai_dau(danhSach_doiBong_theoBang);
     }
-    alert("Thêm trận đấu thành công!");
-    await viewTbody();
+    thongBao.thongBao_error("Thêm trận đấu thành công", 3000, "success");
+    // await viewTbody();
 }
 
 async function capNhat_bangDau_doi_bong_giai_dau(danhSach_doiBong_theoBang) {

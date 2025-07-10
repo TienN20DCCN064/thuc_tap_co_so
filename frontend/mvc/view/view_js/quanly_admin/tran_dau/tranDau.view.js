@@ -22,7 +22,7 @@ export function getElementIds() {
         trangThai: document.getElementById("trangThai"),
         ghiChu: document.getElementById("ghiChu"),
 
-        
+
         modalXemTrongTai: document.getElementById("modalXemTrongTai"),
         danh_sach_trong_tai_tran_dau: document.getElementById("danh_sach_trong_tai_tran_dau"),
 
@@ -36,6 +36,8 @@ export function getElementIds() {
         maVongDau_chon: document.getElementById("maVongDau_chon"),
         chon_ngayBatDau: document.getElementById("chon_ngayBatDau"),
         chon_gioBatDau: document.getElementById("chon_gioBatDau"),
+        chon_vongDau_cho_all_tran: document.getElementById("chon_vongDau_cho_all_tran"),
+
         button_tao_tran: document.getElementById("button_tao_tran"),
         button_chon_tat_ca: document.getElementById("button_chon_tat_ca"),
         btnCloseBangTaoTran: document.getElementById("btnCloseBangTaoTran"),
@@ -58,6 +60,7 @@ export async function viewTableBody(data, onXemTrongTai, onXemGhiChu, onEdit, on
         data = data.slice(0, 20);
     }
     tableBody.innerHTML = "";
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
         const item = data[i];
 
@@ -65,13 +68,38 @@ export async function viewTableBody(data, onXemTrongTai, onXemGhiChu, onEdit, on
         const data1GiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", item.ma_giai_dau);
         const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
 
-        const db1 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_1 && dd.ma_giai_dau === item.ma_giai_dau);
-        const db2 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_2 && dd.ma_giai_dau === item.ma_giai_dau);
-        const dbWin = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_thang && dd.ma_giai_dau === item.ma_giai_dau);
+        // const db1 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_1 && dd.ma_giai_dau === item.ma_giai_dau);
+        // const db2 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_2 && dd.ma_giai_dau === item.ma_giai_dau);
+        // const dbWin = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_thang && dd.ma_giai_dau === item.ma_giai_dau);
+        const db1 = await hamChung.layThongTinTheo_ID("doi_bong_giai_dau", item.ma_doi_1);
+        const db2 = await hamChung.layThongTinTheo_ID("doi_bong_giai_dau", item.ma_doi_2);
+        const dbWin = await hamChung.layThongTinTheo_ID("doi_bong_giai_dau", item.ma_doi_thang);
+
+        let tenDoi1 = "---";
+        let tenDoi2 = "---";
         let tenDoiThang = "---";
+
+        if (db1 && db1.ten_doi_bong)
+            tenDoi1 = db1.ten_doi_bong;
+        else
+            tenDoi1 = (await hamChung.layThongTinTheo_ID("doi_bong", item.ma_doi_1)).ten_doi_bong;
+
+
+        if (db2 && db1.ten_doi_bong)
+            tenDoi2 = db2.ten_doi_bong;
+        else
+            tenDoi2 = (await hamChung.layThongTinTheo_ID("doi_bong", item.ma_doi_2)).ten_doi_bong;
+
+
         if (dbWin && dbWin.ten_doi_bong) {
             tenDoiThang = dbWin.ten_doi_bong;
         }
+
+        else if (item.ma_doi_thang) {
+            tenDoiThang = (await hamChung.layThongTinTheo_ID("doi_bong", item.ma_doi_thang)).ten_doi_bong;
+        }
+
+
         const dataVongDau = await hamChung.layThongTinTheo_ID("vong_dau", item.ma_vong_dau);
         const data1SVD = await hamChung.layThongTinTheo_ID("san_van_dong", item.ma_san);
         //  console.log(data[i]);
@@ -79,9 +107,9 @@ export async function viewTableBody(data, onXemTrongTai, onXemGhiChu, onEdit, on
             <td style="text-align: center;">${data1GiaiDau.ten_giai_dau}</td>
             <td style="text-align: center;">${dataVongDau.ten_vong_dau}</td>
             <td style="text-align: center;">${item.ma_tran_dau}</td>
-            <td style="text-align: center;">${db1.ten_doi_bong}</td>
+            <td style="text-align: center;">${tenDoi1}</td>
             <td style="text-align: center;">${item.so_ban_doi_1}:${item.so_ban_doi_2}</td>
-            <td style="text-align: center;">${db2.ten_doi_bong}</td>
+            <td style="text-align: center;">${tenDoi2}</td>
             <td style="text-align: center;">${tenDoiThang}</td>
 
             <td style="text-align: center;">${item.thoi_gian_dien_ra}</td>
@@ -126,12 +154,22 @@ export async function viewTbody_chon(data_doiBong_giaiDau) {
 }
 
 export async function view_danhSachTranDau_duocTao(danhSanhTranDau_theoBang) {
+    console.log("danh sách trận được được tảo theo bảng ");
+    console.log(danhSanhTranDau_theoBang);
     const tbody = document.getElementById("bodyBangTaoTran");
-    tbody.innerHTML = "";
-    const dataSanVanDong = await hamChung.layDanhSach("san_van_dong");
-    const dataVongDau = await hamChung.layDanhSach("vong_dau");
-    const hinhThucTaoTran = document.getElementById("chon_hinhThuc_tao_tran");
     const maGiaiDau = document.getElementById("maGiaiDau_chon");
+    const chonVongDauDaDa = document.getElementById("maVongDau_chon");
+    const hinhThucTaoTran = document.getElementById("chon_hinhThuc_tao_tran");
+    const dataSanVanDong = await hamChung.layDanhSach("san_van_dong");
+    const dataSanVanDong_theoGiai = dataSanVanDong.filter(item => item.ma_giai_dau === maGiaiDau.value);
+
+    const dataVongDau = await hamChung.layDanhSach("vong_dau");
+    const dataVongDau_theoGiai = dataVongDau.filter(item => item.ma_giai_dau === maGiaiDau.value);
+
+
+    tbody.innerHTML = "";
+
+
     for (let i = 0; i < danhSanhTranDau_theoBang.length; i++) {
         const bangData = danhSanhTranDau_theoBang[i];
         const indexBang = i;
@@ -143,6 +181,8 @@ export async function view_danhSachTranDau_duocTao(danhSanhTranDau_theoBang) {
             const row = document.createElement("tr");
             const datadoi1_end = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", tran.doi1, maGiaiDau.value);
             const datadoi2_end = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", tran.doi2, maGiaiDau.value);
+            const vongDau_chon = getElementIds().chon_vongDau_cho_all_tran.value;
+            const data_1vongDau_chon = await hamChung.layThongTinTheo_ID("vong_dau", vongDau_chon);
             row.innerHTML = `
                 <td>${bangData.bang.ten_bang_dau || '---'}</td>
                 <td>${tran.tran}</td>
@@ -152,66 +192,27 @@ export async function view_danhSachTranDau_duocTao(danhSanhTranDau_theoBang) {
                 <td><input type="time" value="${tran.gio || ''}" data-field="gio" data-index="${indexBang}-${indexTran}"></td>
                 <td>
                     <select data-field="san" data-index="${indexBang}-${indexTran}">
-                        ${dataSanVanDong.map(san => `
+                        ${dataSanVanDong_theoGiai.map(san => `
                         <option value="${san.ma_san}" ${tran.san === san.ma_san ? 'selected' : ''}>
                             ${san.ma_san} - ${san.ten_san}
                         </option>
                         `).join('')}
                     </select>
                 </td>
+
                 <td>
-                    <select data-field="vong" data-index="${indexBang}-${indexTran}">
-                        ${dataVongDau.map(vong => `
-                        <option value="${vong.ma_vong_dau}">
-                            ${vong.ten_vong}
-                        </option>
+                    <select data-field="vong" data-index="${indexBang}-${indexTran}" disabled>
+                        ${dataVongDau_theoGiai.map(vong => `
+                            <option value="${vong.ma_vong_dau}" ${vong.ma_vong_dau === data_1vongDau_chon.ma_vong_dau ? 'selected' : ''}>
+                                ${vong.ten_vong_dau}
+                            </option>
                         `).join('')}
                     </select>
                 </td>
+             
+
             `;
-            if (hinhThucTaoTran.value === "chia-bang") {
-                const selectVongHtml = `
-                <select data-field="vong" data-index="${indexBang}-${indexTran}" disabled>
-                    ${dataVongDau.map(vong => `
-                        <option value="${vong.ma_vong_dau}" ${vong.ma_vong_dau === "V1" ? 'selected' : ''}>
-                            ${vong.ten_vong}
-                        </option>
-                    `).join('')}
-                </select>
-                `;
-                const tdVong = row.querySelector('td:last-child');
-                tdVong.innerHTML = selectVongHtml;
-            } else {
-                const chonVongDauDaDa = document.getElementById("maVongDau_chon");
-                let chonVong = "";
-                if (chonVongDauDaDa.value === "All") {
-                    chonVong = "V4";
-                } else if (chonVongDauDaDa.value === "V1") {
-                    chonVong = "V2";
-                } else if (chonVongDauDaDa.value === "V2") {
-                    chonVong = "V3";
-                } else if (chonVongDauDaDa.value === "V3") {
-                    chonVong = "V4";
-                }
-                const selectVongHtml = `
-                <select data-field="vong" data-index="${indexBang}-${indexTran}">
-                    ${dataVongDau.map(vong => `
-                        <option value="${vong.ma_vong_dau}" ${vong.ma_vong_dau === chonVong ? 'selected' : ''}>
-                            ${vong.ten_vong}
-                        </option>
-                    `).join('')}
-                </select>
-                `;
-                const tdVong = row.querySelector('td:last-child');
-                tdVong.innerHTML = selectVongHtml;
-            }
-            row.querySelectorAll('input, select').forEach(input => {
-                input.addEventListener('change', function () {
-                    const field = input.getAttribute('data-field');
-                    const [indexBang, indexTran] = input.getAttribute('data-index').split('-').map(Number);
-                    danhSanhTranDau_theoBang[indexBang].lich_thi_dau[indexTran][field] = input.value;
-                });
-            });
+
             tbody.appendChild(row);
         }
     }
@@ -366,7 +367,30 @@ export async function loadDanhSachGiaiDau_chon() {
         selectElement.appendChild(option);
     });
 }
-
+export async function loadDanhSachVongDau_chon(maGiaiDau) {
+    const selectElement = document.getElementById("maVongDau_chon");
+    selectElement.innerHTML = '<option value="All">Tất Cả</option>';
+    let data = await hamChung.layDanhSach("vong_dau");
+    data = maGiaiDau ? data.filter(item => item.ma_giai_dau === maGiaiDau) : data;
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_vong_dau;
+        option.textContent = `${item.ten_vong_dau}`;
+        selectElement.appendChild(option);
+    });
+}
+export async function loadDanhSachVongDau_cho_all_tran(maGiaiDau) {
+    const selectElement = document.getElementById("chon_vongDau_cho_all_tran");
+    selectElement.innerHTML = '';
+    let data = await hamChung.layDanhSach("vong_dau");
+    data = data.filter(item => item.ma_giai_dau === maGiaiDau);
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_vong_dau;
+        option.textContent = `${item.ten_vong_dau}`;
+        selectElement.appendChild(option);
+    });
+}
 export async function loadDanhSachGiaiDau_chon_viewbody() {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
