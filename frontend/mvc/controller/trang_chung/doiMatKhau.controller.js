@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "/frontend/mvc/view/view_html/quanly_admin/trang_chu.html";
         }
         else if (data1TaiKhoan.ma_vai_tro === "VT02") {
-            window.location.href = "/frontend/mvc/view/view_html/quanly/trang_chu.html";
+            window.location.href = "/frontend/mvc/view/view_html/quanly_doiBong/trang_chu.html";
         }
         else {
             window.location.href = "/frontend/mvc/view/view_html/trang_chung/dangNhap.html";

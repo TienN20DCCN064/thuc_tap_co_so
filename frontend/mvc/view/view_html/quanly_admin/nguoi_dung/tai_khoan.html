@@ -19,14 +19,7 @@
 
 <body class="sb-nav-fixed">
     <div id="chen"></div>
-    <script>
-        fetch('/frontend/assets/public/src/common/quanly/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('chen').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading HTML:', error));
-    </script>
+        <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>
     <style>
         #layoutSidenav_content {
             margin-left: 200px;
@@ -75,7 +68,8 @@
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
                                 <button id="button_luu" class="btn btn-success">Lưu</button>
-                                <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại Trang</button>
+                                <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
+                                    Trang</button>
                             </div>
                         </div>
                     </form>
@@ -131,8 +125,10 @@
     </div>
     <script type="module" src="/frontend/mvc/controller/quanly_admin/nguoi_dung/tai_khoan.controller.js"></script>
     <script type="module" src="/frontend/global/global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="/frontend/assets/public/src/styles/resources/quanly/js/datatables-simple-demo.js"></script>
 </body>
+
 </html>

@@ -33,15 +33,7 @@
 <body class="sb-nav-fixed">
 
     <div id="chen"></div>
-    <script>
-        // Sử dụng Fetch API để tải nội dung file HTML và chèn vào vị trí div
-        fetch('/frontend/public/src/common/quanly_doibong/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('chen').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading HTML:', error));
-    </script>
+        <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>
     <style>
         #layoutSidenav_content {
             margin-left: 200px;
@@ -69,7 +61,7 @@
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Ngày Sinh</label>
-                            <input type="date" class="form-control" id="ngaySinh" required style="min-width: 100%;"/>
+                            <input type="date" class="form-control" id="ngaySinh" required style="min-width: 100%;" />
                         </div>
 
                         <div class="col-md-3">
@@ -101,21 +93,22 @@
                         <div class="col-md-3">
                             <label class="font-weight-bold">Hình Ảnh</label>
                             <!-- Input hiển thị tên file hoặc URL ảnh -->
-                            <input type="text" class="form-control" id="hinhAnh" readonly style="cursor: pointer;"/>
+                            <input type="text" class="form-control" id="hinhAnh" readonly style="cursor: pointer;" />
                             <!-- Input cho phép người dùng chọn file ảnh -->
                             <input type="file" class="form-control d-none" id="hinhAnhFile" accept="image/*" />
                         </div>
                         <div class="col-md-3 d-flex align-items-start" style="    flex-direction: column;">
                             <label class="font-weight-bold">Xem Trước Ảnh</label>
                             <div style="width: 100%; border: 1px solid #ccc; padding: 5px;height: 155px; ">
-                                
-                                <img id="previewImage" src="https://cdn4.vectorstock.com/i/1000x1000/58/48/blank-photo-icon-vector-3265848.jpg" alt="Xem trước ảnh"
-                                    style="width: 100%; height: 145px; object-fit: contain;" />
+
+                                <img id="previewImage"
+                                    src="https://cdn4.vectorstock.com/i/1000x1000/58/48/blank-photo-icon-vector-3265848.jpg"
+                                    alt="Xem trước ảnh" style="width: 100%; height: 145px; object-fit: contain;" />
                             </div>
                         </div>
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
-                                <button id="button_luu" class="btn btn-success"  accept="image/*">Lưu</button>
+                                <button id="button_luu" class="btn btn-success" accept="image/*">Lưu</button>
                                 <!-- <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
                                     Trang</button>  -->
                             </div>
@@ -128,7 +121,7 @@
                         <div>
                             <i class="fas fa-table me-1"></i> DANH SÁCH CẦU THỦ
                         </div>
-                        <div >
+                        <div>
                             <!-- Dropdown lọc đội bóng -->
                             <select class="form-control comboboxDoiBong" id="filterDoiBong">
                                 <option value="ALL">-- ALL đội --</option>
@@ -143,9 +136,9 @@
                                     <th style="text-align: start;">Họ Tên</th>
                                     <th style="text-align: start;">Ngày Sinh</th>
                                     <th style="text-align: start;">Số Áo</th>
-                                    
+
                                     <th style="text-align: start;">Vị Trí</th>
-                                    
+
                                     <th style="text-align: start;">Hình Ảnh</th>
                                     <th style="text-align: start;">Sửa</th>
                                     <th style="text-align: start;">Xóa</th>
