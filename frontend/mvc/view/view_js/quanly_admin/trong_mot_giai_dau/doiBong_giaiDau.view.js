@@ -28,6 +28,7 @@ export function getElementIds() {
 
 
         tableBody: document.getElementById("dataTable"),
+        button_xem_danh_sach_dang_ky: document.getElementById("button_xem_danh_sach_dang_ky"),
 
 
     };
@@ -155,5 +156,18 @@ export async function loadDanhSachBangDau_chon_viewbody(maGiaiDau) {
     ids.maBangDau_chon_viewbody.innerHTML = `<option value="All">-- All --</option>`;
     ds.filter(b => maGiaiDau === "All" || b.ma_giai_dau === maGiaiDau).forEach(item => {
         ids.maBangDau_chon_viewbody.innerHTML += `<option value="${item.ma_bang_dau}">${item.ten_bang_dau}</option>`;
+    });
+}
+
+    
+export async function loadDanhSachGiaiDau_chon() {
+    const selectElement = document.getElementById("maGiaiDau_chon");
+    selectElement.innerHTML = '<option value="All">Tất Cả</option>'; // Reset danh sách
+    const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ten_giai_dau}`;
+        selectElement.appendChild(option);
     });
 }

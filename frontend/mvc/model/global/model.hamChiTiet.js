@@ -25,7 +25,13 @@ const hamChiTiet = {
     async danhSachSukien_trong_1_tranDau(maTranDau) {
         return await danhSachSukien_trong_1_tranDau(maTranDau);
     },
-    
+    async demSoLuong_cauThu_theoDoiBong(maDoiBong) {
+        return await demSoLuong_cauThu_theoDoiBong(maDoiBong);
+    },
+    async demSoLuong_doiBong_theoGiaiDau(maGiaiDau) {
+        return await demSoLuong_doiBong_theoGiaiDau(maGiaiDau);
+    },
+
 
 
 };
@@ -82,5 +88,14 @@ async function danhSachSukien_trong_1_tranDau(maTranDau) {
     const danhSachSuKien_theoTranDau = danhSachSuKien.filter((item) => item.ma_tran_dau === maTranDau);
     return danhSachSuKien_theoTranDau;
 }
-
+async function demSoLuong_cauThu_theoDoiBong(maDoiBong) {
+    const dataCauThu = await hamChung.layDanhSach("cau_thu");
+    const dataCauThu_theoDoiBong = dataCauThu.filter((item) => item.ma_doi_bong === maDoiBong);
+    return dataCauThu_theoDoiBong.length;
+}
+async function demSoLuong_doiBong_theoGiaiDau(maGiaiDau) {
+    const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
+    const dataDoiBong_1GiaiDau = dataDoiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau);
+    return dataDoiBong_1GiaiDau.length;
+}
 export default hamChiTiet;

@@ -94,11 +94,11 @@ async function check_dangNhap(event) {
         console.log("Đã chọn đội:", doiDuocChon.ten_doi_bong);
         // alert(`Bạn đã chọn đội: ${doiDuocChon.ten_doi_bong}`);
         // Chuyển hướng đến trang quản lý đội bóng
-        window.location.href = "/frontend/mvc/view/view_html/quanly/trang_chu.html";
+        window.location.href = "/frontend/mvc/view/view_html/quanly_doiBong/trang_chu.html";
       });
     }
     else {
-      window.location.href = "/frontend/mvc/view/view_html/quanly/trang_chu.html";
+      window.location.href = "/frontend/mvc/view/view_html/quanly_doiBong/trang_chu.html";
     }
     // C:\Users\vanti\Desktop\mvc_project\frontend\mvc\view\view_html\quanly\trang_chu.html
 
