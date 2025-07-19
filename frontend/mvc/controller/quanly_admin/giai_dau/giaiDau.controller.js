@@ -4,7 +4,7 @@ import { getElementIds, viewTbody, fillForm, loadDanhSachNguoiTao } from "../../
 const {
     btnLuuThayDoi, btnTaiLaiTrang, btnLocDanhSach, form,
     maGiaiDau, tenGiaiDau, maNguoiTao, ngayBatDau, ngayKetThuc,
-    ngayHetDangKy, maGioiTinh, hinhAnh, inputFile, moTa,
+    ngayHetDangKy, hinhAnh, inputFile, moTa,
     maGioiTinh_viewBody, ngayBatDau_chon_viewbody, ngayKetThuc_chon_viewbody
 } = getElementIds();
 
@@ -70,7 +70,6 @@ async function handleLuuThayDoi(event) {
             ngay_bat_dau: ngayBatDau.value,
             ngay_ket_thuc: ngayKetThuc.value,
             ngay_ket_thuc_dang_ky_giai: ngayHetDangKy.value,
-            gioi_tinh: maGioiTinh.value,
             hinh_anh: id_Hinh_anh_thay,
             mo_ta: moTa.value,
         };
@@ -85,7 +84,6 @@ async function handleLuuThayDoi(event) {
             ngay_bat_dau: ngayBatDau.value,
             ngay_ket_thuc: ngayKetThuc.value,
             ngay_ket_thuc_dang_ky_giai: ngayHetDangKy.value,
-            gioi_tinh: maGioiTinh.value,
             hinh_anh: id_Hinh_anh_thay,
             mo_ta: moTa.value
         };

@@ -1,3 +1,8 @@
+import hamChiTiet from "/frontend/mvc/model/global/model.hamChiTiet.js";
+
+
+
+
 const email_gui = document.getElementById('email_gui');
 // const email_nhan = document.getElementById('email_nhan');
 const subject = document.getElementById('subject');
@@ -6,6 +11,26 @@ const form = document.getElementById('form_sendEmail');
 
 
 document.addEventListener("DOMContentLoaded", async function () {
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     console.log(GlobalStore.getUsername());
     const taiKhoan = GlobalStore.getUsername();
     const doiTuyen_dangChon = DoiTuyen.getDoiTuyen_dangChon();
@@ -62,3 +87,27 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     });
 });
+
+export async function loadDanhSachGiaiDau() {
+    const selectElement = document.getElementById("maGiaiDau");
+    selectElement.innerHTML = '<option value="">-- Chọn Giải Đấu --</option>';
+    const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ten_giai_dau} (${item.ma_giai_dau})`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachDoiBong_theo_quanLy(maQuanLy) {
+    const selectElement = document.getElementById("doiBong");
+    selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>';
+    const data = await hamChung.layDanhSach("doi_bong");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_doi_bong;
+        option.textContent = `${item.ten_doi_bong} (${item.ma_doi_bong})`;
+        selectElement.appendChild(option);
+    });
+}

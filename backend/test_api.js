@@ -3,6 +3,7 @@ const express = require("express");
 const mysql = require("mysql2");    // kết nối trực tiếp với mysql
 const cors = require("cors");   // cho phép các tài nguyên được tải từ một tên miền khác với tên miền mà trang web đang chạy
 const jwt = require("jsonwebtoken");
+const moment = require("moment");
 
 require("dotenv").config(); // Đọc biến môi trường từ .env
 
@@ -45,6 +46,37 @@ function verifyToken(req, res, next) {
 
 
 
+const tables_not_token = {
+    "truong": ["ma_truong"],                                // Trường học
+    "vai_tro": ["ma_vai_tro"],                              // Vai trò người dùng
+    "nguoi_dung": ["ma_nguoi_dung"],                        // Người dùng
+    "tai_khoan": ["ma_nguoi_dung"],                         // Tài khoản (dùng chung mã người dùng)
+
+    "doi_bong": ["ma_doi_bong"],                            // Đội bóng
+    "vi_tri_cau_thu": ["ma_vi_tri"],                        // Vị trí cầu thủ
+    "cau_thu": ["ma_cau_thu"],                              // Cầu thủ
+
+    "loai_trong_tai": ["ma_loai_trong_tai"],                // Loại trọng tài
+    "trong_tai": ["ma_trong_tai"],                          // Trọng tài
+
+    "giai_dau": ["ma_giai_dau"],                            // Giải đấu
+    "cau_hinh_giai_dau": ["ma_giai_dau"],                   // Cấu hình giải đấu
+    "vong_dau": ["ma_vong_dau"],                            // Vòng đấu (đã chuyển sang dùng mã vòng đấu làm PK)
+    "bang_dau": ["ma_bang_dau"],                            // Bảng đấu (đã chuyển sang dùng mã bảng đấu làm PK)
+    "san_van_dong": ["ma_san"],                             // Sân vận động
+
+    "doi_bong_giai_dau": ["ma_doi_bong", "ma_giai_dau"],    // Đội bóng tham gia giải
+    "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"],      // Cầu thủ tham gia giải
+    "trong_tai_tran_dau": ["ma_tran_dau", "ma_trong_tai"],  // Phân công trọng tài trận
+
+    "tran_dau": ["ma_tran_dau"],                            // Trận đấu
+    "su_kien_tran_dau": ["ma_su_kien"],                     // Sự kiện trận đấu
+
+    "bang_xep_hang_vong_dau": ["ma_giai_dau", "ma_vong_dau", "ma_doi_bong"], // BXH vòng đấu
+    "quy_tac_tinh_diem": ["ma_giai_dau", "ma_vong_dau"],    // Quy tắc tính điểm
+    "cau_hinh_giao_dien": ["ma_cau_hinh_giao_dien"],                // Cấu hình giao diện người dùng
+
+};
 
 const tables = {
     "truong": ["ma_truong"],                                // Trường học
@@ -77,6 +109,7 @@ const tables = {
     "cau_hinh_giao_dien": ["ma_cau_hinh_giao_dien"],                // Cấu hình giao diện người dùng
 
 };
+
 
 app.post("/api/dang-nhap", (req, res) => {
     const { ten_dang_nhap, mat_khau } = req.body;
@@ -112,15 +145,33 @@ app.post("/api/dang-nhap", (req, res) => {
         });
     });
 });
+// đây là api không cần tocken // trả về nguyên bản
 
+Object.entries(tables_not_token).forEach(([table, keys]) => {
+    // GET - Lấy tất cả dữ liệu
+    app.get(`/api_not_token/${table}`, (req, res) => {
+        db.query(`SELECT * FROM ??`, [table], (err, results) => {
+            if (err) return res.status(500).send(`Lỗi khi lấy dữ liệu từ ${table}`);
+            res.json(results);
+        });
+    });
 
+    // GET - Lấy một bản ghi theo khóa chính
+    app.get(`/api_not_token/${table}/:${keys.map((_, i) => `id${i + 1}`).join("/:")}`, (req, res) => {
+        const conditions = keys.map((key, i) => `?? = ?`).join(" AND ");
+        const params = [table, ...keys.flatMap((key, i) => [key, req.params[`id${i + 1}`]])];
 
-
-
+        db.query(`SELECT * FROM ?? WHERE ${conditions}`, params, (err, results) => {
+            if (err) return res.status(500).send(`Lỗi khi lấy dữ liệu từ ${table}`);
+            if (results.length === 0) return res.status(404).send(`Không tìm thấy dữ liệu trong ${table}`);
+            res.json(results[0]);
+        });
+    });
+});
 
 Object.entries(tables).forEach(([table, keys]) => {
     // GET - Lấy tất cả dữ liệu
-    const moment = require("moment");
+    // const moment = require("moment");
 
     function convertToYYYYMMDD(isoString) {
         if (typeof isoString === "string" && !isNaN(Date.parse(isoString))) {
@@ -341,6 +392,8 @@ Object.entries(tables).forEach(([table, keys]) => {
 
 
 });
+
+// tạo 1 api lấy cấu hình giao diện không cần đăng nhập 
 
 
 

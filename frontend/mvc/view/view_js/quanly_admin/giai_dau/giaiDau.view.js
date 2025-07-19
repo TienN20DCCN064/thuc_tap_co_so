@@ -10,7 +10,7 @@ export function getElementIds() {
         ngayBatDau: document.getElementById("ngayBatDau"),
         ngayKetThuc: document.getElementById("ngayKetThuc"),
         ngayHetDangKy: document.getElementById("ngayHetDangKy"),
-        maGioiTinh: document.getElementById("maGioiTinh"),
+        // maGioiTinh: document.getElementById("maGioiTinh"),
         hinhAnh: document.getElementById("hinhAnh"),
         inputFile: document.getElementById("hinhAnhFile"),
         moTa: document.getElementById("moTa"),
@@ -45,7 +45,7 @@ export async function viewTbody(data, onEdit, onDelete) {
             <td style="text-align: center;">${item.ngay_bat_dau}</td>
             <td style="text-align: center;">${item.ngay_ket_thuc}</td>
             <td style="text-align: center;">${item.ngay_ket_thuc_dang_ky_giai}</td>
-            <td style="text-align: center;">${item.gioi_tinh}</td>
+           
             <td style="text-align: center;"><img src="${hinh_anh}" alt="Hình ảnh" width="50"></td>
             <td style="text-align: center;">${item.mo_ta || ""}</td>
             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
@@ -71,7 +71,7 @@ export function fillForm(item) {
     ngayBatDau.value = item.ngay_bat_dau;
     ngayKetThuc.value = item.ngay_ket_thuc;
     ngayHetDangKy.value = item.ngay_ket_thuc_dang_ky_giai;
-    maGioiTinh.value = item.gioi_tinh;
+   
     hinhAnh.value = item.hinh_anh;
     moTa.value = item.mo_ta || "";
     window.scrollTo({ top: 0, behavior: "smooth" });

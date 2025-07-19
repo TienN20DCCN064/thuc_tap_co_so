@@ -209,30 +209,78 @@
 
             <div style="width: 100%; margin-left: 120px;">
               <div class="custom-login-box">
-                <h2>Đổi mật khẩu</h2>
+                <h2>Gửi Gmail</h2>
+                <!-- ...existing code... -->
+                <!-- // tạo 2 sửa lựa chọn A và B -->
 
-                <form id="form_sendEmail">
-                  <div class="form-group">
-                    <input type="email" id="email_gui" class="form-control custom-login-input"
-                      placeholder="Mật khẩu hiện tại" required>
-                  </div>
-                  <div class="form-group">
-                    <input type="password" id="new_password" class="form-control custom-login-input"
-                      placeholder="Mật khẩu mới" required>
-                  </div>
-                  <div class="form-group">
-                    <input type="password" id="confirm_password" class="form-control custom-login-input"
-                      placeholder="Xác nhận mật khẩu mới" required>
-                  </div>
-                  <button id="changePassBtn" type="submit" class="btn btn-primary custom-login-button">Đổi mật
-                    khẩu</button>
-                  <!-- <input id="changePassBtn" type="submit" value="Đổi mật khẩu" class="btn"> -->
+                <!-- ...existing code... -->
+                <div class="form-group" style="text-align:left;">
+                  <label><strong>Gửi Với Vai Trò:</strong></label><br>
+                  <input type="radio" id="vaiTroQL_DoiBong" name="luaChon" value="A" checked>
+                  <label for="vaiTroQL_DoiBong">Quản Lý Đội Bóng</label>
+                  &nbsp;&nbsp;
+                  <input type="radio" id="vaiTroQL_GiaiDau" name="luaChon" value="B">
+                  <label for="vaiTroQL_GiaiDau">Quản Lý Giải Đấu</label>
+                </div>
+                <!-- ...existing code... -->
 
+                <!-- ...existing code... -->
+                <form id="guiGmailForm_qlDoiBong" method="POST">
+                  <div class="form-group">
+
+                    <select class="form-control" id="maGiaiDau" required>
+                      <option value="">-- Chọn Giải Đấu --</option>
+                      <!-- Thêm option giải đấu ở đây -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+
+                    <select class="form-control" id="maDoiBong" required>
+                      <option value="">-- Chọn Đội Bóng --</option>
+                      <!-- Thêm option đội bóng ở đây -->
+                    </select>
+                  </div>
+                  <!-- /// thêm phần subject -->
+                  <div class="form-group">
+                    <label for="subject"><strong>Tiêu đề</strong></label>
+                    <input type="text" id="subject" class="form-control custom-login-input"
+                      placeholder="Nhập tiêu đề của email..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="noiDungGmail"><strong>Nội dung gửi Gmail</strong></label>
+                    <textarea id="noiDungGmail" class="form-control custom-login-input" rows="5"
+                      placeholder="Nhập nội dung bạn muốn gửi..." required></textarea>
+                  </div>
+                  <button id="btnGuiGmail" type="submit" class="btn btn-primary custom-login-button">Gửi Gmail</button>
                 </form>
+
+
+
+                <!-- Form Quản Lý Giải Đấu -->
+                <form id="guiGmailForm_qlGiaiDau" method="POST" style="display: none;">
+                  <div class="form-group">
+                    <select class="form-control" id="maGiaiDau_cuaBan" required>
+                      <option value="">-- Chọn Giải Đấu --</option>
+                      <!-- Thêm option giải đấu ở đây -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="subject_2"><strong>Tiêu đề</strong></label>
+                    <input type="text" id="subject_2" class="form-control custom-login-input"
+                      placeholder="Nhập tiêu đề của email..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="noiDung_2"><strong>Nội dung gửi Gmail</strong></label>
+                    <textarea id="noiDung_2" class="form-control custom-login-input" rows="5"
+                      placeholder="Nhập nội dung bạn muốn gửi..." required></textarea>
+                  </div>
+                  <button id="btnGuiGmailGiaiDau" type="submit" class="btn btn-primary custom-login-button">Gửi
+                    Gmail</button>
+                </form>
+
                 <div class="custom-login-links">
-                  <p id="btn_trangChu"><a href="#">Trang Chủ</a></p>
-                  <!-- <p>Không có tài khoản? <a href="/frontend/mvc/view/view_html/trang_chung/dangKyTaiKhoan.html">Đăng
-                      ký</a></p> -->
+                  <p><a href="/frontend/mvc/view/view_html/quanly_admin/trang_chu.html">Quay lại trang quản lý ?</a></p>
+                  <p>Đăng nhập lại? <a href="/frontend/mvc/view/view_html/trang_chung/dangNhap.html">Đăng Nhập</a></p>
                 </div>
               </div>
             </div>
@@ -388,7 +436,7 @@ C:\Users\vanti\Desktop\mvc_project\frontend\mvc\view\view_html\trang_chung\quyen
 
   <script src="/frontend/mvc/view/view_js/nguoihammo/main.js"></script>
 
-  <script type="module" src="/frontend/mvc/controller/trang_chung/doiMatKhau.controller.js"></script>
+  <script type="module" src="/frontend/mvc/controller/trang_chung/guiGmail.controller.js"></script>
 
   <!-- <script type="module" src="/backend/services/global/global.js"></script>
   <script type="module" src="/backend/services/global/hamChiTiet.js"></script> -->

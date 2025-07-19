@@ -2,11 +2,13 @@ import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
 
 
 import PrimaryKeys from './databaseKey.js';
+import PrimaryKeys_not_token from './databaseKey.js';
 const token = localStorage.getItem("token"); // hoặc nơi bạn lưu token
 
 
 const hamChung = {
     PrimaryKeys, // 👈 cho phép gọi ở nơi khác: hamChung.primaryKeys["cau_thu"]
+    PrimaryKeys_not_token, // 👈 cho phép gọi ở nơi khác: hamChung.primaryKeys_not_token["cau_hinh_giao_dien"]
     async dangNhap(formData) {
         return await dangNhap(formData);
     },
@@ -18,6 +20,15 @@ const hamChung = {
     },
     async layThongTinTheo_2_ID(table, id, id2) {
         return await layThongTinTheo_2_ID(table, id, id2);
+    },
+    async layDanhSach_notToken(table) {
+        return await layDanhSach_notToken(table);
+    },
+    async layThongTinTheo_ID_notToken(table, id) {
+        return await layThongTinTheo_ID_notToken(table, id);
+    },
+    async layThongTinTheo_2_ID_notToken(table, id, id2) {
+        return await layThongTinTheo_2_ID_notToken(table, id, id2);
     },
 
     async taoID_theoBang(table) {
@@ -126,19 +137,6 @@ async function layDanhSach(table) {
         return [];
     }
 }
-
-
-// // Hàm lấy chi tiết theo ID
-// async function layThongTinTheo_ID(table, id) {
-//     try {
-//         const response = await fetch(GlobalStore.getLinkCongAPI() + table + "/" + id);
-//         return await response.json();
-//     } catch (error) {
-//         console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
-//         return null;
-//     }
-// }
-// Hàm lấy chi tiết theo ID (1 khóa chính)
 async function layThongTinTheo_ID(table, id) {
     const url = GlobalStore.getLinkCongAPI() + table + "/" + id;
     try {
@@ -154,6 +152,38 @@ async function layThongTinTheo_2_ID(table, id, id2) {
     const url = GlobalStore.getLinkCongAPI() + table + "/" + id + "/" + id2;
     try {
         const response = await fetchCoToken(url);
+        return await response.json();
+    } catch (error) {
+        console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
+        return null;
+    }
+}
+
+async function layDanhSach_notToken(table) {
+    const url = GlobalStore.getLinkCongApi_notToken() + table;
+    try {
+        const response = await fetch(url);
+        return await response.json();
+    } catch (error) {
+        console.error(`Lỗi khi lấy danh sách ${table}:`, error);
+        return [];
+    }
+}
+async function layThongTinTheo_ID_notToken(table, id) {
+    const url = GlobalStore.getLinkCongApi_notToken() + table + "/" + id;
+    try {
+        const response = await fetch(url);
+        return await response.json();
+    } catch (error) {
+        console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
+        return null;
+    }
+}
+
+async function layThongTinTheo_2_ID_notToken(table, id, id2) {
+    const url = GlobalStore.getLinkCongApi_notToken() + table + "/" + id + "/" + id2;
+    try {
+        const response = await fetch(url);
         return await response.json();
     } catch (error) {
         console.error(`Lỗi khi lấy thông tin ${table} với ID ${id}:`, error);
