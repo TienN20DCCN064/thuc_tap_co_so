@@ -13,6 +13,13 @@ const hamChiTiet = {
     async layGiaiDauTheoQL(ma_nguoi_tao) {
         return await layGiaiDauTheoQL(ma_nguoi_tao);
     },
+    async danhSachTranDau_theoQL(ma_nguoi_tao) {
+        return await danhSachTranDau_theoQL(ma_nguoi_tao);
+    },
+
+    async danhSachDoiBong_theoGiai(maGiaiDau) {
+        return await danhSachDoiBong_theoGiai(maGiaiDau);
+    },
     async danhSachTrongTai_theoGiai(maGiaiDau) {
         return await danhSachTrongTai_theoGiai(maGiaiDau);
     },
@@ -44,6 +51,9 @@ const hamChiTiet = {
     async danhSachSukien_trong_1_tranDau_notToken(maTranDau) {
         return await danhSachSukien_trong_1_tranDau_notToken(maTranDau);
     },
+    async check_id_form_tonTai(id, table) {
+        return await check_id_form_tonTai(id, table);
+    }
 
 };
 
@@ -65,11 +75,27 @@ async function layGiaiDauTheoQL(ma_nguoi_tao) {
     const dataGiaiDau_theoIdQuanLy = dataGiaiDau.filter((item) => item.ma_nguoi_tao === ma_nguoi_tao);
     return dataGiaiDau_theoIdQuanLy;
 }
+async function danhSachTranDau_theoQL(ma_nguoi_tao) {
+    const dataGiaiDau = await layGiaiDauTheoQL(ma_nguoi_tao);
+    const dataTranDau = await hamChung.layDanhSach("tran_dau");
+    // lọc ra dataTranDau.ma_giai_dau === dataGiaiDau[i].ma_giai_dau
+    const dataTranDau_theoQL = dataTranDau.filter((item) => {
+        return dataGiaiDau.some(giaiDau => giaiDau.ma_giai_dau === item.ma_giai_dau);
+    });
+    return dataTranDau_theoQL;
+
+}
 async function danhSachTrongTai_theoGiai(maGiaiDau) {
     const danhSachTrongTai = await hamChung.layDanhSach("trong_tai");
     const danhSachTrongTai_theoGiai = danhSachTrongTai.filter((item) => item.ma_giai_dau === maGiaiDau);
     return danhSachTrongTai_theoGiai;
 }
+async function danhSachDoiBong_theoGiai(maGiaiDau) {
+    const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
+    const dataDoiBong_1GiaiDau = dataDoiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau);
+    return dataDoiBong_1GiaiDau;
+}
+
 async function danhSachTrongTai_theo_1tranDau(maTranDau) {
     const danhSachTrongTaiTranDau = await hamChung.layDanhSach("trong_tai_tran_dau");
     const danhSachTrongTai_theo_1tranDau = danhSachTrongTaiTranDau.filter((item) => item.ma_tran_dau === maTranDau);
@@ -149,5 +175,11 @@ async function danhSachSukien_trong_1_tranDau_notToken(maTranDau) {
     const danhSachSuKien_theoTranDau = danhSachSuKien.filter((item) => item.ma_tran_dau === maTranDau);
     return danhSachSuKien_theoTranDau;
 }
+
+async function check_id_form_tonTai(id, table) {
+    const allData = await hamChung.layDanhSach(table);
+    return allData.some(item => item.ma_giai_dau === id);
+}
+
 
 export default hamChiTiet;

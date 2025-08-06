@@ -1,4 +1,5 @@
 import hamChung from "../../../model/global/model.hamChung.js";
+import { GlobalStore } from "/frontend/global/global.js";
 import {
     getElementIds, viewTbody, fillForm, loadDanhSachGiaiDau, loadDanhSachGiaiDau_chon_viewBody
 } from "../../../view/view_js/quanly_admin/giai_dau/vongDau.view.js";
@@ -7,21 +8,47 @@ const {
     btnLuuThayDoi, btnTaiLaiTrang, maVongDau, tenVongDau, moTa, maGiaiDau, maGiaiDau_chon_viewbody, form
 } = getElementIds();
 
+let ROLE_USER = "";
+let DATA = [];
+let DATA_VONG_DAU = [];
+
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachGiaiDau();
-    await loadDanhSachGiaiDau_chon_viewBody();
+    ROLE_USER = await hamChung.getRoleUser();
+    await reset_data_toanCuc();
+
+
+    await loadDanhSachGiaiDau(DATA);
+    await loadDanhSachGiaiDau_chon_viewBody(DATA);
+
     await load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
     maGiaiDau_chon_viewbody.addEventListener("change", load_viewTbody);
 });
+async function reset_data_toanCuc() {
+    DATA = await hamChung.layDanhSach("giai_dau");
+    DATA_VONG_DAU = await hamChung.layDanhSach("vong_dau");
+    if (ROLE_USER === "VT02") {
+        DATA = DATA.filter(item => item.ma_nguoi_tao === GlobalStore.getUsername());
+
+        let dataBangDau_theo_ql = [];
+        for (const item of DATA) {
+            const dataBangDau_theoGiaiDau = DATA_VONG_DAU.filter(bang => bang.ma_giai_dau === item.ma_giai_dau);
+            dataBangDau_theo_ql = dataBangDau_theo_ql.concat(dataBangDau_theoGiaiDau);
+        }
+        DATA_VONG_DAU = dataBangDau_theo_ql;
+    }
+}
 
 async function load_viewTbody() {
-    let data = await hamChung.layDanhSach("vong_dau");
+    await reset_data_toanCuc();
+
+    // let data = await hamChung.layDanhSach("vong_dau");
+
     if (maGiaiDau_chon_viewbody.value !== "All") {
-        data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
+        DATA_VONG_DAU = DATA_VONG_DAU.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
     }
-    viewTbody(data, handleEdit, handleDelete);
+    viewTbody(DATA_VONG_DAU, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {

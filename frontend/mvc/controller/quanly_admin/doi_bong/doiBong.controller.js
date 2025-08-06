@@ -1,4 +1,7 @@
 import hamChung from "../../../model/global/model.hamChung.js";
+import hamChiTiet from "../../../model/global/model.hamChiTiet.js";
+import thongBao from "/frontend/assets/components/thongBao.js";
+import { GlobalStore } from "/frontend/global/global.js";
 import {
     getElementIds,
     viewTbody,
@@ -11,8 +14,15 @@ const {
     btnLuuThayDoi, btnTaiLaiTrang, maDoiBong, tenDoiBong, maGioiTinh,
     hinhAnh, maQlDoiBong, ghiChu, inputFile, form, maQlDoiBong_chon_viewbody, gioiTinh_chon_viewbody
 } = getElementIds();
+let ROLE_USER = "";
+let DATA_DOI_BONG = [];
+
+
 
 document.addEventListener("DOMContentLoaded", async function () {
+    ROLE_USER = await hamChung.getRoleUser();
+    await reset_data_toanCuc();
+
     await loadDanhSachNguoiDung();
     await loadDanhSachQuanLy_view_body();
     load_viewTbody();
@@ -22,16 +32,31 @@ document.addEventListener("DOMContentLoaded", async function () {
     maQlDoiBong_chon_viewbody.addEventListener("change", load_viewTbody);
     gioiTinh_chon_viewbody.addEventListener("change", load_viewTbody);
 });
+async function reset_data_toanCuc() {
+    DATA_DOI_BONG = await hamChung.layDanhSach("doi_bong");
+
+    if (ROLE_USER === "VT02") {
+        console.log(GlobalStore.getUsername());
+        DATA_DOI_BONG = DATA_DOI_BONG.filter(item => item.ma_ql_doi_bong === GlobalStore.getUsername());
+        maQlDoiBong.value = GlobalStore.getUsername();
+        maQlDoiBong_chon_viewbody.value = GlobalStore.getUsername();
+        // khóa lại
+        maQlDoiBong.disabled = true;
+        maQlDoiBong_chon_viewbody.disabled = true; // khóa lại
+    }
+}
 
 async function load_viewTbody() {
-    let data = await hamChung.layDanhSach("doi_bong");
+    await reset_data_toanCuc();
+
+    let data = DATA_DOI_BONG;
     if (gioiTinh_chon_viewbody.value !== "All") {
         data = data.filter(item => item.gioi_tinh === gioiTinh_chon_viewbody.value);
     }
     if (maQlDoiBong_chon_viewbody.value !== "All") {
         data = data.filter(item => item.ma_ql_doi_bong === maQlDoiBong_chon_viewbody.value);
     }
-    console.log( data);
+    console.log(data);
     await viewTbody(data, handleEdit, handleDelete);
 }
 
@@ -66,6 +91,10 @@ async function handleLuuThayDoi(event) {
             ma_ql_doi_bong: maQlDoiBong.value,
             ghi_chu: ghiChu.value
         };
+        if (await checkTenDoiBong_trong_doiBong(tenDoiBong.value, DATA_DOI_BONG)) {
+            alert("Tên đội bóng đã tồn tại!");
+            return;
+        }x
         await hamChung.them(formData, "doi_bong");
         alert("Thêm thành công!");
     } else {
@@ -89,4 +118,8 @@ async function handleLuuThayDoi(event) {
 function handleTaiLaiTrang(event) {
     event.preventDefault();
     location.reload();
+}
+async function checkTenDoiBong_trong_doiBong(tenDoiBong, dataDoiBong) {
+    const result = dataDoiBong.find(item => item.ten_doi_bong === tenDoiBong);
+    return result !== undefined;
 }

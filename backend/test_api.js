@@ -78,6 +78,8 @@ const tables_not_token = {
 
 };
 
+// get : /api/{name_table}/{id_tbale}
+
 const tables = {
     "truong": ["ma_truong"],                                // Trường học
     "vai_tro": ["ma_vai_tro"],                              // Vai trò người dùng

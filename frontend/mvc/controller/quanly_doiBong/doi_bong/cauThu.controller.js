@@ -1,8 +1,5 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
-import { GlobalStore } from "/frontend/global/global.js";
-// import { hamChiTiet } from "../../../model/global/model.hamChiTiet.js";
-// import thongBao from "/frontend/assets/components/thongBao.js";
-
+import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
 import {
     getElementIds,
     viewTbody,
@@ -11,10 +8,6 @@ import {
     loadDanhSachDoiBong,
     loadDanhSachDoiBong_chon_viewbody
 } from "../../../view/view_js/quanly_admin/doi_bong/cauThu.view.js";
-let ROLE_USER = "";
-let DATA_CAU_THU = [];
-let DATA_DOI_BONG = [];
-
 
 const {
     btnLuuThayDoi, btnTaiLaiTrang, maCauThu, hoTen, ngaySinh, soAo,
@@ -22,37 +15,21 @@ const {
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
-    ROLE_USER = await hamChung.getRoleUser();
-    await reset_data_toanCuc();
-
     await loadDanhSachViTri();
-    await loadDanhSachDoiBong(DATA_DOI_BONG);
-    await loadDanhSachDoiBong_chon_viewbody(DATA_DOI_BONG);
+    await loadDanhSachDoiBong();
+    await loadDanhSachDoiBong_chon_viewbody();
     await load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
     maDoiBong_chon_viewbody.addEventListener("change", load_viewTbody);
 });
-async function reset_data_toanCuc() {
-
-
-
-
-    DATA_CAU_THU = await hamChung.layDanhSach("cau_thu");
-    DATA_DOI_BONG = await hamChung.layDanhSach("doi_bong");
-    if (ROLE_USER === "VT02") {
-        DATA_DOI_BONG = DATA_DOI_BONG.filter(item => item.ma_ql_doi_bong === GlobalStore.getUsername());
-        DATA_CAU_THU = DATA_CAU_THU.filter(item => item.ma_doi_bong === maDoiBong.value);
-    }
-
-}
-
 
 async function load_viewTbody() {
-    await reset_data_toanCuc();
-    let data = DATA_CAU_THU;
-    console.log("DATA_CAU_THU", data);
-    await viewTbody(data, handleEdit, handleDelete);
+    let data = await hamChung.layDanhSach("cau_thu");
+    console.log("Danh sách cầu thủ:", data);
+    console.log("DoiTuyen.getDoiTuyen_dangChon", DoiTuyen.getDoiTuyen_dangChon());
+    const dataCauThu_theoMaQuanLy = data.filter(item => item.ma_doi_bong === DoiTuyen.getDoiTuyen_dangChon());
+    await viewTbody(dataCauThu_theoMaQuanLy, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {

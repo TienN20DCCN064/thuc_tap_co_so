@@ -20,7 +20,7 @@ export function getElementIds() {
 
 export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody, maGiaiDau_chon_viewbody, maDoiBong_chon_viewbody } = getElementIds();
-    if (!data) data = await hamChung.layDanhSach("cau_thu_giai_dau");
+
     // Lọc theo giải đấu và đội bóng nếu có chọn
     if (maGiaiDau_chon_viewbody && maGiaiDau_chon_viewbody.value !== "All") {
         data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
@@ -70,12 +70,12 @@ export function fillForm(item) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhSachCauThu() {
+export async function loadDanhSachCauThu(maDoiBong) {
     const selectElement = document.getElementById("maCauThu");
     selectElement.innerHTML = '<option value="">-- Chọn cầu thủ --</option>';
-    const data = await hamChung.layDanhSach("cau_thu");
-
-    data.forEach(item => {
+    const dataCauThu = await hamChung.layDanhSach("cau_thu");
+    const dataCauThu_theoDoiBong = dataCauThu.filter(item => item.ma_doi_bong === maDoiBong);
+    dataCauThu_theoDoiBong.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_cau_thu;
         option.textContent = `${item.ho_ten}`;
@@ -83,11 +83,12 @@ export async function loadDanhSachCauThu() {
     });
 }
 
-export async function loadDanhSachDoiBong() {
+export async function loadDanhSachDoiBong(maGiaiDau) {
     const selectElement = document.getElementById("maDoiBong");
     selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>';
     const data = await hamChung.layDanhSach("doi_bong_giai_dau");
-    data.forEach(item => {
+    const dataDoiBong_theoGiaiDau = data.filter(item => item.ma_giai_dau === maGiaiDau);
+    dataDoiBong_theoGiaiDau.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_doi_bong;
         option.textContent = `${item.ten_doi_bong}`;
@@ -95,10 +96,10 @@ export async function loadDanhSachDoiBong() {
     });
 }
 
-export async function loadDanhSachGiaiDau() {
+export async function loadDanhSachGiaiDau(data) {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn Giải Đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -119,10 +120,10 @@ export async function loadDanhSachViTri() {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewbody() {
+export async function loadDanhSachGiaiDau_chon_viewbody(data) {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;

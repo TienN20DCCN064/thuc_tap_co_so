@@ -1,6 +1,7 @@
 import hamChung from "../../../model/global/model.hamChung.js";
 import hamChiTiet from "../../../model/global/model.hamChiTiet.js";
 import thongBao from "/frontend/assets/components/thongBao.js";
+import { GlobalStore } from "/frontend/global/global.js";
 import {
     getElementIds,
     viewTbody,
@@ -25,10 +26,19 @@ const {
     form, tableBody
 } = getElementIds();
 
+let ROLE_USER = "";
+let DATA = [];
+let DATA_QUY_TAC_TINH_DIEM = [];
+
+
+
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachGiaiDau();
-    await loadDanhSachGiaiDau_chon_viewbody();
-    await loadDanhSachGiaiDau_chon_BXH();
+    ROLE_USER = await hamChung.getRoleUser();
+    await reset_data_toanCuc();
+
+    await loadDanhSachGiaiDau(DATA);
+    await loadDanhSachGiaiDau_chon_viewbody(DATA);
+    await loadDanhSachGiaiDau_chon_BXH(DATA);
 
     // await loadDanhSachVongDau_chon_viewbody();
     await load_viewTbody();
@@ -58,9 +68,25 @@ document.addEventListener("DOMContentLoaded", async function () {
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
 
 });
+async function reset_data_toanCuc() {
+    DATA = await hamChung.layDanhSach("giai_dau");
+    console.log("DATA", DATA);
+    DATA_QUY_TAC_TINH_DIEM = await hamChung.layDanhSach("quy_tac_tinh_diem");
+    if (ROLE_USER === "VT02") {
+        DATA = DATA.filter(item => item.ma_nguoi_tao === GlobalStore.getUsername());
 
-async function load_viewTbody(data) {
-    await viewTbody(data, handleXemBXH, handleEdit, handleDelete);
+        let dataQTTD_theo_ql = [];
+        for (const item of DATA) {
+            const dataQTTD_theoGiaiDau = DATA_QUY_TAC_TINH_DIEM.filter(bang => bang.ma_giai_dau === item.ma_giai_dau);
+            dataQTTD_theo_ql = dataQTTD_theo_ql.concat(dataQTTD_theoGiaiDau);
+        }
+        DATA_QUY_TAC_TINH_DIEM = dataQTTD_theo_ql;
+    }
+}
+
+async function load_viewTbody() {
+    await reset_data_toanCuc();
+    await viewTbody(DATA_QUY_TAC_TINH_DIEM, handleXemBXH, handleEdit, handleDelete);
 }
 async function handleXemBXH(item) {
     await loadDanhSachVongDau_chon_BXH(item.ma_giai_dau);

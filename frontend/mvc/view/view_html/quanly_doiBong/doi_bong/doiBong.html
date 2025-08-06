@@ -21,13 +21,11 @@
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-    <!-- Quill stylesheet -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="/frontend/public/src/styles/resources/quanly/css/styles.css" rel="stylesheet" />
+    <link href="/frontend/assets/public/src/styles/resources/quanly/css/styles.css" rel="stylesheet" />
 
-    <link href="/frontend/public/src/styles/resources/table/table.css" rel="stylesheet" />
-    <link href="/frontend/public/src/styles/resources/table/time.css" rel="stylesheet" />
-    <link rel="icon" href="/frontend/public/src/styles/resources/img/logowebsite.png" type="image/png" />
+    <link href="/frontend/assets/public/src/styles/resources/table/table.css" rel="stylesheet" />
+    <link href="/frontend/assets/public/src/styles/resources/table/time.css" rel="stylesheet" />
+    <link rel="icon" href="/frontend/assets/public/src/styles/resources/img/logowebsite.png" type="image/png" />
 
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
@@ -35,7 +33,12 @@
 <body class="sb-nav-fixed">
 
     <div id="chen"></div>
-       <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>  
+
+    <!-- C:\Users\vanti\Desktop\mvc_project\frontend\assets\public\src\common\common.view.js -->
+       <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>
+
+
+
     <style>
         #layoutSidenav_content {
             margin-left: 200px;
@@ -50,56 +53,46 @@
                 </div>
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="font-weight-bold">Mã Đội Bóng</label>
                             <input path="maDoiBong" type="text" class="form-control" id="maDoiBong" required readonly />
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="font-weight-bold">Tên Đội Bóng</label>
                             <input path="tenDoiBong" type="text" class="form-control" id="tenDoiBong" required />
                         </div>
-                        <div class="col-md-3">
-                            <label class="font-weight-bold">Quốc Gia</label>
-                            <input path="quocGia" type="text" class="form-control" id="quocGia" required />
-                        </div>
-                        <div class="col-md-3">
+
+                        <div class="col-md-4">
                             <label class="font-weight-bold">Giới Tính</label>
                             <select path="maGioiTinh" class="form-control" id="maGioiTinh" required>
-                                <option value="nam">Nam</option>
-                                <option value="nữ">Nữ</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
                             </select>
                         </div>
-                        <!-- <div class="col-md-3">
-                            <label class="font-weight-bold">logo</label>
-                            
-                            <input type="text" class="form-control" id="logo" readonly />
-                            <input type="file" class="form-control" id="logoFile" />
-                        </div> -->
                         <div class="col-md-3">
                             <label class="font-weight-bold">Hình Ảnh</label>
                             <!-- Input hiển thị tên file hoặc URL ảnh -->
-                            <input type="text" class="form-control" id="logo" readonly style="cursor: pointer;"/>
+                            <input type="text" class="form-control" id="hinhAnh" readonly />
                             <!-- Input cho phép người dùng chọn file ảnh -->
-                            <input type="file" class="form-control" id="logoFile" accept="image/*" />
+                            <input type="file" class="form-control" id="hinhAnhFile" />
                         </div>
-                        <div class="col-md-3 d-flex align-items-start" style="    flex-direction: column;">
-                            <label class="font-weight-bold">Xem Trước Ảnh</label>
-                            <div style="width: 100%; border: 1px solid #ccc; padding: 5px;height: 155px; ">
-                                
-                                <img id="previewImage" src="https://cdn4.vectorstock.com/i/1000x1000/58/48/blank-photo-icon-vector-3265848.jpg" alt="Xem trước ảnh"
-                                    style="width: 100%; height: 145px; object-fit: contain;" />
-                            </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Mã Quản Lý Đội Bóng</label>
+                            <select class="form-control" id="maQlDoiBong"  required>
+                                <option value="">-- Chưa Nhập --</option>
+                            </select>
                         </div>
-                        <!-- <div class="col-md-12">
-                            <label class="font-weight-bold">Mô Tả Đội Bóng</label>
-                            <div id="editor" style="height: 200px;"></div>
-                        </div> -->
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Ghi Chú</label>
+                            <textarea class="form-control" id="ghiChu"></textarea>
+                        </div>
+
 
                         <div class='parent col-md-12 mt-3'>
                             <div class='child float-left-child'>
-                                <button id="button_luu" class="btn btn-success"  accept="image/*">Lưu</button>
-                                <!-- <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
-                                    Trang</button> -->
+                                <button id="button_luu" class="btn btn-success" accept="image/*">Lưu</button>
+                                <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
+                                    Trang</button>
                             </div>
                         </div>
                     </form>
@@ -108,31 +101,59 @@
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH ĐỘI BÓNG
                     </div>
+                    <form:form class="row mb-3" modelAttribute="doiBongTrongBangEntity" action="" method="post">
+
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Người Quản Lý</label>
+                            <select class="form-control" id="maQlDoiBong_chon_viewbody" required>
+                                <option value="All">-- Tất cả --</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Chọn Giới Tính</label>
+                            <select class="form-control" id="gioiTinh_chon_viewbody" required>
+                                <option value="All">-- Tất cả --</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+                        <!-- <div class="col-md-3">
+                                <label class="font-weight-bold">Chọn Kết Quả</label>
+                                <select class="form-control" id="checkKetQua_chon_viewbody" required>
+                                    <option value="co_kq">Có kết quả</option>
+                                    <option value="chua_kq">Chưa kết quả</option>
+                                </select>
+                            </div> -->
+
+                    </form:form>
                     <div class="card-body">
                         <table id="table">
                             <thead>
                                 <tr>
-                                    <!-- <th style="text-align: center;">Mã Đội Bóng</th> -->
-                                    <th style="text-align: center;">Tên Đội Bóng</th>
-                                    <th style="text-align: center;">Quốc Gia</th>
-                                    <th style="text-align: center;">Giới Tính</th>
-                                    <th style="text-align: center;">Logo</th>
-                                    <!-- <th style="text-align: center;">Mã Quản Lý Đội Bóng</th> -->
-                                    <th style="text-align: center;"></th>
-                                </tr>
-                            </thead>
-                            <!-- <tfoot>
-                                <tr>
                                     <th style="text-align: center;">Mã Đội Bóng</th>
                                     <th style="text-align: center;">Tên Đội Bóng</th>
-                                    <th style="text-align: center;">Quốc Gia</th>
+
                                     <th style="text-align: center;">Giới Tính</th>
                                     <th style="text-align: center;">Logo</th>
-                                    
+                                    <th style="text-align: center;">Mã Quản Lý Đội Bóng</th>
+                                    <th style="text-align: center;">Ghi Chú</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
-                            </tfoot> -->
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th style="text-align: center;">Mã Đội Bóng</th>
+                                    <th style="text-align: center;">Tên Đội Bóng</th>
+                                    <th style="text-align: center;">Giới Tính</th>
+                                    <th style="text-align: center;">Logo</th>
+                                    <th style="text-align: center;">Mã Quản Lý Đội Bóng</th>
+                                    <th style="text-align: center;">Ghi Chú</th>
+                                    <th style="text-align: center;">Sửa</th>
+                                    <th style="text-align: center;">Xóa</th>
+                                </tr>
+                            </tfoot>
                             <tbody id="dataTable">
                                 <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
                             </tbody>
@@ -141,7 +162,7 @@
                 </div>
             </div>
         </main>
-        
+
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
@@ -154,33 +175,21 @@
             </div>
         </footer>
     </div>
-    
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    
-<script>
+    <script>
         function confirmDelete() {
             if (window.confirm("Nhân viên hiện đang được cấp 1 tài khoản, xóa nhân viên sẽ dẫn đến xóa tài khoản. Bạn có muốn xóa?")) {
                 // perform the delete action
             }
         }
-        
-
     </script>
-    
-    
-    <script src="/backend/services/global/global.js"></script>
-    <script type="module" src="/backend/services/global/hamChung.js"></script>
-    <script type="module" src="/backend/services/global/hamChiTiet.js"></script>
-    <script src="/backend/services/doi_tuong/quanly/doi_bong/doiBong.js"></script>
+    <script type="module" src="/frontend/mvc/controller/quanly_admin/doi_bong/doiBong.controller.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <!-- <script src=" /public/src/styles/resources/quanly/js/scripts.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
-    <script src="/frontend/public/src/styles/resources/quanly/js/datatables-simple-demo.js"></script>
-
-    
+    <script src="/frontend/assets/public/src/styles/resources/quanly/js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

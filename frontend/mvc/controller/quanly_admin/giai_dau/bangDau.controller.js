@@ -1,4 +1,6 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
+
 import {
     getElementIds,
     viewTbody,
@@ -11,21 +13,48 @@ const {
     btnLuuThayDoi, btnTaiLaiTrang, maBangDau, tenBangDau, maGiaiDau, maGiaiDau_chon_viewbody, form
 } = getElementIds();
 
+let ROLE_USER = "";
+let DATA = [];
+let DATA_BANG_DAU = [];
+
+
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachGiaiDau();
-    await loadDanhSachGiaiDau_chon_viewBody();
+    ROLE_USER = await hamChung.getRoleUser();
+    await reset_data_toanCuc();
+
+    await loadDanhSachGiaiDau(DATA);
+    await loadDanhSachGiaiDau_chon_viewBody(DATA);
+
     await load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
     maGiaiDau_chon_viewbody.addEventListener("change", load_viewTbody);
 });
 
-async function load_viewTbody() {
-    let data = await hamChung.layDanhSach("bang_dau");
-    if (maGiaiDau_chon_viewbody.value !== "All") {
-        data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
+
+async function reset_data_toanCuc() {
+    DATA = await hamChung.layDanhSach("giai_dau");
+    DATA_BANG_DAU = await hamChung.layDanhSach("bang_dau");
+    if (ROLE_USER === "VT02") {
+        DATA = DATA.filter(item => item.ma_nguoi_tao === GlobalStore.getUsername());
+
+        let dataBangDau_theo_ql = [];
+        for (const item of DATA) {
+           const dataBangDau_theoGiaiDau = DATA_BANG_DAU.filter(bang => bang.ma_giai_dau === item.ma_giai_dau);
+           dataBangDau_theo_ql = dataBangDau_theo_ql.concat(dataBangDau_theoGiaiDau);
+        }
+        DATA_BANG_DAU = dataBangDau_theo_ql;
     }
-    await viewTbody(data, handleEdit, handleDelete);
+}
+
+
+async function load_viewTbody() {
+    await reset_data_toanCuc();
+
+    if (maGiaiDau_chon_viewbody.value !== "All") {
+        DATA_BANG_DAU = DATA_BANG_DAU.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
+    }
+    await viewTbody(DATA_BANG_DAU, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {
@@ -35,6 +64,7 @@ function handleEdit(item) {
 async function handleDelete(item) {
     if (confirm(`Bạn có chắc chắn muốn xóa bảng đấu "${item.ten_bang_dau}"?`)) {
         await hamChung.xoa({ ma_bang_dau: item.ma_bang_dau }, "bang_dau");
+
         load_viewTbody();
     }
 }

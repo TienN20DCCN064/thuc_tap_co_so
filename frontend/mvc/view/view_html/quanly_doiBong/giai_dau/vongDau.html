@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Quản lý sân vận động</title>
+    <title>Quản lý nhân viên</title>
     <style>
         label {
             display: block;
@@ -33,7 +33,7 @@
 <body class="sb-nav-fixed">
 
     <div id="chen"></div>
-    <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>
+       <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>
     <style>
         #layoutSidenav_content {
             margin-left: 200px;
@@ -44,14 +44,10 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="card-header">
-                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ SÂN VẬN ĐỘNG</label>
+                    <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ VÒNG ĐẤU</label>
                 </div>
                 <div class="card-header">
-                    <form class="row mb-3" id="inputForm">
-                        <div class="col-md-4">
-                            <label class="font-weight-bold">Mã Sân</label>
-                            <input type="text" class="form-control" id="maSan" required readonly />
-                        </div>
+                    <form:form class="row mb-3" modelAttribute="vongDauEntity" action="" method="post">
                         <div class="col-md-4">
                             <label class="font-weight-bold">Mã Giải Đấu</label>
                             <select class="form-control" id="maGiaiDau">
@@ -59,80 +55,61 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="font-weight-bold">Tên Sân</label>
-                            <input type="text" class="form-control" id="tenSan" required />
+                            <label class="font-weight-bold">Mã Vòng Đấu</label>
+                            <input path="maVongDau" type="text" class="form-control" id="maVongDau" required readonly />
                         </div>
                         <div class="col-md-4">
-                            <label class="font-weight-bold">Sức Chứa</label>
-                            <input type="number" class="form-control" id="sucChua" required min="1" value="0" />
+                            <label class="font-weight-bold">Tên Vòng Đấu</label>
+                            <input path="tenVongDau" type="text" class="form-control" id="tenVongDau" required />
                         </div>
-
-                        <div class="col-md-6 mt-3">
-                            <label class="font-weight-bold">Địa Chỉ</label>
-                            <textarea class="form-control" id="diaChi" rows="2" required></textarea>
-                        </div>
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4">
                             <label class="font-weight-bold">Mô Tả</label>
-                            <textarea class="form-control" id="moTa" rows="2"></textarea>
+                            <textarea path="moTa" class="form-control" id="moTa"></textarea>
                         </div>
-
                         <div class='col-md-12 mt-3'>
-                            <button id="button_luu" class="btn btn-success" type="submit">Lưu</button>
+                            <button id="button_luu" class="btn btn-success">Lưu</button>
                             <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
                                 Trang</button>
 
                         </div>
-                    </form>
+                    </form:form>
                 </div>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> DANH SÁCH SÂN VẬN ĐỘNG
+                        <i class="fas fa-table me-1"></i> DANH SÁCH VÒNG ĐẤU
                     </div>
-                    <div class="card-header">
-                        <form class="row mb-3" id="inputForm_chon">
-                            <div class="col-md-4">
-                                <label class="font-weight-bold">Mã Giải Đấu</label>
-                                <select class="form-control" id="maGiaiDau_chon" required>
-                                    <option value="All">Tất Cả</option>
+                    <div style="margin-left: 100px;">
+                        <form:form class="row mb-3" modelAttribute="doiBongTrongBangEntity" action="" method="post">
+                            <div class="col-md-3">
+                                <label class="font-weight-bold">Giải Đấu</label>
+                                <select class="form-control" id="maGiaiDau_chon_viewbody" required>
+                                    <option value="">-- Chọn Giải Đấu--</option>
                                 </select>
                             </div>
-                            <!-- 
-                        <div class="col-md-4">
-                            <label class="font-weight-bold">Mã Đội Bóng</label>
-                            <select class="form-control" id="maDoiBong_chon" required>
-                                <option value="All">Tất Cả</option>
-                            </select>
-                        </div> -->
-                        </form>
+
+
+                        </form:form>
                     </div>
                     <div class="card-body">
                         <table id="table">
                             <thead>
                                 <tr>
-
-                                    <th style="text-align: center;">Giải Đấu</th>
-                                    <th style="text-align: center;">Mã Sân</th>
-                                    <th style="text-align: center;">Tên Sân</th>
-                                    <th style="text-align: center;">Địa Chỉ</th>
-                                    <th style="text-align: center;">Sức Chứa</th>
+                                    <th style="text-align: center;">Mã Giải Đấu</th>
+                                    <th style="text-align: center;">Mã Vòng Đấu</th>
+                                    <th style="text-align: center;">Tên Vòng</th>
                                     <th style="text-align: center;">Mô Tả</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
-
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-
                                     <th style="text-align: center;">Mã Giải Đấu</th>
-                                    <th style="text-align: center;">Mã Sân</th>
-                                    <th style="text-align: center;">Tên Sân</th>
-                                    <th style="text-align: center;">Địa Chỉ</th>
-                                    <th style="text-align: center;">Sức Chứa</th>
+                                    <th style="text-align: center;">Mã Vòng Đấu</th>
+                                    <th style="text-align: center;">Tên Vòng</th>
                                     <th style="text-align: center;">Mô Tả</th>
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
-
                                 </tr>
                             </tfoot>
                             <tbody id="dataTable">
@@ -143,6 +120,7 @@
                 </div>
             </div>
         </main>
+
 
 
 
@@ -165,7 +143,7 @@
             }
         }
     </script>
-    <script type="module" src="/frontend/mvc/controller/quanly_admin/giai_dau/sanVanDong.controller.js"></script>
+    <script type="module" src="/frontend/mvc/controller/quanly_admin/giai_dau/vongDau.controller.js"></script>
     <script type="module" src="/frontend/global/global.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

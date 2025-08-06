@@ -40,6 +40,7 @@ export async function viewTbody(data, onEdit, onDelete) {
             ? await hamChung.getImage(item.hinh_anh)
             : "/frontend/public/images/cat-2.png";
         const data1GiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", item.ma_giai_dau);
+        const data1LoaiTrongTai = await hamChung.layThongTinTheo_ID("loai_trong_tai", item.ma_loai_trong_tai);
         row.innerHTML = `
             <td style="text-align: center;">${data1GiaiDau.ten_giai_dau}</td>
             <td style="text-align: center;">${item.ho_ten}</td>
@@ -48,7 +49,7 @@ export async function viewTbody(data, onEdit, onDelete) {
             <td style="text-align: center;">
                 <img src="${hinhAnh}" alt="Hình ảnh" style="width: 50px; height: 50px; border-radius: 50%;">
             </td>
-            <td style="text-align: center;">${item.ma_loai_trong_tai}</td>
+            <td style="text-align: center;">${data1LoaiTrongTai.ten_loai_trong_tai}</td>
             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
             <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
         `;
@@ -80,10 +81,10 @@ export function fillForm(data) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhSachGiaiDau() {
+export async function loadDanhSachGiaiDau(data) {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn Giải Đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -103,10 +104,10 @@ export async function loadDanhSachLoaiTrongTai() {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewbody() {
+export async function loadDanhSachGiaiDau_chon_viewbody(data) {
     const selectElement = document.getElementById("giaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">-- ALL --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;

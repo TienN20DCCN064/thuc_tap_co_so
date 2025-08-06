@@ -1,22 +1,53 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+import hamChiTiet from "/frontend/mvc/model/global/model.hamChiTiet.js";
+import thongBao from "/frontend/assets/components/thongBao.js";
+
+
+import { GlobalStore } from "/frontend/global/global.js";
 import { getElementIds, loadDanhSachGiaiDau, viewTbody, fillForm } from "../../../view/view_js/quanly_admin/giai_dau/cau_hinh_giai_dau.view.js";
+
+
+const { btnLuu, btnTaiLai, form } = getElementIds();
+
+let ROLE_USER = "";
+let DATA = [];
+let DATA_CAU_HINH_GIAI_DAU = [];
 
 
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadDanhSachGiaiDau();
+    ROLE_USER = await hamChung.getRoleUser();
+    await reset_data_toanCuc();
+
+    await loadDanhSachGiaiDau(DATA);
     loadTbody();
 
-    const { btnLuu, btnTaiLai, form } = getElementIds();
+
     btnLuu.addEventListener("click", handleLuu);
     btnTaiLai.addEventListener("click", () => location.reload());
     form.addEventListener("submit", e => e.preventDefault());
 });
 
+async function reset_data_toanCuc() {
+    DATA = await hamChung.layDanhSach("giai_dau");
+    console.log("DATA", DATA);
+    DATA_CAU_HINH_GIAI_DAU = await hamChung.layDanhSach("cau_hinh_giai_dau");
+    if (ROLE_USER === "VT02") {
+        DATA = DATA.filter(item => item.ma_nguoi_tao === GlobalStore.getUsername());
+
+        let dataCauHinh_theo_ql = [];
+        for (const item of DATA) {
+            const dataCauHinh_theoGiaiDau = DATA_CAU_HINH_GIAI_DAU.filter(bang => bang.ma_giai_dau === item.ma_giai_dau);
+            dataCauHinh_theo_ql = dataCauHinh_theo_ql.concat(dataCauHinh_theoGiaiDau);
+        }
+        DATA_CAU_HINH_GIAI_DAU = dataCauHinh_theo_ql;
+    }
+}
+
+
 async function loadTbody() {
-    const data = await hamChung.layDanhSach("cau_hinh_giai_dau");
-    console.log("Danh sách cấu hình giải đấu:", data);
-    await viewTbody(data, handleEdit, handleDelete);
+    await reset_data_toanCuc();
+    await viewTbody(DATA_CAU_HINH_GIAI_DAU, handleEdit, handleDelete);
 }
 
 function handleEdit(item) {
@@ -55,6 +86,11 @@ async function handleLuu(event) {
     console.log("Dữ liệu gửi đi:", formData);
 
     if (!maGiaiDau.disabled) {
+        const exists = await hamChiTiet.check_id_form_tonTai(maGiaiDau.value, "cau_hinh_giai_dau");
+        if (exists) {
+            thongBao.thongBao_error("Cấu hình giải đấu đã tồn tại trong giải đấu - KHÔNG THỂ THÊM!", 3000, "error");
+            return;
+        }
         await hamChung.them(formData, "cau_hinh_giai_dau");
         alert("Thêm thành công!");
     } else {
@@ -63,3 +99,4 @@ async function handleLuu(event) {
     }
     loadTbody();
 }
+

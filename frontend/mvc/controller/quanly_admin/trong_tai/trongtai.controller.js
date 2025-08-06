@@ -1,6 +1,10 @@
 // frontend/mvc/controller/view/quanly_admin/trong_tai.controller.js
 
 import hamChung from "../../../model/global/model.hamChung.js";
+import hamChiTiet from "../../../model/global/model.hamChiTiet.js";
+import thongBao from "/frontend/assets/components/thongBao.js";
+import { GlobalStore } from "/frontend/global/global.js";
+
 import { getElementIds, viewTbody, fillForm, loadDanhSachGiaiDau, loadDanhSachLoaiTrongTai, loadDanhSachGiaiDau_chon_viewbody }
     from "../../../view/view_js/quanly_admin/trong_tai/trongTai.view.js";
 
@@ -19,11 +23,20 @@ const {
     inputFile,
     giaiDau_chon_viewbody
 } = getElementIds();
+let ROLE_USER = "";
+let DATA = [];
+let DATA_TRONG_TAI_GIAI_DAU = [];
+
+
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadDanhSachGiaiDau();
+    ROLE_USER = await hamChung.getRoleUser();
+    await reset_data_toanCuc();
+
+
+    await loadDanhSachGiaiDau(DATA);
     await loadDanhSachLoaiTrongTai();
-    await loadDanhSachGiaiDau_chon_viewbody();
+    await loadDanhSachGiaiDau_chon_viewbody(DATA);
 
     load_viewTbody();
 
@@ -32,6 +45,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     giaiDau_chon_viewbody.addEventListener("change", load_viewTbody);
 });
+async function reset_data_toanCuc() {
+    DATA = await hamChung.layDanhSach("giai_dau");
+    console.log("DATA", DATA);
+    DATA_TRONG_TAI_GIAI_DAU = await hamChung.layDanhSach("trong_tai");
+    if (ROLE_USER === "VT02") {
+        DATA = DATA.filter(item => item.ma_nguoi_tao === GlobalStore.getUsername());
+
+        let dataTT_theo_ql = [];
+        for (const item of DATA) {
+            const dataTT_theoGiaiDau = DATA_TRONG_TAI_GIAI_DAU.filter(bang => bang.ma_giai_dau === item.ma_giai_dau);
+            dataTT_theo_ql = dataTT_theo_ql.concat(dataTT_theoGiaiDau);
+        }
+        DATA_TRONG_TAI_GIAI_DAU = dataTT_theo_ql;
+    }
+}
+
 
 async function handleLuuThayDoi(event) {
     event.preventDefault();
@@ -71,13 +100,15 @@ async function handleLuuThayDoi(event) {
     load_viewTbody();
 }
 
+
 function handleTaiLaiTrang(event) {
     event.preventDefault();
     location.reload();
 }
 
 async function load_viewTbody() {
-    const data = await hamChung.layDanhSach("trong_tai");
+    await reset_data_toanCuc();
+    const data = DATA_TRONG_TAI_GIAI_DAU;
     viewTbody(data, handleEdit, handleDelete);
 }
 

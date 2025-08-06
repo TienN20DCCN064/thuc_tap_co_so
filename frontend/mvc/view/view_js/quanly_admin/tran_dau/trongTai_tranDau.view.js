@@ -1,9 +1,11 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 import hamChiTiet from "/frontend/mvc/model/global/model.hamChiTiet.js";
+import thongBao from "/frontend/assets/components/thongBao.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
         btnTaiLaiTrang: document.getElementById("button_taiLaiTrang"),
+        maGiaiDau: document.getElementById("maGiaiDau"),
         maTranDau: document.getElementById("maTranDau"),
         maTrongTai: document.getElementById("maTrongTai"),
         maLoaiTrongTai: document.getElementById("maLoaiTrongTai"),
@@ -16,12 +18,14 @@ export function getElementIds() {
 
 export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody, maGiaiDau_chon_viewbody, maTranDau_chon_viewbody } = getElementIds();
-    if (!data) data = await hamChung.layDanhSach("trong_tai_tran_dau");
+
     // Lọc theo giải đấu và trận đấu nếu có chọn
     if (maGiaiDau_chon_viewbody && maGiaiDau_chon_viewbody.value !== "All") {
         const danhSachTrongTai_theoGiai = await hamChiTiet.danhSachTrongTai_theoGiai(maGiaiDau_chon_viewbody.value);
-        // console.log("Danh sách trọng tài theo giải đấu:", danhSachTrongTai_theoGiai);
-        data = danhSachTrongTai_theoGiai;
+        const maTrongTaiHopLe = danhSachTrongTai_theoGiai.map(item => item.ma_trong_tai);
+        data = data.filter(item => maTrongTaiHopLe.includes(item.ma_trong_tai));
+        console.log("Danh sách trọng tài :", data);
+
     }
     if (maTranDau_chon_viewbody && maTranDau_chon_viewbody.value !== "All") {
         data = data.filter(item => item.ma_tran_dau === maTranDau_chon_viewbody.value);
@@ -30,7 +34,7 @@ export async function viewTbody(data, onEdit, onDelete) {
     // Hiển thị dữ liệu vào bảng
     tableBody.innerHTML = "";
     for (const item of data) {
-        console.log("Processing item:", item);
+        //   console.log("Processing item:", item);
         const data1TranDau = await hamChung.layThongTinTheo_ID("tran_dau", item.ma_tran_dau);
         const data1GiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", data1TranDau.ma_giai_dau);
         const data1TrongTai = await hamChung.layThongTinTheo_ID("trong_tai", item.ma_trong_tai);
@@ -61,10 +65,25 @@ export function fillForm(item) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhTranDau() {
+
+export async function loadDanhGiaiDau(maNguoiTao) {
+    const selectElement = document.getElementById("maGiaiDau");
+    selectElement.innerHTML = '<option value="">-- Chọn giai đấu --</option>';
+    let data = await hamChung.layDanhSach("giai_dau");
+    data = data.filter(item => item.ma_nguoi_tao === maNguoiTao);
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = item.ten_giai_dau;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhTranDau(maGiaiDau) {
     const selectElement = document.getElementById("maTranDau");
     selectElement.innerHTML = '<option value="">-- Chọn trận đấu --</option>';
-    const data = await hamChung.layDanhSach("tran_dau");
+    let data = await hamChung.layDanhSach("tran_dau");
+    data = data.filter(item => item.ma_giai_dau === maGiaiDau);
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_tran_dau;
@@ -73,10 +92,11 @@ export async function loadDanhTranDau() {
     });
 }
 
-export async function loadDanhSachTrongTai() {
+export async function loadDanhSachTrongTai(maGiaiDau) {
     const selectElement = document.getElementById("maTrongTai");
     selectElement.innerHTML = '<option value="">-- Chọn trọng tài --</option>';
-    const data = await hamChung.layDanhSach("trong_tai");
+    let data = await hamChung.layDanhSach("trong_tai");
+    data = data.filter(item => item.ma_giai_dau === maGiaiDau);
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_trong_tai;
@@ -97,10 +117,11 @@ export async function loadDanhSachLoaiTrongTai() {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewbody() {
+export async function loadDanhSachGiaiDau_chon_viewbody(maNguoiTao) {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    let data = await hamChung.layDanhSach("giai_dau");
+    data = data.filter(item => item.ma_nguoi_tao === maNguoiTao);
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -114,6 +135,7 @@ export async function loadDanhSachTranDauTheoGiaiDau_chon_viewbody(maGiaiDau) {
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
     let data = await hamChung.layDanhSach("tran_dau");
     if (maGiaiDau && maGiaiDau !== "All") data = data.filter(item => item.ma_giai_dau === maGiaiDau);
+    else data = [];
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_tran_dau;

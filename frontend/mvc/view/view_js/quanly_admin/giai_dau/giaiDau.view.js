@@ -9,16 +9,22 @@ export function getElementIds() {
         maNguoiTao: document.getElementById("maNguoiTao"),
         ngayBatDau: document.getElementById("ngayBatDau"),
         ngayKetThuc: document.getElementById("ngayKetThuc"),
+        ngayBatDauDangKy: document.getElementById("ngayBatDauDangKy"),
         ngayHetDangKy: document.getElementById("ngayHetDangKy"),
         // maGioiTinh: document.getElementById("maGioiTinh"),
         hinhAnh: document.getElementById("hinhAnh"),
         inputFile: document.getElementById("hinhAnhFile"),
         moTa: document.getElementById("moTa"),
-        maGioiTinh_viewBody: document.getElementById("maGioiTinh_viewBody"),
+        trangThai: document.getElementById("trangThai"),
+        // maGioiTinh_viewBody: document.getElementById("maGioiTinh_viewBody"),
         ngayBatDau_chon_viewbody: document.getElementById("ngayBatDau_chon_viewbody"),
         ngayKetThuc_chon_viewbody: document.getElementById("ngayKetThuc_chon_viewbody"),
+        trangThai_chon_viewbody: document.getElementById("trangThai_chon_viewbody"),
         tableBody: document.getElementById("dataTable"),
         form: document.getElementById("inputForm"),
+        /// form lọc danh sách ra
+        maGiaiDau_chon: document.getElementById("maGiaiDau_chon"),
+        maDoiBong_chon: document.getElementById("maDoiBong_chon"),
     };
 }
 
@@ -38,16 +44,20 @@ export async function viewTbody(data, onEdit, onDelete) {
         }
 
         const row = document.createElement("tr");
+        const data_1nguoiDung = await hamChung.layThongTinTheo_ID("nguoi_dung", item.ma_nguoi_tao);
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_giai_dau}</td>
             <td style="text-align: center;">${item.ten_giai_dau}</td>
-            <td style="text-align: center;">${item.ma_nguoi_tao}</td>
+            <td style="text-align: center;">${data_1nguoiDung.ho_ten}</td>
             <td style="text-align: center;">${item.ngay_bat_dau}</td>
             <td style="text-align: center;">${item.ngay_ket_thuc}</td>
+            
+            <td style="text-align: center;">${item.ngay_bat_dau_dang_ky_giai}</td>
             <td style="text-align: center;">${item.ngay_ket_thuc_dang_ky_giai}</td>
-           
+
             <td style="text-align: center;"><img src="${hinh_anh}" alt="Hình ảnh" width="50"></td>
             <td style="text-align: center;">${item.mo_ta || ""}</td>
+            <td style="text-align: center;">${item.trang_thai_duyet}</td>
             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
             <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
         `;
@@ -62,7 +72,7 @@ export async function viewTbody(data, onEdit, onDelete) {
 export function fillForm(item) {
     const {
         maGiaiDau, tenGiaiDau, maNguoiTao, ngayBatDau, ngayKetThuc,
-        ngayHetDangKy, maGioiTinh, hinhAnh, moTa
+        ngayHetDangKy, maGioiTinh, hinhAnh, moTa, trangThai
     } = getElementIds();
     // console.log(maNguoiTao);
     maGiaiDau.value = item.ma_giai_dau;
@@ -71,9 +81,10 @@ export function fillForm(item) {
     ngayBatDau.value = item.ngay_bat_dau;
     ngayKetThuc.value = item.ngay_ket_thuc;
     ngayHetDangKy.value = item.ngay_ket_thuc_dang_ky_giai;
-   
+
     hinhAnh.value = item.hinh_anh;
     moTa.value = item.mo_ta || "";
+    trangThai.value = item.trang_thai_duyet; 
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -84,7 +95,58 @@ export async function loadDanhSachNguoiTao() {
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_nguoi_dung;
-        option.textContent = `${item.ho_ten}`;
+        option.textContent = ` ${item.ma_nguoi_dung} - ${item.ho_ten}`;
         selectElement.appendChild(option);
     });
 }
+
+
+export async function loadDanhSachGiaiDau_chon(data) {
+    const selectElement = document.getElementById("maGiaiDau_chon");
+    selectElement.innerHTML = '<option value="All">Tất Cả</option>'; // Reset danh sách
+    // const data = await hamChung.layDanhSach("giai_dau");
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_giai_dau;
+        option.textContent = `${item.ten_giai_dau}`;
+        selectElement.appendChild(option);
+    });
+}
+
+export async function loadDanhSachDoiBong_chon(maGiaiDau) {
+    const selectElement = document.getElementById("maDoiBong_chon");
+    selectElement.innerHTML = '<option value="All">Tất Cả</option>'; // Reset danh sách
+    let data;
+    const data_doiBong = await hamChung.layDanhSach("doi_bong");
+    // Lọc danh sách đội bóng theo mã giải đấu
+    // maGiaiDau !== "All" thì lọc theo mã giải đấu
+    console.log(maGiaiDau);
+    if (maGiaiDau !== "All") {
+        const dataDangKyGiai = await hamChung.layDanhSach("doi_bong_giai_dau");
+        const loc_theoMaGiaiDau = dataDangKyGiai.filter(item => item.ma_giai_dau === maGiaiDau);
+
+        // Tạo tập hợp mã đội bóng đã đăng ký giải
+        const maDoiBongSet = new Set(loc_theoMaGiaiDau.map(item => item.ma_doi_bong));
+
+        // Lọc danh sách đội bóng theo mã giải đấu
+        const dataLoc = data_doiBong.filter(item => maDoiBongSet.has(item.ma_doi_bong));
+        console.log(dataLoc);
+        data = dataLoc;
+
+    }
+    else {
+        data = data_doiBong;
+    }
+    console.log(maGiaiDau);
+    data.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.ma_doi_bong;
+        option.textContent = `${item.ten_doi_bong}`;
+        selectElement.appendChild(option);
+    });
+}
+
+
+
+
+

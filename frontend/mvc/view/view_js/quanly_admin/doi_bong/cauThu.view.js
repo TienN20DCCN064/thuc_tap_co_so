@@ -1,4 +1,5 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -20,7 +21,7 @@ export function getElementIds() {
 
 export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody, maDoiBong_chon_viewbody } = getElementIds();
-    if (!data) data = await hamChung.layDanhSach("cau_thu");
+
     if (maDoiBong_chon_viewbody && maDoiBong_chon_viewbody.value !== "All") {
         data = data.filter(item => item.ma_doi_bong === maDoiBong_chon_viewbody.value);
     }
@@ -78,11 +79,15 @@ export async function loadDanhSachViTri() {
     });
 }
 
-export async function loadDanhSachDoiBong() {
+export async function loadDanhSachDoiBong(data) {
     const selectElement = document.getElementById("maDoiBong");
     selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>';
-    const data = await hamChung.layDanhSach("doi_bong");
-    data.forEach(item => {
+
+    console.log("Danh sách đội bóng:", data);
+    console.log("GlobalStore.getUsername", GlobalStore.getUsername());
+    const dataDoiBong_theoMaQuanLy = data.filter(item => item.ma_ql_doi_bong === GlobalStore.getUsername());
+
+    dataDoiBong_theoMaQuanLy.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_doi_bong;
         option.textContent = `${item.ten_doi_bong}`;
@@ -90,10 +95,10 @@ export async function loadDanhSachDoiBong() {
     });
 }
 
-export async function loadDanhSachDoiBong_chon_viewbody() {
+export async function loadDanhSachDoiBong_chon_viewbody(data) {
     const selectElement = document.getElementById("maDoiBong_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-    const data = await hamChung.layDanhSach("doi_bong");
+    // const data = await hamChung.layDanhSach("doi_bong");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_doi_bong;

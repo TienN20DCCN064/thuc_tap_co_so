@@ -17,10 +17,10 @@ export function getElementIds() {
     };
 }
 
-export async function loadDanhSachGiaiDau() {
+export async function loadDanhSachGiaiDau(data) {
     const select = document.getElementById("maGiaiDau");
     select.innerHTML = '<option value="">-- Chọn giải đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;

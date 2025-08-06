@@ -4,6 +4,7 @@ export function getElementIds() {
         btnLuuThayDoi: document.getElementById("button_luu"),
         btnTaiLaiTrang: document.getElementById("button_taiLaiTrang"),
         maSuKien: document.getElementById("maSuKien"),
+        maGiaiDau: document.getElementById("maGiaiDau"),
         maTranDau: document.getElementById("maTranDau"),
         maDoiBong: document.getElementById("maDoiBong"),
         thoiDiem: document.getElementById("thoiDiem"),
@@ -12,8 +13,9 @@ export function getElementIds() {
         ghiChu: document.getElementById("ghiChu"),
         form: document.getElementById("inputForm"),
 
+
         maGiaiDau_chon_viewbody: document.getElementById("maGiaiDau_chon_viewbody"),
-        maVongDau_chon_viewbody: document.getElementById("maVongDau_chon_viewbody"),
+        //  maVongDau_chon_viewbody: document.getElementById("maVongDau_chon_viewbody"),
         maTranDau_chon_viewbody: document.getElementById("maTranDau_chon_viewbody"),
         tableBody: document.getElementById("dataTable"),
     };
@@ -21,23 +23,35 @@ export function getElementIds() {
 
 export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody } = getElementIds();
-    if (!data) data = await hamChung.layDanhSach("su_kien_tran_dau");
+    console.log("viewTbody data", data);
+
     if (maGiaiDau_chon_viewbody.value !== "All") {
-        data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
+        let cmddata = [];
+        for (const item of data) {
+            const data1TranDau = await hamChung.layThongTinTheo_ID("tran_dau", item.ma_tran_dau);
+            // nếu trận đấu đó thuộc giải đấu
+            if (data1TranDau.ma_giai_dau === maGiaiDau_chon_viewbody.value) {
+                cmddata.push(item);
+            }
+        }
+        data = cmddata;
     }
-    if (maVongDau_chon_viewbody.value !== "All") {
-        data = data.filter(item => item.ma_vong_dau === maVongDau_chon_viewbody.value);
-    }
+    // if (maVongDau_chon_viewbody.value !== "All") {
+    //     data = data.filter(item => item.ma_vong_dau === maVongDau_chon_viewbody.value);
+    // }
     if (maTranDau_chon_viewbody.value !== "All") {
         data = data.filter(item => item.ma_tran_dau === maTranDau_chon_viewbody.value);
     }
+    console.log("viewTbody data", data);
 
     tableBody.innerHTML = "";
     for (const item of data) {
         const tranDau = await hamChung.layThongTinTheo_ID("tran_dau", item.ma_tran_dau);
+        const data1GiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", tranDau.ma_giai_dau);
         const cauThu = await hamChung.layThongTinTheo_ID("cau_thu", item.ma_cau_thu);
         const row = document.createElement("tr");
         row.innerHTML = `
+            <td>${data1GiaiDau?.ten_giai_dau || item.ma_giai_dau}</td>
             <td>${item.ma_su_kien}</td>
             <td>${tranDau?.ten_tran_dau || item.ma_tran_dau}</td>
             <td>${item.thoi_diem}</td>
@@ -53,34 +67,71 @@ export async function viewTbody(data, onEdit, onDelete) {
     }
 }
 
-export function fillForm(item) {
-    const { maSuKien, maTranDau, thoiDiem, loaiSuKien, maCauThu, ghiChu } = getElementIds();
+export async function fillForm(item) {
+    const { maSuKien, maGiaiDau, maTranDau, maDoiBong, thoiDiem, loaiSuKien, maCauThu, ghiChu } = getElementIds();
+    console.log("fillForm item", item);
+    const data1TranDau = await hamChung.layThongTinTheo_ID("tran_dau", item.ma_tran_dau);
+    const data1GiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", data1TranDau.ma_giai_dau);
+    // tìm cầu thủ thuộc đổi bóng nào trong mùa giải đó
+    const data1CauThuGiaiDau = await hamChung.layThongTinTheo_2_ID("cau_thu_giai_dau", item.ma_cau_thu, data1GiaiDau.ma_giai_dau);
+    const data1DoiBongGiaiDau = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", data1CauThuGiaiDau.ma_doi_bong, data1GiaiDau.ma_giai_dau);
+    console.log("data1GiaiDau", data1CauThuGiaiDau);
+    console.log("data1DoiBongGiaiDau", data1DoiBongGiaiDau);
+
     maSuKien.value = item.ma_su_kien;
+    maGiaiDau.value = data1GiaiDau.ma_giai_dau;
+    await loadDanhSachTranDau(data1GiaiDau.ma_giai_dau);
+    await loadDanhSachDoiBong(data1TranDau.ma_tran_dau);
     maTranDau.value = item.ma_tran_dau;
+    maDoiBong.value = data1DoiBongGiaiDau.ma_doi_bong;
     thoiDiem.value = item.thoi_diem;
     loaiSuKien.value = item.loai_su_kien;
+    await loadDanhSachCauThu(data1DoiBongGiaiDau.ma_doi_bong, data1GiaiDau.ma_giai_dau);
     maCauThu.value = item.ma_cau_thu;
     ghiChu.value = item.ghi_chu || "";
     maSuKien.setAttribute("disabled", true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-export async function loadDanhSachTranDau() {
-    const select = document.getElementById("maTranDau");
-    select.innerHTML = '<option value="">--Chọn trận đấu--</option>';
-    const data = await hamChung.layDanhSach("tran_dau");
+export async function loadDanhSachGiaiDau(data) {
+    const select = document.getElementById("maGiaiDau");
+    select.innerHTML = '<option value="">--Chọn Giải Đấu--</option>';
+    // const data = await hamChung.layDanhSach("maGiaiDau");
     data.forEach(item => {
         const option = document.createElement("option");
-        option.value = item.ma_tran_dau;
-        option.textContent = item.ten_tran_dau || item.ma_tran_dau;
+        option.value = item.ma_giai_dau;
+        option.textContent = item.ten_giai_dau || item.ma_giai_dau;
         select.appendChild(option);
     });
 }
 
-export async function loadDanhSachCauThu(maDoiBong) {
+export async function loadDanhSachTranDau(maGiaiDau) {
+    const select = document.getElementById("maTranDau");
+    select.innerHTML = '<option value="">--Chọn trận đấu--</option>';
+    let data = await hamChung.layDanhSach("tran_dau");
+    data = data.filter(item => item.ma_giai_dau === maGiaiDau);
+    for (const item of data) {
+
+        const option = document.createElement("option");
+        let tenTranDau = "";
+        const data1TranDau = await hamChung.layThongTinTheo_ID("tran_dau", item.ma_tran_dau);
+        const dataDoi1 = await hamChung.layThongTinTheo_ID("doi_bong", data1TranDau.ma_doi_1);
+        const dataDoi2 = await hamChung.layThongTinTheo_ID("doi_bong", data1TranDau.ma_doi_2);
+        tenTranDau = `${dataDoi1?.ten_doi_bong} vs ${dataDoi2?.ten_doi_bong}`;
+        if (data1TranDau) {
+            option.value = item.ma_tran_dau;
+            option.textContent = `${item.ma_tran_dau} : ${tenTranDau}`;
+            select.appendChild(option);
+        }
+    }
+}
+
+export async function loadDanhSachCauThu(maDoiBong, maGiaiDau) {
     const select = document.getElementById("maCauThu");
     select.innerHTML = '<option value="">--Chọn cầu thủ--</option>';
     let data = await hamChung.layDanhSach("cau_thu_giai_dau");
+    data = data.filter(item => item.ma_giai_dau === maGiaiDau);
     data = data.filter(item => item.ma_doi_bong === maDoiBong);
+
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_cau_thu;
@@ -108,33 +159,24 @@ export async function loadDanhSachDoiBong(maTranDau) {
     }
 }
 // Load danh sách giải đấu cho filter viewbody
-export async function loadDanhSachGiaiDau_chon_viewbody() {
+export async function loadDanhSachGiaiDau_chon_viewbody(data) {
     const ids = getElementIds();
-    const ds = await hamChung.layDanhSach("giai_dau");
+    //  const ds = await hamChung.layDanhSach("giai_dau");
     ids.maGiaiDau_chon_viewbody.innerHTML = `<option value="All">-- All --</option>`;
-    ds.forEach(item => {
+    data.forEach(item => {
         ids.maGiaiDau_chon_viewbody.innerHTML += `<option value="${item.ma_giai_dau}">${item.ten_giai_dau}</option>`;
     });
 }
-export async function loadDanhSachVongDau_chon_viewbody(maGiaiDau) {
-    const ids = getElementIds();
-    let data = await hamChung.layDanhSach("vong_dau");
-    if (maGiaiDau && maGiaiDau !== "All") data = data.filter(item => item.ma_giai_dau === maGiaiDau);
-    data.forEach(item => {
-        const option = document.createElement("option");
-        option.value = item.ma_vong_dau;
-        option.textContent = item.ten_vong_dau || item.ma_vong_dau;
-        ids.maVongDau_chon_viewbody.appendChild(option);
-    });
-}
-export async function loadDanhSachTranDau_chon_viewbody(maVongDau) {
+
+export async function loadDanhSachTranDau_chon_viewbody(maGiaiDau) {
     const ids = getElementIds();
     let data = await hamChung.layDanhSach("tran_dau");
-    if (maVongDau && maVongDau !== "All") data = data.filter(item => item.ma_vong_dau === maVongDau);
+    data = data.filter(item => item.ma_giai_dau === maGiaiDau);
+
+    ids.maTranDau_chon_viewbody.innerHTML = `<option value="All">-- All --</option>`;
     data.forEach(item => {
-        const option = document.createElement("option");
-        option.value = item.ma_tran_dau;
-        option.textContent = item.ten_tran_dau || item.ma_tran_dau;
-        ids.maTranDau_chon_viewbody.appendChild(option);
+        ids.maTranDau_chon_viewbody.innerHTML += `<option value="${item.ma_tran_dau}">${item.ma_tran_dau}</option>`;
     });
+
+
 }

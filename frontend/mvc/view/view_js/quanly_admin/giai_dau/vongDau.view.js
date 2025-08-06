@@ -48,10 +48,10 @@ export function fillForm(item) {
     maGiaiDau.value = item.ma_giai_dau;
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
-export async function loadDanhSachGiaiDau() {
+export async function loadDanhSachGiaiDau(data) {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn Mã Giải Đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -60,10 +60,10 @@ export async function loadDanhSachGiaiDau() {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewBody() {
+export async function loadDanhSachGiaiDau_chon_viewBody(data) {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;

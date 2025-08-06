@@ -1,6 +1,8 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 import hamChiTiet from "/frontend/mvc/model/global/model.hamChiTiet.js";
 import thongBao from "/frontend/assets/components/thongBao.js";
+import { GlobalStore } from "/frontend/global/global.js";
+
 import {
     getElementIds,
     viewTableBody,
@@ -18,7 +20,8 @@ import {
     loadDanhSachVongDau_chon_viewbody,
     loadDanhSachDoiBong_maDoi1_end,
     loadDanhSachDoiBong_maDoi2_end,
-    loadDanhSachTrongTai
+    loadDanhSachTrongTai,
+    loadDanhSachDoiBong_maDoiThang_end
 } from "/frontend/mvc/view/view_js/quanly_admin/tran_dau/tranDau.view.js";
 
 const {
@@ -35,13 +38,21 @@ const {
 let danhSach_doiBong_theoBang;
 const SOGIOTANGTHEM = 1;
 
+let ROLE_USER = "";
+let DATA_GIAI_DAU = [];
+let DATA_TRAN_DAU = [];
+
+
 document.addEventListener("DOMContentLoaded", async function () {
+    ROLE_USER = await hamChung.getRoleUser();
+    await reset_data_toanCuc();
+
     console.log("Trang quản lý trận đấu đã được tải");
-    await loadDanhSachGiaiDau();
+    await loadDanhSachGiaiDau(DATA_GIAI_DAU);
     await loadDanhSachVongDau();
 
     await loadDanhSachHinhThucXepTranDau();
-    await loadDanhSachGiaiDau_chon_viewbody();
+    await loadDanhSachGiaiDau_chon_viewbody(DATA_GIAI_DAU);
 
 
     await viewTbody();
@@ -62,6 +73,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         await loadDanhSachDoiBong_maDoi1_end(maGiaiDau.value);
         await loadDanhSachDoiBong_maDoi2_end(maGiaiDau.value);
     });
+    maDoi1.addEventListener("change", async function () {
+        await loadDanhSachDoiBong_maDoiThang_end(maGiaiDau.value);
+    });
+    maDoi2.addEventListener("change", async function () {
+        await loadDanhSachDoiBong_maDoiThang_end(maGiaiDau.value);
+    });
     // maDoi1.change
 
     // chon_hinhThuc_tao_tran.addEventListener("change", async function () {
@@ -81,6 +98,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         await viewTbody();
     });
 });
+async function reset_data_toanCuc() {
+    DATA_GIAI_DAU = await hamChung.layDanhSach("giai_dau");
+    DATA_TRAN_DAU = await hamChung.layDanhSach("tran_dau");
+
+    if (ROLE_USER === "VT02") {
+        console.log(GlobalStore.getUsername());
+        DATA_GIAI_DAU = DATA_GIAI_DAU.filter(item => item.ma_nguoi_tao === GlobalStore.getUsername());
+        let dataTranDau_theoGiaiDau = [];
+        for (const giaiDau of DATA_GIAI_DAU) {
+            dataTranDau_theoGiaiDau = dataTranDau_theoGiaiDau.concat(
+                DATA_TRAN_DAU.filter(item => item.ma_giai_dau === giaiDau.ma_giai_dau));
+        }
+        DATA_TRAN_DAU = dataTranDau_theoGiaiDau;
+    }
+}
+
 async function handleXemDanhSachTrongTai_formInput(event) {
     event.preventDefault();
     console.log("Xem danh sách trọng tài cho trận đấu");
@@ -157,14 +190,17 @@ async function handleLuuThayDoi(event) {
     }
 
 
-    // await viewTbody();
+    viewTbody();
 }
 function handleTaiLaiTrang(event) {
     event.preventDefault();
     location.reload();
 }
 
-async function viewTbody(data) {
+async function viewTbody() {
+
+    await reset_data_toanCuc();
+    const data = DATA_TRAN_DAU;
     viewTableBody(data, handleXemTrongTai, handleXemGhiChu, handleEdit, handleDelete);
 }
 
@@ -370,7 +406,7 @@ async function handleDelete(item) {
 async function handleXepLich(event) {
     event.preventDefault();
 
-    await loadDanhSachGiaiDau_chon();
+    await loadDanhSachGiaiDau_chon(DATA_GIAI_DAU);
 
     const vongDauTruocDiv = document.getElementById("vongDauTruocContainer");
     const hinhThucTaoTran = chon_hinhThuc_tao_tran.value;

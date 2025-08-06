@@ -26,7 +26,7 @@ export function getElementIds() {
         truTheVang_BXH: document.getElementById("truTheVang_BXH"),
         truTheDo_BXH: document.getElementById("truTheDo_BXH"),
 
-     
+
 
         form: document.getElementById("inputForm"),
         tableBody: document.getElementById("dataTable"),
@@ -35,7 +35,7 @@ export function getElementIds() {
 
 export async function viewTbody(data, xemBXH, onEdit, onDelete) {
     const { tableBody } = getElementIds();
-    if (!data) data = await hamChung.layDanhSach("quy_tac_tinh_diem");
+
     if (maGiaiDau_chon_viewbody.value !== "All") {
         data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
     }
@@ -87,10 +87,10 @@ export async function fillForm(item) {
 }
 
 
-export async function loadDanhSachGiaiDau() {
+export async function loadDanhSachGiaiDau(data) {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn giải đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -112,10 +112,11 @@ export async function loadDanhSachVongDau(maGiaiDau) {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewbody() {
+
+export async function loadDanhSachGiaiDau_chon_viewbody(data) {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">-- Chọn giải đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -137,10 +138,10 @@ export async function loadDanhSachVongDau_chon_viewbody(maGiaiDau) {
 }
 
 
-export async function loadDanhSachGiaiDau_chon_BXH() {
+export async function loadDanhSachGiaiDau_chon_BXH(data) {
     const selectElement = document.getElementById("maGiaiDau_chon_BXH");
     selectElement.innerHTML = '<option value="All">-- Chọn giải đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    //  const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;

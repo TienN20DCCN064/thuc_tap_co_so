@@ -47,9 +47,10 @@ export function getElementIds() {
 
 export async function viewTableBody(data, onXemTrongTai, onXemGhiChu, onEdit, onDelete) {
     const { tableBody, maGiaiDau_chon_viewbody, maVongDau_chon_viewbody } = getElementIds();
-    if (data === undefined || data == null) {
-        data = await hamChung.layDanhSach("tran_dau");
-    }
+    // if (data === undefined || data == null) {
+    //     data = await hamChung.layDanhSach("tran_dau");
+    // }
+
     if (maGiaiDau_chon_viewbody.value !== "All" && maGiaiDau_chon_viewbody.value !== "") {
         data = data.filter(item => item.ma_giai_dau === maGiaiDau_chon_viewbody.value);
     }
@@ -60,24 +61,30 @@ export async function viewTableBody(data, onXemTrongTai, onXemGhiChu, onEdit, on
         data = data.slice(0, 20);
     }
     tableBody.innerHTML = "";
-    console.log(data);
+    console.log("data doi bong view body ", data);
     for (let i = 0; i < data.length; i++) {
         const item = data[i];
 
         const row = document.createElement("tr");
         const data1GiaiDau = await hamChung.layThongTinTheo_ID("giai_dau", item.ma_giai_dau);
-        const dataDoiBongGiaiDau = await hamChung.layDanhSach("doi_bong_giai_dau");
 
-        // const db1 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_1 && dd.ma_giai_dau === item.ma_giai_dau);
-        // const db2 = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_2 && dd.ma_giai_dau === item.ma_giai_dau);
-        // const dbWin = dataDoiBongGiaiDau.find(dd => dd.ma_doi_bong === item.ma_doi_thang && dd.ma_giai_dau === item.ma_giai_dau);
-        const db1 = await hamChung.layThongTinTheo_ID("doi_bong_giai_dau", item.ma_doi_1);
-        const db2 = await hamChung.layThongTinTheo_ID("doi_bong_giai_dau", item.ma_doi_2);
-        const dbWin = await hamChung.layThongTinTheo_ID("doi_bong_giai_dau", item.ma_doi_thang);
+        //  await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", item.ma_doi_bong, item.ma_giai_dau);
+        console.log("data1GiaiDau", data1GiaiDau.ma_giai_dau);
+        console.log("item", item);
+        const db1 = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", item.ma_doi_1, item.ma_giai_dau);
+        const db2 = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", item.ma_doi_2, item.ma_giai_dau);
+        const dbWin = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", item.ma_doi_thang, item.ma_giai_dau);
+
+        // const db1 = item.ma_doi_1;
+        // const db2 = item.ma_doi_2;
+        // const dbWin = item.ma_doi_thang;
 
         let tenDoi1 = "---";
         let tenDoi2 = "---";
         let tenDoiThang = "---";
+        // let tenDoi1 = db1;
+        // let tenDoi2 = db2;
+        // let tenDoiThang = dbWin;
 
         if (db1 && db1.ten_doi_bong)
             tenDoi1 = db1.ten_doi_bong;
@@ -179,6 +186,7 @@ export async function view_danhSachTranDau_duocTao(danhSanhTranDau_theoBang) {
             const tran = lichThiDau[j];
             const indexTran = j;
             const row = document.createElement("tr");
+            //  await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", item.ma_doi_bong, item.ma_giai_dau);
             const datadoi1_end = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", tran.doi1, maGiaiDau.value);
             const datadoi2_end = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", tran.doi2, maGiaiDau.value);
             const vongDau_chon = getElementIds().chon_vongDau_cho_all_tran.value;
@@ -243,10 +251,10 @@ export async function fillForm(item) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhSachGiaiDau() {
+export async function loadDanhSachGiaiDau(data) {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn Giải Đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -356,10 +364,10 @@ export async function loadDanhSachHinhThucXepTranDau() {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon() {
+export async function loadDanhSachGiaiDau_chon(data) {
     const selectElement = document.getElementById("maGiaiDau_chon");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    //   const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -391,10 +399,10 @@ export async function loadDanhSachVongDau_cho_all_tran(maGiaiDau) {
         selectElement.appendChild(option);
     });
 }
-export async function loadDanhSachGiaiDau_chon_viewbody() {
+export async function loadDanhSachGiaiDau_chon_viewbody(data) {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;

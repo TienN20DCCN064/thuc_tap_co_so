@@ -22,8 +22,8 @@ export async function viewTbody(data, onEdit, onDelete) {
         const row = document.createElement("tr");
        const data1giaiDau = await hamChung.layThongTinTheo_ID("giai_dau", item.ma_giai_dau);
         row.innerHTML = `
-            <td style="text-align: center;">${item.ma_san}</td>
             <td style="text-align: center;">${data1giaiDau.ten_giai_dau}</td>
+            <td style="text-align: center;">${item.ma_san}</td>
             <td style="text-align: center;">${item.ten_san}</td>
             <td style="text-align: center;">${item.dia_chi}</td>
             <td style="text-align: center;">${item.suc_chua}</td>
@@ -49,10 +49,10 @@ export function fillForm(item) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-export async function loadDanhSachGiaiDau() {
+export async function loadDanhSachGiaiDau(data) {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn Mã Giải Đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+    //const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -61,10 +61,10 @@ export async function loadDanhSachGiaiDau() {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewBody() {
+export async function loadDanhSachGiaiDau_chon_viewBody(data) {
     const selectElement = document.getElementById("maGiaiDau_chon");
     selectElement.innerHTML = '<option value="All">-- Tất cả Giải Đấu --</option>';
-    const data = await hamChung.layDanhSach("giai_dau");
+   // const data = await hamChung.layDanhSach("giai_dau");
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;

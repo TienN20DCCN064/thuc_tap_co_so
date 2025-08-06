@@ -77,6 +77,9 @@ const hamChung = {
 
     async sendEmail(emailReceiver, subject, message) {
         return await sendEmail(emailReceiver, subject, message);
+    },
+    async getRoleUser() {
+        return await getRoleUser();
     }
 
 
@@ -673,6 +676,17 @@ async function sendEmail(emailReceiver, subject, message) {
             console.error('Lỗi khi gọi API:', error);
             alert('Gửi email thất bại!');
         });
+}
+
+async function getRoleUser() {
+    const data1TaiKhoan = await hamChung.layThongTinTheo_ID("tai_khoan", GlobalStore.getUsername());
+    if (data1TaiKhoan && data1TaiKhoan.ma_vai_tro) {
+        return data1TaiKhoan.ma_vai_tro;
+    } else {
+        console.error("Không tìm thấy thông tin vai trò người dùng");
+        return null;
+    }
+
 }
 
 
