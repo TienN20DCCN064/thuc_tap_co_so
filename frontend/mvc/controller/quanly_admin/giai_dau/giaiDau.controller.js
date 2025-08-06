@@ -54,7 +54,7 @@ async function reset_data_toanCuc() {
         data = data.filter(item => item.ma_nguoi_tao === GlobalStore.getUsername());
         maNguoiTao.value = GlobalStore.getUsername();
         maNguoiTao.disabled = true; // Disable input for admin
-        
+
         // lấy ra các đội bóng tham gia các giải đấu của data
         // const dataDoiBongGiaiDau_admin = data_doiBongGiaiDau;
         let dataDoiBongGiaiDau_theo_ql = [];
@@ -125,43 +125,60 @@ async function handleLuuThayDoi(event) {
     }
     // ...existing code...
     // ...validate ngày/tháng...
-    let formData = {};
     let id_Hinh_anh_thay = inputFile.value === "" ? hinhAnh.value : inputFile.files[0].name;
     id_Hinh_anh_thay = hamChung.doiKhoangTrangThanhGachDuoi(id_Hinh_anh_thay);
+    let formData = {
+        ma_giai_dau: maGiaiDau.value,
+        ten_giai_dau: tenGiaiDau.value,
+        ma_nguoi_tao: maNguoiTao.value,
+        ngay_bat_dau: ngayBatDau.value,
+        ngay_ket_thuc: ngayKetThuc.value,
+
+        ngay_bat_dau_dang_ky_giai: ngayBatDauDangKy.value,
+        ngay_ket_thuc_dang_ky_giai: ngayHetDangKy.value,
+        hinh_anh: id_Hinh_anh_thay,
+        mo_ta: moTa.value
+
+    };
+    let formData_yeuCauTaoGiaiDau = {
+        ma_yeu_cau: await hamChung.taoID_theoBang("giai_dau"),
+        ten_giai_dau: tenGiaiDau.value,
+        ngay_bat_dau: ngayBatDau.value,
+        ngay_ket_thuc: ngayKetThuc.value,
+        ngay_bat_dau_dang_ky_giai: ngayBatDauDangKy.value,
+        ngay_ket_thuc_dang_ky_giai: ngayHetDangKy.value,
+        hinh_anh: id_Hinh_anh_thay,
+        mo_ta: moTa.value,
+        ma_nguoi_gui: GlobalStore.getUsername()
+    }
+
 
     if (maGiaiDau.value === "") {
-        formData = {
-            ma_giai_dau: await hamChung.taoID_theoBang("giai_dau"),
-            ten_giai_dau: tenGiaiDau.value,
-            ma_nguoi_tao: maNguoiTao.value,
-            ngay_bat_dau: ngayBatDau.value,
-            ngay_ket_thuc: ngayKetThuc.value,
 
-            ngay_bat_dau_dang_ky_giai: ngayBatDauDangKy.value,
-            ngay_ket_thuc_dang_ky_giai: ngayHetDangKy.value,
-            hinh_anh: id_Hinh_anh_thay,
-            mo_ta: moTa.value,
-        };
         console.log(formData);
-        await hamChung.them(formData, "giai_dau");
-        alert("Thêm thành công!");
+        console.log(ROLE_USER);
+
+        if (ROLE_USER === "VT01") {
+            // await hamChung.them(formData, "giai_dau");
+            alert("Thêm thành công!");
+        }
+        else if (ROLE_USER === "VT02") {
+
+            console.log(formData_yeuCauTaoGiaiDau);
+
+            // Thêm xác nhận trước khi gửi yêu cầu
+            const isConfirmed = confirm("Bạn có muốn gửi yêu cầu tạo giải đấu này không?");
+            if (isConfirmed) {
+                await hamChung.them(formData_yeuCauTaoGiaiDau, "yeu_cau_tao_giai_dau");
+                alert("Gửi yêu cầu thành công!");
+            }
+        }
     } else {
-        formData = {
-            ma_giai_dau: maGiaiDau.value,
-            ten_giai_dau: tenGiaiDau.value,
-            ma_nguoi_tao: maNguoiTao.value,
-            ngay_bat_dau: ngayBatDau.value,
-            ngay_ket_thuc: ngayKetThuc.value,
-
-            ngay_bat_dau_dang_ky_giai: ngayBatDauDangKy.value,
-            ngay_ket_thuc_dang_ky_giai: ngayHetDangKy.value,
-            hinh_anh: id_Hinh_anh_thay,
-            mo_ta: moTa.value
-        };
-        console.log(formData);
         await hamChung.sua(formData, "giai_dau");
         alert("Sửa thành công!");
     }
+
+
     if (inputFile.value != "") {
         await hamChung.uploadImage(inputFile.files[0]);
     }

@@ -5,30 +5,30 @@ const PrimaryKeys = {
   // "nguoi_dung": ["ma_nguoi_dung"],                        
   // "tai_khoan": ["ma_nguoi_dung"],                         
 
-  "doi_bong": ["ma_doi_bong"],                           
-  "vi_tri_cau_thu": ["ma_vi_tri"],                        
-  "cau_thu": ["ma_cau_thu"],                              
+  "doi_bong": ["ma_doi_bong"],
+  "vi_tri_cau_thu": ["ma_vi_tri"],
+  "cau_thu": ["ma_cau_thu"],
 
-  "loai_trong_tai": ["ma_loai_trong_tai"],                
-  "trong_tai": ["ma_trong_tai"],                          
+  "loai_trong_tai": ["ma_loai_trong_tai"],
+  "trong_tai": ["ma_trong_tai"],
 
   "giai_dau": ["ma_giai_dau"],                          // dùng        
   "cau_hinh_giai_dau": ["ma_giai_dau"],                   // dùng 
-  "vong_dau": ["ma_vong_dau"],                            
-  "bang_dau": ["ma_bang_dau"],                           
-  "san_van_dong": ["ma_san"],                            
+  "vong_dau": ["ma_vong_dau"],
+  "bang_dau": ["ma_bang_dau"],
+  "san_van_dong": ["ma_san"],
 
-  "doi_bong_giai_dau": ["ma_doi_bong", "ma_giai_dau"],    
-  "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"],     
-  "trong_tai_tran_dau": ["ma_tran_dau", "ma_trong_tai"], 
+  "doi_bong_giai_dau": ["ma_doi_bong", "ma_giai_dau"],
+  "cau_thu_giai_dau": ["ma_cau_thu", "ma_giai_dau"],
+  "trong_tai_tran_dau": ["ma_tran_dau", "ma_trong_tai"],
 
   "tran_dau": ["ma_tran_dau"],
   "su_kien_tran_dau": ["ma_su_kien"],
 
-  
-  "quy_tac_tinh_diem": ["ma_giai_dau", "ma_vong_dau"],    
-  "cau_hinh_giao_dien": ["ma_cau_hinh_giao_dien"],                
 
+  "quy_tac_tinh_diem": ["ma_giai_dau", "ma_vong_dau"],
+  "cau_hinh_giao_dien": ["ma_cau_hinh_giao_dien"],
+  "yeu_cau_tao_giai_dau": ["ma_yeu_cau "],
 };
 
 const PrimaryKeys_not_token = {
@@ -60,6 +60,7 @@ const PrimaryKeys_not_token = {
   // "bang_xep_hang_vong_dau": ["ma_giai_dau", "ma_vong_dau", "ma_doi_bong"], // BXH vòng đấu
   "quy_tac_tinh_diem": ["ma_giai_dau", "ma_vong_dau"],    // Quy tắc tính điểm
   "cau_hinh_giao_dien": ["ma_cau_hinh_giao_dien"],                // Cấu hình giao diện người dùng
+  "yeu_cau_tao_giai_dau": ["ma_yeu_cau "],
 };
 
 
