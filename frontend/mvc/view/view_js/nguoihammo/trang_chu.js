@@ -13,6 +13,8 @@ const nextMatchInfo = document.getElementById("next-match-info");
 const backgroundImage = document.getElementById("background-image");
 
 const maVongDau_xemHang = document.getElementById("maVongDau_xemHang");
+const btn_xem_giai_dau = document.getElementById("btn_xem_giai_dau");
+
 document.addEventListener("DOMContentLoaded", async function () {
     console.log("Trang chủ đã được tải");
 
@@ -36,6 +38,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     maVongDau_xemHang.addEventListener("change", async function () {
         await view_bangXepHang(data1TranDau.ma_giai_dau, maVongDau_xemHang.value);
     });
+    btn_xem_giai_dau.addEventListener("click", async function (e) {
+        e.preventDefault();
+        window.location.href = `/frontend/mvc/view/view_html/nguoihammo/cac_tran_dau.html?maGiaiDau=${data1TranDau.ma_giai_dau}`;
+        return false;
+    });
 
 
 });
@@ -45,6 +52,11 @@ async function view_1TranDau(data1TranDau, dataCauHinhGiaiDau_chon) {
 
     const dataDoi_bong_1 = await hamChung.layThongTinTheo_ID_notToken("doi_bong", data1TranDau.ma_doi_1);
     const dataDoi_bong_2 = await hamChung.layThongTinTheo_ID_notToken("doi_bong", data1TranDau.ma_doi_2);
+
+    const dataCauThu_giaiDau = await hamChung.layDanhSach_notToken("cau_thu_giai_dau");
+
+    const dataCauThu_doi1_trongGiai = dataCauThu_giaiDau.filter(item => item.ma_doi_bong === data1TranDau.ma_doi_1 && item.ma_giai_dau === data1TranDau.ma_giai_dau);
+    const dataCauThu_doi2_trongGiai = dataCauThu_giaiDau.filter(item => item.ma_doi_bong === data1TranDau.ma_doi_2 && item.ma_giai_dau === data1TranDau.ma_giai_dau);
 
     // console.log("Thông tin trận đấu:", data1TranDau);
     console.log("Thông tin giải đấu:", dataGiaiDau);
@@ -58,6 +70,7 @@ async function view_1TranDau(data1TranDau, dataCauHinhGiaiDau_chon) {
     if (data1TranDau.so_ban_doi_1 !== null && data1TranDau.so_ban_doi_2 !== null) {
         soBan_doi1_doi2 = `${data1TranDau.so_ban_doi_1} - ${data1TranDau.so_ban_doi_2}`;
     }
+
 
 
 
@@ -76,6 +89,8 @@ async function view_1TranDau(data1TranDau, dataCauHinhGiaiDau_chon) {
 
     // team1.querySelector("ul").innerHTML = dataCauHinhGiaiDau_chon.list_player_team_1.map(player => `<li>${player}</li>`).join("");
     // team2.querySelector("ul").innerHTML = dataCauHinhGiaiDau_chon.list_player_team_2.map(player => `<li>${player}</li>`).join("");
+    renderPlayerList("team-1-players", dataCauThu_doi1_trongGiai);
+    renderPlayerList("team-2-players", dataCauThu_doi2_trongGiai);
 
 }
 
@@ -183,6 +198,16 @@ var siteCountDown = function (date, element) {
     });
 
 };
+function renderPlayerList(containerId, players) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = ""; // Xóa danh sách cũ
+
+    players.forEach(player => {
+        const li = document.createElement("li");
+        li.textContent = `${player.ho_ten} (${player.ma_vi_tri})`; // Hiển thị tên cầu thủ và vị trí
+        container.appendChild(li);
+    });
+}
 async function tranDau_tiepTheo(maGiaiDau) {
     const dataTranDau = await hamChung.layDanhSach_notToken("tran_dau");
     const currentTime = new Date(); // thời điểm hiện tại thực sự

@@ -472,7 +472,7 @@ Object.entries(tables).forEach(([table, keys]) => {
 
     });
 
-    app.put(`/api/${table}/:${keys.map((_, i) => `id${i + 1}`).join("/:")}`, verifyToken, (req, res) => {
+    app.put(`/api/${table}/:${keys.map((_, i) => `id${i + 1}`).join("/:")}`, verifyToken, async (req, res) => {
         if (Object.keys(req.body).length === 0) {
             return res.status(400).send("Không có dữ liệu để cập nhật.");
         }
@@ -481,6 +481,14 @@ Object.entries(tables).forEach(([table, keys]) => {
         Object.keys(req.body).forEach(key => {
             req.body[key] = convertToMySQLTimestamp(req.body[key]);
         });
+        // Nếu cập nhật bảng tai_khoan và có mật khẩu mới thì băm mật khẩu
+        if (table === "tai_khoan" && req.body.mat_khau) {
+            try {
+                req.body.mat_khau = await hashPassword(req.body.mat_khau);
+            } catch (error) {
+                return res.status(500).send("Lỗi khi băm mật khẩu");
+            }
+        }
 
         const updates = Object.keys(req.body).map(key => `\`${key}\` = ?`).join(", ");
         const values = [...Object.values(req.body), ...keys.map((_, i) => req.params[`id${i + 1}`])];
@@ -502,12 +510,19 @@ Object.entries(tables).forEach(([table, keys]) => {
 
 
 
-    app.post(`/api/${table}`, verifyToken, (req, res) => {
+    app.post(`/api/${table}`, verifyToken, async (req, res) => {
         // Chuyển đổi dữ liệu ngày tháng sang định dạng MySQL (YYYY-MM-DD)
         Object.keys(req.body).forEach(key => {
             req.body[key] = convertToMySQLTimestamp(req.body[key]); // Chuyển đổi nếu là ngày hợp lệ
         });
-
+        // Nếu là bảng tai_khoan, băm mật khẩu trước khi lưu
+        if (table === "tai_khoan" && req.body.mat_khau) {
+            try {
+                req.body.mat_khau = await hashPassword(req.body.mat_khau);
+            } catch (error) {
+                return res.status(500).send("Lỗi khi băm mật khẩu");
+            }
+        }
         const columns = Object.keys(req.body);
         const values = Object.values(req.body);
 
@@ -543,9 +558,10 @@ function getTableColumns(tableName) {
 }
 
 async function hashPassword(password) {
-    const saltRounds = parseInt(process.env.SALT_ROUNDS);
+    const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;  // có giá trị mặc định nếu env không có
     return await bcrypt.hash(password, saltRounds);
 }
+
 
 // // Khởi động server
 // app.listen(port, () => {

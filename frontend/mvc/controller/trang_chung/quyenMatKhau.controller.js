@@ -14,7 +14,7 @@ const { newPasswordSection, loginSection, btnDangNhap, btnNhapMa, taiKhoan, emai
     newPassword,
     confirmPassword,
     btnDoiMatKhau,
-    btnQuayLai
+    btnQuayLai, newPassword_Form,
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -78,8 +78,8 @@ async function handleNhapMa(event) {
 }
 async function handleXacNhan_DoiMatKhau(event) {
     event.preventDefault();
-    if (!newPasswordSection.checkValidity()) {
-        newPasswordSection.reportValidity();
+    if (!newPassword_Form.checkValidity()) {
+        newPassword_Form.reportValidity();
         return;
     }
     if (newPassword.value !== confirmPassword.value) {
@@ -90,13 +90,20 @@ async function handleXacNhan_DoiMatKhau(event) {
     const newPasswordValue = newPassword.value.trim();
 
     // Cập nhật mật khẩu mới
-    const dataTaiKhoan = await hamChung.layDanhSach("tai_khoan");
+    const dataTaiKhoan = await hamChung.layDanhSach_notToken("tai_khoan");
     const tonTai_tk = dataTaiKhoan.find(tk => tk.ten_dang_nhap === username);
+
     if (!tonTai_tk) {
         alert("Tài khoản không tồn tại!");
         return;
     }
-    await hamChung.capNhatThongTin("tai_khoan", tonTai_tk.ma_nguoi_dung, { mat_khau: newPasswordValue });
+    console.log(tonTai_tk);
+    const formUpdate = {
+        ma_nguoi_dung: tonTai_tk.ma_nguoi_dung,
+        ten_dang_nhap: tonTai_tk.ten_dang_nhap,
+        mat_khau: newPasswordValue
+    }
+    await hamChung.sua(formUpdate, "tai_khoan");
 
     alert("Đổi mật khẩu thành công!");
     resetForm();
@@ -111,14 +118,15 @@ function random_numberCode() {
 }
 
 async function check_tk_va_gmail(taiKhoan, email) {
-    const dataTaiKhoan = await hamChung.layDanhSach("tai_khoan");
+    const dataTaiKhoan = await hamChung.layDanhSach_notToken("tai_khoan");
     const tonTai_tk = dataTaiKhoan.find(tk =>
         tk.ten_dang_nhap === taiKhoan
     );
     if (!tonTai_tk) {
         return "Tài khoản sai!";
     }
-    const data1NguoiDung = await hamChung.layThongTinTheo_ID("nguoi_dung", tonTai_tk.ma_nguoi_dung);
+    const data1NguoiDung = await hamChung.layThongTinTheo_ID_notToken("nguoi_dung", tonTai_tk.ma_nguoi_dung);
+    console.log(data1NguoiDung);
     if (data1NguoiDung.email != email) {
         return "Sai email!";
     }

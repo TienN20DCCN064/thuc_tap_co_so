@@ -54,16 +54,17 @@ async function handleLuuThayDoi(event) {
     };
     // Kiểm tra nếu tên đăng nhâp đã tồn tại
     const dataTaiKhoan = await hamChung.layDanhSach("tai_khoan");
-    const tenDangNhapDaTonTai = dataTaiKhoan.some(item => item.ten_dang_nhap === tenDangNhap.value);
-    if (tenDangNhapDaTonTai) {
-        alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
-        return;
-    }
+
 
     if (maNguoiDung.disabled && tenDangNhap.disabled) {
         await hamChung.sua(formData, "tai_khoan");
         alert("Sửa thành công!");
     } else {
+        const tenDangNhapDaTonTai = dataTaiKhoan.some(item => item.ten_dang_nhap === tenDangNhap.value);
+        if (tenDangNhapDaTonTai) {
+            alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+            return;
+        }
         await hamChung.them(formData, "tai_khoan");
         alert("Thêm thành công!");
     }

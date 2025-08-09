@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Soccer &mdash; Website by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/frontend/assets/home/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="/frontend/assets/home/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/frontend/assets/home/css/jquery-ui.css">
+    <link rel="stylesheet" href="/frontend/assets/home/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/frontend/assets/home/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/frontend/assets/home/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="/frontend/assets/home/css/jquery.fancybox.min.css">
+
+    <link rel="stylesheet" href="/frontend/assets/home/css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="/frontend/assets/home/fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="/frontend/assets/home/css/aos.css">
+
+    <link rel="stylesheet" href="/frontend/assets/home/css/style.css">
+
+
+
+</head>
+
+<body>
+
+    <div class="site-wrap">
+
+        <div class="site-mobile-menu site-navbar-target">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close">
+                    <span class="icon-close2 js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
+        </div>
+
+
+        <header class="site-navbar py-4" role="banner">
+
+            <div class="container">
+                <div class="d-flex align-items-center">
+                    <div class="site-logo">
+                        <a href="/frontend/mvc/view/view_html/nguoihammo/index.html">
+                            <img src="/frontend/assets/home/images/logo.png" alt="Logo">
+                        </a>
+                    </div>
+                    <div class="ml-auto">
+                        <nav class="site-navigation position-relative text-right" role="navigation">
+                            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                                <li class="active"><a href="/frontend/mvc/view/view_html/nguoihammo/trang_chu.html"
+                                        class="nav-link">Trang Chủ</a></li>
+                                <li><a href="/frontend/mvc/view/view_html/nguoihammo/cac_tran_dau.html"
+                                        class="nav-link">Giải Đấu</a></li>
+                                <li><a href="/frontend/mvc/view/view_html/nguoihammo/players.html"
+                                        class="nav-link">Players</a></li>
+                                <li><a href="/frontend/mvc/view/view_html/nguoihammo/blog.html"
+                                        class="nav-link">Blog</a></li>
+                                <li><a href="/frontend/mvc/view/view_html/nguoihammo/contact.html"
+                                        class="nav-link">Contact</a></li>
+                                <li><a href="/frontend/mvc/view/view_html/trang_chung/dangNhap.html"
+                                        class="nav-link">Login</a></li>
+                                <!-- C:\Users\vanti\Desktop\mvc_project\frontend\mvc\view\view_html\trang_chung\dangNhap.html -->
+                            </ul>
+                        </nav>
+
+                        <a href="#"
+                            class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right text-white"><span
+                                class="icon-menu h3 text-white"></span></a>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+
+        <div id="background-image" class="hero overlay"
+            style="background-image: url('/frontend/assets/home/images/bg_3.jpg');">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div id="giai_dau" class="col-lg-5 ml-auto">
+                        <h1 class="text-white">World Cup Event</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, molestias repudiandae
+                            pariatur.</p>
+                        <div id="date-countdown"></div>
+                        <p>
+                            <a id="btn_xem_giai_dau" href="#" class="btn btn-primary py-3 px-4 mr-3">Xem Giải Đấu</a>
+                            <a id="btn_tim_hieu_them" href="#" class="more light">Tìm hiểu thêm</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ...existing code... -->
+
+        <!-- ...existing code... -->
+
+        <!-- Thống kê giải đấu - giao diện đẹp hơn -->
+        <div class="container site-section">
+            <div class="row">
+                <div class="col-12 title-section text-center">
+                    <h2 class="heading mb-4">Thống Kê Giải Đấu</h2>
+                    <hr style="width: 60px; border: 2px solid #007bff; margin: 0 auto 30px auto;">
+                </div>
+            </div>
+            <!-- ...existing code... -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-5 col-md-6 mb-2">
+                    <div class="input-group shadow-sm rounded">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-primary text-white font-weight-bold" id="basic-addon1">
+                                <span class="icon-trophy"></span>
+                            </span>
+                        </div>
+                        <select id="select_giai_dau" class="form-control custom-select">
+                            <!-- Options sẽ được render ở đây -->
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6 mb-2">
+                    <div class="input-group shadow-sm rounded">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-success text-white font-weight-bold" id="basic-addon2">
+                                <span class="icon-users"></span>
+                            </span>
+                        </div>
+                        <select id="select_doi_bong" class="form-control custom-select">
+                            <option value="">-- Lọc theo đội bóng --</option>
+                            <!-- Options đội bóng sẽ được render ở đây -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- ...existing code... -->
+            <div id="thong_ke_giai_dau" class="row">
+                <!-- Thông tin chung -->
+                <div class="col-lg-5 mb-4">
+                    <div class="card shadow border-0 h-100">
+                        <div class="card-header bg-primary text-white text-center">
+                            <h4 class="mb-0"><span class="icon-info-circle mr-2"></span>Thông Tin Chung</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush" id="thong_tin_chung">
+                                <!-- Thông tin chung sẽ được render ở đây -->
+                                <!-- Ví dụ:
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><strong>Số đội tham dự:</strong></span>
+                            <span>32</span>
+                        </li>
+                        -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Top 5 cầu thủ ghi bàn -->
+                <div class="col-lg-7 mb-4">
+                    <div class="card shadow border-0 h-100">
+                        <div class="card-header bg-success text-white text-center">
+                            <h4 class="mb-0"><span class="icon-star mr-2"></span>Top 5 Cầu Thủ Ghi Bàn</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-hover mb-0 text-center" id="top_cau_thu_ban">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Hạng</th>
+                                        <th>Cầu Thủ</th>
+                                        <th>Đội</th>
+                                        <th>Bàn Thắng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dữ liệu top 5 cầu thủ sẽ được render ở đây -->
+                                    <!-- Ví dụ:
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <img src="/frontend/assets/home/images/player1.jpg" alt="Player" class="rounded-circle mr-2" width="32" height="32">
+                                    Nguyễn Văn A
+                                </td>
+                                <td>Việt Nam</td>
+                                <td>7</td>
+                            </tr>
+                            -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Có thể bổ sung thêm các thống kê khác bên dưới -->
+        </div>
+        <!-- ...existing code... --
+
+
+
+        <div class="container site-section">
+            <div class="row">
+                <div class="col-6 title-section">
+                    <h2 class="heading">Our Blog</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="custom-media d-flex">
+                        <div class="img mr-4">
+                            <img src="/frontend/assets/home/images/img_1.jpg" alt="Image" class="img-fluid">
+                        </div>
+                        <div class="text">
+                            <span class="meta">May 20, 2020</span>
+                            <h3 class="mb-4"><a href="#">Romolu to stay at Real Nadrid?</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus deserunt saepe tempora
+                                dolorem.</p>
+                            <p><a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="custom-media d-flex">
+                        <div class="img mr-4">
+                            <img src="/frontend/assets/home/images/img_3.jpg" alt="Image" class="img-fluid">
+                        </div>
+                        <div class="text">
+                            <span class="meta">May 20, 2020</span>
+                            <h3 class="mb-4"><a href="#">Romolu to stay at Real Nadrid?</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus deserunt saepe tempora
+                                dolorem.</p>
+                            <p><a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <footer class="footer-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="widget mb-3">
+                            <h3>News</h3>
+                            <ul class="list-unstyled links">
+                                <li><a href="#">All</a></li>
+                                <li><a href="#">Club News</a></li>
+                                <li><a href="#">Media Center</a></li>
+                                <li><a href="#">Video</a></li>
+                                <li><a href="#">RSS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widget mb-3">
+                            <h3>Tickets</h3>
+                            <ul class="list-unstyled links">
+                                <li><a href="#">Online Ticket</a></li>
+                                <li><a href="#">Payment and Prices</a></li>
+                                <li><a href="#">Contact &amp; Booking</a></li>
+                                <li><a href="#">Tickets</a></li>
+                                <li><a href="#">Coupon</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="widget mb-3">
+                            <h3>Matches</h3>
+                            <ul class="list-unstyled links">
+                                <li><a href="#">Standings</a></li>
+                                <li><a href="#">World Cup</a></li>
+                                <li><a href="#">La Lega</a></li>
+                                <li><a href="#">Hyper Cup</a></li>
+                                <li><a href="#">World League</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="widget mb-3">
+                            <h3>Social</h3>
+                            <ul class="list-unstyled links">
+                                <li><a href="#">Twitter</a></li>
+                                <li><a href="#">Facebook</a></li>
+                                <li><a href="#">Instagram</a></li>
+                                <li><a href="#">Youtube</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <div class=" pt-5">
+                            <p>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        Copyright &copy;
+        <script>
+            document.write(new Date().getFullYear());
+        </script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a
+            href="https://colorlib.com" target="_blank">Colorlib</a>
+        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        </p>
+    </div>
+    </div>
+
+    </div>
+    </div>
+    </footer>
+
+
+
+    </div>
+    <!-- .site-wrap -->
+
+    <script src="/frontend/assets/home/js/jquery-3.3.1.min.js"></script>
+    <script src="/frontend/assets/home/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="/frontend/assets/home/js/jquery-ui.js"></script>
+    <script src="/frontend/assets/home/js/popper.min.js"></script>
+    <script src="/frontend/assets/home/js/bootstrap.min.js"></script>
+    <script src="/frontend/assets/home/js/owl.carousel.min.js"></script>
+    <script src="/frontend/assets/home/js/jquery.stellar.min.js"></script>
+    <script src="/frontend/assets/home/js/jquery.countdown.min.js"></script>
+    <script src="/frontend/assets/home/js/bootstrap-datepicker.min.js"></script>
+    <script src="/frontend/assets/home/js/jquery.easing.1.3.js"></script>
+    <script src="/frontend/assets/home/js/aos.js"></script>
+    <script src="/frontend/assets/home/js/jquery.fancybox.min.js"></script>
+    <script src="/frontend/assets/home/js/jquery.sticky.js"></script>
+    <script src="/frontend/assets/home/js/jquery.mb.YTPlayer.min.js"></script>
+
+
+    <script src="/frontend/mvc/view/view_js/nguoihammo/main.js"></script>
+    <script type="module" src="/frontend/mvc/view/view_js/nguoihammo/thongKe.js"></script>
+
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';  // Nếu dùng môi trường Node.js, hoặc gọi bcrypt client nếu có
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
 import thongBao from "/frontend/assets/components/thongBao.js";
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
             thongBao.thongBao_error("Mật khẩu mới và xác nhận không khớp!", null, "error");
             return;
         }
+        
         if (oldPass !== data1TaiKhoan.mat_khau) {
             thongBao.thongBao_error("Mật khẩu không chính xác!", null, "error");
             return;

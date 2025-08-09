@@ -16,7 +16,7 @@ export function getElementIds() {
         hinhAnh: document.getElementById("hinhAnh"),
         inputFile: document.getElementById("hinhAnhFile"),
         moTa: document.getElementById("moTa"),
-        trangThai: document.getElementById("trangThai"),
+        // trangThai: document.getElementById("trangThai"),
         // maGioiTinh_viewBody: document.getElementById("maGioiTinh_viewBody"),
         ngayBatDau_chon_viewbody: document.getElementById("ngayBatDau_chon_viewbody"),
         ngayKetThuc_chon_viewbody: document.getElementById("ngayKetThuc_chon_viewbody"),
@@ -72,7 +72,7 @@ export async function viewTbody(data, onXemMoTa, onEdit, onDelete) {
 export function fillForm(item) {
     const {
         maGiaiDau, tenGiaiDau, maNguoiTao, ngayBatDau, ngayKetThuc,
-        ngayHetDangKy, maGioiTinh, hinhAnh, moTa, trangThai
+        ngayBatDauDangKy, ngayHetDangKy, maGioiTinh, hinhAnh, moTa
     } = getElementIds();
     // console.log(maNguoiTao);
     maGiaiDau.value = item.ma_giai_dau;
@@ -80,11 +80,12 @@ export function fillForm(item) {
     maNguoiTao.value = item.ma_nguoi_tao;
     ngayBatDau.value = item.ngay_bat_dau;
     ngayKetThuc.value = item.ngay_ket_thuc;
+    ngayBatDauDangKy.value = item.ngay_bat_dau_dang_ky_giai;
     ngayHetDangKy.value = item.ngay_ket_thuc_dang_ky_giai;
 
     hinhAnh.value = item.hinh_anh;
     moTa.value = item.mo_ta || "";
-    trangThai.value = item.trang_thai_duyet;
+   
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
