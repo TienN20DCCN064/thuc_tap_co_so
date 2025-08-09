@@ -1,7 +1,9 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
-import { getElementIds, viewTbody, fillForm, loadDanhSachNguoiTao, loadDanhSachGiaiDau_chon, loadDanhSachDoiBong_chon } from "../../../view/view_js/quanly_admin/giai_dau/giaiDau.view.js";
+import { getElementIds, viewTbody, fillForm, loadDanhSachNguoiTao, loadDanhSachGiaiDau_chon, 
+    loadDanhSachDoiBong_chon } from "../../../view/view_js/quanly_admin/giai_dau/giaiDau.view.js";
 import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
 import hamChiTiet from "../../../model/global/model.hamChiTiet.js";
+import thongBao from "/frontend/assets/components/thongBao.js";
 
 const {
     btnLuuThayDoi, btnTaiLaiTrang, btnLocDanhSach, form,
@@ -79,9 +81,12 @@ async function load_viewTbody() {
     }
 
 
-    await viewTbody(data, handleEdit, handleDelete);
+    await viewTbody(data, handleXemMoTa, handleEdit, handleDelete);
 }
-
+async function handleXemMoTa(item) {
+    thongBao.thongBao_error(`${item.mo_ta}`);
+    // showNotification("Thông tin không hợp lệ!", null, "error"); // Đỏ
+}
 function handleEdit(item) {
     fillForm(item);
 }
@@ -141,7 +146,7 @@ async function handleLuuThayDoi(event) {
 
     };
     let formData_yeuCauTaoGiaiDau = {
-        ma_yeu_cau: await hamChung.taoID_theoBang("giai_dau"),
+        ma_yeu_cau: await hamChung.taoID_theoBang("yeu_cau_tao_giai_dau"),
         ten_giai_dau: tenGiaiDau.value,
         ngay_bat_dau: ngayBatDau.value,
         ngay_ket_thuc: ngayKetThuc.value,
@@ -159,7 +164,8 @@ async function handleLuuThayDoi(event) {
         console.log(ROLE_USER);
 
         if (ROLE_USER === "VT01") {
-            // await hamChung.them(formData, "giai_dau");
+            formData.ma_giai_dau = await hamChung.taoID_theoBang("giai_dau");
+            await hamChung.them(formData, "giai_dau");
             alert("Thêm thành công!");
         }
         else if (ROLE_USER === "VT02") {

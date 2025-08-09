@@ -36,8 +36,10 @@ async function handleLuuThayDoi(event) {
         ma_truong: maTruong.value,
         ten_truong: tenTruong.value
     };
+    
     if (maTruong.value === "") {
         formData.ma_truong = await hamChung.taoID_theoBang("truong");
+        console.log(formData);
         await hamChung.them(formData, "truong");
         alert("Thêm thành công!");
     } else {

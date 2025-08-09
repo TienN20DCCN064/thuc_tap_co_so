@@ -1,5 +1,5 @@
 import hamChung from "../../../model/global/model.hamChung.js";
-
+import thongBao from "/frontend/assets/components/thongBao.js";
 import { getElementIds, viewTbody, fillForm } from "../../../view/view_js/quanly_admin/trong_tai/loaiTrongTai.view.js";
 //                                    /frontend/mvc/controller/view/view_js/quanly_admin/trong_tai/loai_trong_tai.js 
 // C:\Users\vanti\Downloads\mvc_project\frontend\mvc\view\view_js\quanly_admin\trong_tai\loai_trong_tai.js
@@ -35,6 +35,10 @@ async function handleLuuThayDoi(event) {
             ma_loai_trong_tai: await hamChung.taoID_theoBang("loai_trong_tai"),
             ten_loai_trong_tai: tenLoaiTrongTai.value,
         };
+        if (await checkTenLoaiTrongTai_tonTai(tenLoaiTrongTai.value)) {
+            thongBao.thongBao_error("Đã tồn tại loại trọng tài với tên này!", 3000, "error");
+            return;
+        }
         await hamChung.them(formData, "loai_trong_tai");
         alert("Thêm thành công!");
     } else {
@@ -49,6 +53,10 @@ async function handleLuuThayDoi(event) {
     }
     console.log(formData);
     load_viewTbody();
+}
+async function checkTenLoaiTrongTai_tonTai(tenLoaiTrongTai) {
+    const data = await hamChung.layDanhSach("loai_trong_tai");
+    return data.some(item => item.ten_loai_trong_tai === tenLoaiTrongTai);
 }
 
 // Xử lý tải lại trang

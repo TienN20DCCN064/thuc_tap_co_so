@@ -1,5 +1,7 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
 import { GlobalStore, DoiTuyen } from "/frontend/global/global.js";
+// C:\Users\vanti\Desktop\mvc_project\frontend\mvc\controller\EditFormData.controller.js
+import FORM from "/frontend/MVC/controller/EditFormData.controller.js"
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -39,7 +41,7 @@ export async function viewTbody(data, onEdit, onDelete) {
         row.innerHTML = `
             <td style="text-align: center;">${lay1doiBong.ten_doi_bong}</td>
             <td style="text-align: center;">${item.ho_ten}</td>
-            <td style="text-align: center;">${item.ngay_sinh}</td>
+            <td style="text-align: center;">${FORM.formatDateT_to_Date(item.ngay_sinh)}</td>
             <td style="text-align: center;">${item.so_ao}</td>
             <td style="text-align: center;">${item.gioi_tinh}</td>
             <td style="text-align: center;">${lay1ViTri.ten_vi_tri}</td>
@@ -58,7 +60,7 @@ export function fillForm(item) {
     const { maCauThu, hoTen, ngaySinh, soAo, maGioiTinh, maViTri, maDoiBong, hinhAnh } = getElementIds();
     maCauThu.value = item.ma_cau_thu;
     hoTen.value = item.ho_ten;
-    ngaySinh.value = item.ngay_sinh;
+    ngaySinh.value = FORM.formatDateT_to_Date(item.ngay_sinh);
     soAo.value = item.so_ao;
     maGioiTinh.value = item.gioi_tinh;
     maViTri.value = item.ma_vi_tri;

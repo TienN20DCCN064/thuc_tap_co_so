@@ -1,4 +1,5 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+import FORM from "/frontend/mvc/controller/EditFormData.controller.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -14,18 +15,19 @@ export function getElementIds() {
     };
 }
 
-export function viewTbody(data, onEdit, onDelete) {
+export async function viewTbody(data, onEdit, onDelete) {
     const { tableBody } = getElementIds();
     tableBody.innerHTML = "";
     for (const item of data) {
         const row = document.createElement("tr");
+        const data1VaiTro = await hamChung.layThongTinTheo_ID("vai_tro", item.ma_vai_tro);
         row.innerHTML = `
             <td style="text-align: center;">${item.ma_nguoi_dung}</td>
             <td style="text-align: center;">${item.ten_dang_nhap}</td>
-            <td style="text-align: center;">${item.mat_khau}</td>
+            <td style="text-align: center;">****</td>
             <td style="text-align: center;">${item.trang_thai == "Hoạt động" ? "Hoạt Động" : "Bị Khóa"}</td>
-            <td style="text-align: center;">${item.ma_vai_tro}</td>
-            <td style="text-align: center;">${item.ngay_tao}</td>
+            <td style="text-align: center;">${data1VaiTro.ten_vai_tro}</td>
+            <td style="text-align: center;">${FORM.formatDateT_to_Date(item.ngay_tao)}</td>
             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
             <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
         `;
@@ -44,7 +46,7 @@ export async function fillForm(item) {
     matKhau.value = item.mat_khau;
     trangThai.value = item.trang_thai;
     maVaiTro.value = item.ma_vai_tro;
-    ngayTao.value = item.ngay_tao;
+    ngayTao.value = FORM.formatDateT_to_Date(item.ngay_tao);
     maNguoiDung.setAttribute("disabled", true);
     tenDangNhap.setAttribute("disabled", true);
     window.scrollTo({ top: 0, behavior: "smooth" });

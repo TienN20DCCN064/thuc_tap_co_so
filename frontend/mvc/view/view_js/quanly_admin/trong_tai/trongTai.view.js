@@ -1,5 +1,6 @@
 // frontend/mvc/view/view_js/quanly_admin/trong_tai/trong_tai.view.js
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+import FORM from "/frontend/mvc/controller/EditFormData.controller.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -44,7 +45,7 @@ export async function viewTbody(data, onEdit, onDelete) {
         row.innerHTML = `
             <td style="text-align: center;">${data1GiaiDau.ten_giai_dau}</td>
             <td style="text-align: center;">${item.ho_ten}</td>
-            <td style="text-align: center;">${item.ngay_sinh}</td>
+            <td style="text-align: center;">${FORM.formatDateT_to_Date(item.ngay_sinh)}</td>
             <td style="text-align: center;">${item.gioi_tinh}</td>
             <td style="text-align: center;">
                 <img src="${hinhAnh}" alt="Hình ảnh" style="width: 50px; height: 50px; border-radius: 50%;">
@@ -73,7 +74,7 @@ export function fillForm(data) {
     elementIDs.maGiaiDau.value = data.ma_giai_dau;
     elementIDs.maTrongTai.value = data.ma_trong_tai;
     elementIDs.hoTen.value = data.ho_ten;
-    elementIDs.ngaySinh.value = data.ngay_sinh;
+    elementIDs.ngaySinh.value = FORM.formatDateT_to_Date(data.ngay_sinh);
     elementIDs.maGioiTinh.value = data.gioi_tinh;
     elementIDs.maLoaiTrongTai.value = data.ma_loai_trong_tai;
     elementIDs.hinhAnh.value = data.hinh_anh;

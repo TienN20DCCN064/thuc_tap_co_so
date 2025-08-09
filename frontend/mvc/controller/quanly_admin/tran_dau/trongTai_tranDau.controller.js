@@ -21,14 +21,15 @@ const {
 } = getElementIds();
 let ROLE_USER = "";
 let DATA_TRONG_TAI_TRAN_DAU = [];
+let DATA_GIAI_DAU = [];
 
 document.addEventListener("DOMContentLoaded", async function () {
     ROLE_USER = await hamChung.getRoleUser();
     await reset_data_toanCuc();
 
     await loadDanhSachLoaiTrongTai();
-    await loadDanhGiaiDau(GlobalStore.getUsername());
-    await loadDanhSachGiaiDau_chon_viewbody(GlobalStore.getUsername());
+    await loadDanhGiaiDau(DATA_GIAI_DAU);
+    await loadDanhSachGiaiDau_chon_viewbody(DATA_GIAI_DAU);
 
     await load_viewTbody();
 
@@ -63,12 +64,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 async function reset_data_toanCuc() {
     DATA_TRONG_TAI_TRAN_DAU = await hamChung.layDanhSach("trong_tai_tran_dau");
+    DATA_GIAI_DAU = await hamChung.layDanhSach("giai_dau");
     // lấy ra danh sách trọng tài trận đấu theo giải đấu của quản lý
-    console.log("DATA_TRONG_TAI_TRAN_DAU", DATA_TRONG_TAI_TRAN_DAU);
+    // console.log("DATA_TRONG_TAI_TRAN_DAU", DATA_TRONG_TAI_TRAN_DAU);
     // const danhSachTrongTai_trong_1tranDau = await hamChiTiet.danhSachTrongTai_theo_1tranDau() 
     if (ROLE_USER === "VT02") {
         const danhSachTranDau_theoQLy = await hamChiTiet.danhSachTranDau_theoQL(GlobalStore.getUsername());
-
+        DATA_GIAI_DAU = DATA_GIAI_DAU.filter(item => item.ma_nguoi_tao === GlobalStore.getUsername());
         // lấy ra dataTrongTai_tranDau  danhSachTrongTai_theo_1tranDau
         let dataTrongTai_all_tranDau = [];
         for (const tranDau of danhSachTranDau_theoQLy) {

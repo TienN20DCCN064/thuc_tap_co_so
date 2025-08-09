@@ -1,4 +1,5 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
+import FORM from "/frontend/MVC/controller/EditFormData.controller.js"
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -29,7 +30,7 @@ export function getElementIds() {
 }
 
 // Hiển thị danh sách giải đấu
-export async function viewTbody(data, onEdit, onDelete) {
+export async function viewTbody(data, onXemMoTa, onEdit, onDelete) {
     const { tableBody } = getElementIds();
     tableBody.innerHTML = "";
 
@@ -49,20 +50,19 @@ export async function viewTbody(data, onEdit, onDelete) {
             <td style="text-align: center;">${item.ma_giai_dau}</td>
             <td style="text-align: center;">${item.ten_giai_dau}</td>
             <td style="text-align: center;">${data_1nguoiDung.ho_ten}</td>
-            <td style="text-align: center;">${item.ngay_bat_dau}</td>
-            <td style="text-align: center;">${item.ngay_ket_thuc}</td>
-            
-            <td style="text-align: center;">${item.ngay_bat_dau_dang_ky_giai}</td>
-            <td style="text-align: center;">${item.ngay_ket_thuc_dang_ky_giai}</td>
+            <td style="text-align:center">${item.ngay_bat_dau ? item.ngay_bat_dau.replace('T', ' ').slice(0, 16) : ""}</td>
+            <td style="text-align: center;">${item.ngay_ket_thuc ? item.ngay_ket_thuc.replace('T', ' ').slice(0, 16) : ""}</td>
 
+            <td style="text-align:center">${item.ngay_bat_dau_dang_ky_giai ? item.ngay_bat_dau_dang_ky_giai.replace('T', ' ').slice(0, 16) : ""}</td>
+            <td style="text-align: center;">${item.ngay_ket_thuc_dang_ky_giai ? item.ngay_ket_thuc_dang_ky_giai.replace('T', ' ').slice(0, 16) : ""}</td>
             <td style="text-align: center;"><img src="${hinh_anh}" alt="Hình ảnh" width="50"></td>
-            <td style="text-align: center;">${item.mo_ta || ""}</td>
-            <td style="text-align: center;">${item.trang_thai_duyet}</td>
+           
+            <td style="text-align: center;"><button class="btn btn-secondary btn-sm btn-xemMoTa">Xem</button></td>
             <td style="text-align: center;"><button class="edit-btn btn btn-warning btn-sm">Sửa</button></td>
             <td style="text-align: center;"><button class="delete-btn btn btn-danger btn-sm">Xóa</button></td>
         `;
         tableBody.appendChild(row);
-
+        row.querySelector(".btn-xemMoTa").addEventListener("click", () => onXemMoTa(item));
         row.querySelector(".edit-btn").addEventListener("click", () => onEdit(item));
         row.querySelector(".delete-btn").addEventListener("click", () => onDelete(item));
     }
@@ -84,7 +84,7 @@ export function fillForm(item) {
 
     hinhAnh.value = item.hinh_anh;
     moTa.value = item.mo_ta || "";
-    trangThai.value = item.trang_thai_duyet; 
+    trangThai.value = item.trang_thai_duyet;
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 

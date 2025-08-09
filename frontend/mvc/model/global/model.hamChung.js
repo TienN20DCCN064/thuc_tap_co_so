@@ -222,8 +222,10 @@ async function taoID_theoBang(table) {
             .filter(id => typeof id === "string" && id.startsWith(prefix)) // Kiểm tra kiểu dữ liệu và prefix
             .sort()
             .pop();
+        console.log(lastID);
 
         if (!lastID) {
+            console.log(`${prefix}0001`);
             return `${prefix}0001`; // Nếu không tìm thấy ID hợp lệ
         }
 

@@ -504,10 +504,10 @@ async function load_dataTable_chon() {
     if (maGiaiDau_chon.value !== "All") {
         if (maVongDau_chon.value === "All" || chon_hinhThuc_tao_tran.value === "chia-bang") {
             data_doiBong_giaiDau = data_doiBongGiaiDau.filter(item => item.ma_giai_dau === maGiaiDau_chon.value);
-            await viewTbody_chon(data_doiBong_giaiDau);
+            await viewTbody_chon(data_doiBong_giaiDau, handleXemGhiChu);
         } else {
             const data11 = await lay_data_doiBong_vong_giaiDau(maGiaiDau_chon.value, maVongDau_chon.value);
-            await viewTbody_chon(data11);
+            await viewTbody_chon(data11, handleXemGhiChu);
         }
     } else {
         const tableBody = document.getElementById("dataTable_chon").getElementsByTagName('tbody')[0];

@@ -66,11 +66,9 @@ export function fillForm(item) {
 }
 
 
-export async function loadDanhGiaiDau(maNguoiTao) {
+export async function loadDanhGiaiDau(data) {
     const selectElement = document.getElementById("maGiaiDau");
     selectElement.innerHTML = '<option value="">-- Chọn giai đấu --</option>';
-    let data = await hamChung.layDanhSach("giai_dau");
-    data = data.filter(item => item.ma_nguoi_tao === maNguoiTao);
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;
@@ -117,11 +115,9 @@ export async function loadDanhSachLoaiTrongTai() {
     });
 }
 
-export async function loadDanhSachGiaiDau_chon_viewbody(maNguoiTao) {
+export async function loadDanhSachGiaiDau_chon_viewbody(data) {
     const selectElement = document.getElementById("maGiaiDau_chon_viewbody");
     selectElement.innerHTML = '<option value="All">Tất Cả</option>';
-    let data = await hamChung.layDanhSach("giai_dau");
-    data = data.filter(item => item.ma_nguoi_tao === maNguoiTao);
     data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_giai_dau;

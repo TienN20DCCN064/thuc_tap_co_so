@@ -31,6 +31,7 @@ let DATA_TRONG_TAI_GIAI_DAU = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
     ROLE_USER = await hamChung.getRoleUser();
+    console.log("ROLE_USER", ROLE_USER);
     await reset_data_toanCuc();
 
 

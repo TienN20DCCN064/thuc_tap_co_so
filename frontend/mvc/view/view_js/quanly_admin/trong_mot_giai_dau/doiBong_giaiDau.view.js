@@ -1,5 +1,5 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
-
+import FORM from "/frontend/MVC/controller/EditFormData.controller.js"
 // C:\Users\vanti\Desktop\mvc_project\frontend\assets\public\src\common\chung_thongBao\thongBao.js
 export function getElementIds() {
     return {

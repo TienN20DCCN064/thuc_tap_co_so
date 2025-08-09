@@ -409,7 +409,7 @@ async function viewTbody_chon(data, maGiaiDau, trangThai_chon) {
         row.innerHTML = `
             <td style="text-align: center;">${data1giaiDau.ten_giai_dau}</td>
             <td style="text-align: center;">${data1doiBong.ten_doi_bong}</td>
-            <td style="text-align: center;">${item.thoi_gian_dang_ky}</td>
+            <td style="text-align:center">${item.thoi_gian_dang_ky ? item.thoi_gian_dang_ky.replace('T', ' ').slice(0, 16) : ""}</td>
             <td style="text-align: center;">${item.ly_do_tu_choi || ""}</td>
             <td style="text-align: center;">
                 <select class="status-select form-control form-control-sm">

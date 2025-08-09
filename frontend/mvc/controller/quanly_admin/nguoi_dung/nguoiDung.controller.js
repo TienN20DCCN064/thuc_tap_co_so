@@ -1,5 +1,5 @@
 import hamChung from "../../../model/global/model.hamChung.js";
-import { getElementIds, viewTbody, fillForm, loadDanhSachTruong } from "../../../view/view_js/quanly_admin/nguoi_dung/nguoiDung.view.js";
+import { getElementIds, viewTbody, fillForm, loadDanhSachTruong,loadDanhSachTruong_chon_viewbody } from "../../../view/view_js/quanly_admin/nguoi_dung/nguoiDung.view.js";
 
 const {
     btnLuuThayDoi,
@@ -11,14 +11,19 @@ const {
     email,
     soDienThoai,
     ngaySinh,
-    form
+    form,
+    maTruong_chon_viewbody,
+    gioiTinh_chon_viewbody
 } = getElementIds();
 
 document.addEventListener("DOMContentLoaded", async function () {
     await loadDanhSachTruong();
+    await loadDanhSachTruong_chon_viewbody();
     load_viewTbody();
     btnLuuThayDoi.addEventListener("click", handleLuuThayDoi);
     btnTaiLaiTrang.addEventListener("click", handleTaiLaiTrang);
+    maTruong_chon_viewbody.addEventListener("change", load_viewTbody);
+    gioiTinh_chon_viewbody.addEventListener("change", load_viewTbody);
 });
 
 async function load_viewTbody() {

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Quản lý nhân viên</title>
+    <title>Quản lý yêu cầu tạo giải đấu</title>
     <style>
         label {
             display: block;
@@ -45,124 +45,157 @@
             <div class="container-fluid px-4">
                 <div class="card-header">
                     <label class="font-weight-bold" style="font-size: 20px; color: #800000">QUẢN LÝ GIẢI ĐẤU</label>
-
                 </div>
+
                 <div class="card-header">
                     <form class="row mb-3" id="inputForm">
                         <div class="col-md-2">
-                            <label class="font-weight-bold">Mã Giải Đấu</label>
-                            <input type="text" class="form-control" id="maGiaiDau" required readonly />
+                            <label class="font-weight-bold">Mã Yêu Cầu</label>
+                            <input type="text" class="form-control" id="ma_yeu_cau" name="ma_yeu_cau" required
+                                readonly />
                         </div>
                         <div class="col-md-4">
                             <label class="font-weight-bold">Tên Giải Đấu</label>
-                            <input type="text" class="form-control" id="tenGiaiDau" required />
+                            <input type="text" class="form-control" id="ten_giai_dau" name="ten_giai_dau" required />
                         </div>
-                        <!-- <div class="col-md-4">
-                            <label class="font-weight-bold">Tên Tổ Chức</label>
-                            <input type="text" class="form-control" id="tenToChuc" required />
-                        </div> -->
                         <div class="col-md-3">
-                            <label class="font-weight-bold">Người Tạo Giải</label>
-                            <select class="form-control" id="maNguoiTao" required>
-                                <option value="">-- Chọn Người Tạo --</option>
+                            <label class="font-weight-bold">Người Gửi</label>
+                            <select class="form-control" id="ma_nguoi_gui" name="ma_nguoi_gui" required>
+                                <option value="">-- Chọn Người Gửi --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Thời Gian Gửi</label>
+                            <input type="datetime-local" class="form-control" id="thoi_gian_gui" name="thoi_gian_gui"
+                                readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Thời Gian Duyệt</label>
+                            <input type="datetime-local" class="form-control" id="thoi_gian_duyet"
+                                name="thoi_gian_duyet" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Người Duyệt</label>
+                            <!-- ko cho nhập -->
+                            <select class="form-control" id="ma_nguoi_duyet" name="ma_nguoi_duyet" disabled>
+                                <option value="">-- Chọn Người Duyệt --</option>
                             </select>
                         </div>
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Ngày Bắt Đầu</label>
-                            <input type="datetime-local" class="form-control" id="ngayBatDau" required />
+                            <input type="datetime-local" class="form-control" id="ngay_bat_dau" name="ngay_bat_dau"
+                                required />
                         </div>
                         <div class="col-md-3">
                             <label class="font-weight-bold">Ngày Kết Thúc</label>
-                            <input type="datetime-local" class="form-control" id="ngayKetThuc" required />
+                            <input type="datetime-local" class="form-control" id="ngay_ket_thuc" name="ngay_ket_thuc"
+                                required />
                         </div>
 
-                        <div class="col-md-3">
-                        </div>
+                        <div class="col-md-3"></div>
 
                         <div class="col-md-3">
                             <label class="font-weight-bold">Ngày Bắt Đầu Đăng Ký</label>
-                            <input type="datetime-local" class="form-control" id="ngayBatDauDangKy" required />
+                            <input type="datetime-local" class="form-control" id="ngay_bat_dau_dang_ky_giai"
+                                name="ngay_bat_dau_dang_ky_giai" required />
                         </div>
                         <div class="col-md-3">
                             <label class="font-weight-bold">Ngày Hết Đăng Ký</label>
-                            <input type="datetime-local" class="form-control" id="ngayHetDangKy" required />
+                            <input type="datetime-local" class="form-control" id="ngay_ket_thuc_dang_ky_giai"
+                                name="ngay_ket_thuc_dang_ky_giai" required />
                         </div>
-                        <div class="col-md-4">
-                            <label class="font-weight-bold">Hình Ảnh</label>
-                            <!-- Input hiển thị tên file hoặc URL ảnh -->
-                            <input type="text" class="form-control" id="hinhAnh" readonly />
-                            <!-- Input cho phép người dùng chọn file ảnh -->
-                            <input type="file" class="form-control" id="hinhAnhFile" accept="image/*" />
-                        </div>
-                        <!-- <div class="col-md-4">
-                            <label class="font-weight-bold">Giới Tính</label>
-                            <select class="form-control" id="maGioiTinh">
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
+                      
+
+                        <div class="col-md-3">
+                            <label class="font-weight-bold">Trạng Thái</label>
+                            <select class="form-control" id="trang_thai" name="trang_thai">
+                                <option value="cho_duyet">Chờ Duyệt</option>
+                                <option value="da_duyet">Đã Duyệt</option>
+                                <option value="tu_choi">Từ Chối</option>
                             </select>
-                        </div> -->
+                        </div>
+                          <div class="col-md-4">
+                            <label class="font-weight-bold">Hình Ảnh</label>
+                            <input type="text" class="form-control" id="hinh_anh" name="hinh_anh" readonly />
+                            <input type="file" class="form-control" id="hinh_anhFile" accept="image/*" />
+                        </div>
+
+
+
 
                         <div class="col-md-12 mt-3">
                             <label class="font-weight-bold">Mô Tả</label>
-                            <textarea class="form-control" id="moTa"></textarea>
+                            <textarea class="form-control" id="mo_ta" name="mo_ta"></textarea>
                         </div>
 
-                        <div class='col-md-12 mt-3'>
+                        <div class="col-md-12 mt-3">
                             <button id="button_luu" class="btn btn-success">Lưu</button>
                             <button id="button_taiLaiTrang" class="btn btn-outline-dark" type="button">Tải Lại
                                 Trang</button>
                         </div>
                     </form>
                 </div>
+
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i> DANH SÁCH GIẢI ĐẤU
-                        <button id="button_locDanhSach" class="btn btn-primary float-end">Lọc Danh Sách
-                            ra</button>
-
+                        <button id="button_locDanhSach" class="btn btn-primary float-end">Lọc Danh Sách ra</button>
                     </div>
-                    <div style="margin-left: 100px;">
-                        <form:form class="row mb-3" modelAttribute="doiBongTrongBangEntity" action="" method="post">
+
+                    <div style="margin-left: 100px; width: 50%;">
+                        <form class="row mb-3">
                             <div class="col-md-3">
                                 <label class="font-weight-bold">Ngày Bắt Đầu</label>
-                                <input type="date" class="form-control" id="ngayBatDau_chon_viewbody" required />
+                                <input type="date" class="form-control" id="ngayBatDau_chon_viewbody" />
                             </div>
                             <div class="col-md-3">
-                                <label class="font-weight-bold">Ngày Kêt Thúc</label>
-                                <input type="date" class="form-control" id="ngayKetThuc_chon_viewbody" required />
+                                <label class="font-weight-bold">Ngày Kết Thúc</label>
+                                <input type="date" class="form-control" id="ngayKetThuc_chon_viewbody" />
                             </div>
-
-
-                        </form:form>
+                            <div class="col-md-3" >
+                                <label class="font-weight-bold">Trạng Thái</label>
+                                <select class="form-control" id="trangThai_chon_viewbody" required>
+                                    <option value="All"> --- Tất Cả ---</option>
+                                    <option value="cho_duyet">Chờ Duyệt</option>
+                                    <option value="da_duyet">Đã Duyệt</option>
+                                    <option value="tu_choi">Từ Chối</option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
+
                     <div class="card-body">
                         <table id="table">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;">Mã Giải Đấu</th>
+                                    <th style="text-align: center;">Mã Yêu Cầu</th>
                                     <th style="text-align: center;">Tên Giải Đấu</th>
-                                    <th style="text-align: center;">Người Tổ Chức</th>
+                                    <th style="text-align: center;">Người Gửi</th>
                                     <th style="text-align: center;">Ngày Bắt Đầu</th>
                                     <th style="text-align: center;">Ngày Kết Thúc</th>
-                                    <th style="text-align: center;">Ngày Bắt Đầu Đăng Ký</th>
-                                    <th style="text-align: center;">Ngày Hết Đăng Ký</th>
-
+                                    <th style="text-align: center;">Ngày Bắt Đầu ĐK</th>
+                                    <th style="text-align: center;">Ngày Hết ĐK</th>
                                     <th style="text-align: center;">Hình Ảnh</th>
+
+                                    <th style="text-align: center;">Trạng Thái</th>
+                                    <th style="text-align: center;">Người Duyệt</th>
+                                    <th style="text-align: center;">Thời Gian Gửi</th>
+                                    <th style="text-align: center;">Thời Gian Duyệt</th>
                                     <th style="text-align: center;">Mô Tả</th>
-                                    <!-- <th style="text-align: center;">Trạng Thái</th> -->
                                     <th style="text-align: center;">Sửa</th>
                                     <th style="text-align: center;">Xóa</th>
                                 </tr>
                             </thead>
                             <tbody id="dataTable">
-                                <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
+                                <!-- Dữ liệu sẽ được render bằng JavaScript -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </main>
+
 
 
 
@@ -186,6 +219,7 @@
                                 <option value="All">Tất Cả</option>
                             </select>
                         </div>
+
                     </form>
                 </div>
 
@@ -283,7 +317,7 @@
         }
     </script>
 
-    <script type="module" src="/frontend/mvc/controller/quanly_admin/giai_dau/giaiDau.controller.js"></script>
+    <script type="module" src="/frontend/mvc/controller/quanly_admin/giai_dau/yeuCauTaoGiaiDau.controller.js"></script>
     <script type="module" src="/frontend/global/global.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

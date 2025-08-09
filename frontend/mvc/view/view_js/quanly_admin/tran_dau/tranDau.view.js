@@ -1,5 +1,5 @@
 import hamChung from "/frontend/mvc/model/global/model.hamChung.js";
-
+import FORM from "/frontend/mvc/controller/EditFormData.controller.js";
 export function getElementIds() {
     return {
         btnLuuThayDoi: document.getElementById("button_luu"),
@@ -119,7 +119,7 @@ export async function viewTableBody(data, onXemTrongTai, onXemGhiChu, onEdit, on
             <td style="text-align: center;">${tenDoi2}</td>
             <td style="text-align: center;">${tenDoiThang}</td>
 
-            <td style="text-align: center;">${item.thoi_gian_dien_ra}</td>
+            <td style="text-align: center;">${FORM.formatDateT_to_DateTime(item.thoi_gian_dien_ra)}</td>
             <td style="text-align: center;">${data1SVD.ten_san}</td>
             <td style="text-align: center;">${item.trang_thai}</td>
 
@@ -137,11 +137,22 @@ export async function viewTableBody(data, onXemTrongTai, onXemGhiChu, onEdit, on
     }
 }
 
-export async function viewTbody_chon(data_doiBong_giaiDau) {
+export async function viewTbody_chon(data_doiBong_giaiDau,onXemGhiChu) {
     const tableBody = document.getElementById("dataTable_chon").getElementsByTagName('tbody')[0];
     tableBody.innerHTML = "";
     for (let i = 0; i < data_doiBong_giaiDau.length; i++) {
         const item = data_doiBong_giaiDau[i];
+        let hinh_anh;
+        // const data1NguoiDung = await hamChung.layThongTinTheo_ID("nguoi_dung", item.ma_ql_doi_bong);
+
+        if (item.hinh_anh === null || item.hinh_anh === "") {
+            // hinh_anh = "/frontend/assets/public/images/cat-2.png";
+            hinh_anh = "/frontend/assets/public/images/user-icon.png";
+            // C:\Users\vanti\Desktop\mvc_project\frontend\assets\public\images\cat-2.png
+        } else {
+            hinh_anh = await hamChung.getImage(item.hinh_anh);
+        }
+
         const checked = item.hat_giong === "co" ? "checked" : "";
         const row = document.createElement("tr");
         const data1doiBongTrongGiai = await hamChung.layThongTinTheo_2_ID("doi_bong_giai_dau", item.ma_doi_bong, item.ma_giai_dau);
@@ -153,10 +164,11 @@ export async function viewTbody_chon(data_doiBong_giaiDau) {
                 <input type="checkbox" class="checkbox-hatGiong" value="${item.ma_doi_bong}" ${checked}>
             </td>
             <td style="text-align: center;">${data1doiBongTrongGiai.ten_doi_bong}</td>
-            <td style="text-align: center;">${item.logo}</td>
-            <td style="text-align: center;">${item.quoc_gia}</td>
+            <td style="text-align: center;"><img src="${hinh_anh}" alt="Logo" width="50"></td>
+            <td style="text-align: center;"><button class="xemGhiChu_chon-btn btn btn-warning btn-sm">Xem</button></td>
         `;
         tableBody.appendChild(row);
+        row.querySelector(".xemGhiChu_chon-btn").addEventListener("click", () => onXemGhiChu(item));
     }
 }
 
