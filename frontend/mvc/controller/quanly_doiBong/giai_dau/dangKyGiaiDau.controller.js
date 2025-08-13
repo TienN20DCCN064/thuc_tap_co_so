@@ -292,7 +292,7 @@ async function check_doiBong_coDatYeuCau_dangKyGiaiKhong(ma_giai_dau, ma_doi_bon
     const dataCauHinhGiaiDau = await hamChung.layThongTinTheo_ID("cau_hinh_giai_dau", ma_giai_dau);
     const dataDoiBong = await hamChung.layThongTinTheo_ID("doi_bong", ma_doi_bong);
     const soLuongCauThu = await hamChiTiet.demSoLuong_cauThu_theoDoiBong(ma_doi_bong);
-    if(soLuongCauThu < dataCauHinhGiaiDau.so_luong_cau_thu_toi_thieu_moi_doi) {
+    if (soLuongCauThu < dataCauHinhGiaiDau.so_luong_cau_thu_toi_thieu_moi_doi) {
         console.log();
         return "Đội bóng không đủ số lượng cầu thủ tối thiểu để đăng ký giải đấu."; // Không đủ số lượng cầu thủ tối thiểu
     }
@@ -305,11 +305,18 @@ function button_dangKy(data) {
         console.log("data:", data);
 
         btn.addEventListener("click", async () => {
+
             // kiểm tra nếu none thì cho hiện lại "dangKyGiai").style.display = "none";
             if (document.getElementById("dangKyGiai").style.display === "none") {
                 document.getElementById("dangKyGiai").style.display = "block"; // hiện lại nút đăng ký giải
             }
-            const item = data[index];
+            // const item = data[index];
+            // alert(item.ma_giai_dau);
+            // Lấy mã giải đấu từ thuộc tính data
+            const maGiaiDau = btn.getAttribute("data-magiaidau");
+            // Tìm đúng item trong data
+            const item = data.find(gd => gd.ma_giai_dau == maGiaiDau);
+            // alert(item.ma_giai_dau); // Giờ sẽ luôn đúng
             const dataCauHinhGiaiDau = await hamChung.layThongTinTheo_ID("cau_hinh_giai_dau", item.ma_giai_dau);
             // 🔥 In ra loại button
             const buttonType = btn.innerText.trim();
