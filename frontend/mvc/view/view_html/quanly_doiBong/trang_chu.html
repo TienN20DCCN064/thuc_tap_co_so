@@ -30,9 +30,10 @@
   <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed" style="background: url('/frontend/assets/home/images/bg_1.jpg');background-size: cover; ">
+
   <div id="chen"></div>
-     <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>  
+  <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>
   <style>
     #layoutSidenav_content {
       margin-left: 200px;
@@ -40,7 +41,21 @@
     }
   </style>
   <div id="layoutSidenav_content">
+    <div class="center-title">TRANG CHỦ QUẢN LÝ</div>
+    <style>
+      .center-title {
+        position: absolute;
+        top: 50%;
+        left: 60%;
+        /* thay đổi % để dịch sang phải */
+        transform: translate(-10%, -50%);
+        font-size: 70px;
+        font-weight: bold;
+        color: white;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
 
+      }
+    </style>
 
     <footer class="py-4 bg-light mt-auto">
       <div class="container-fluid px-4">

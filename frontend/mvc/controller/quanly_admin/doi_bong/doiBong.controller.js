@@ -94,7 +94,7 @@ async function handleLuuThayDoi(event) {
         if (await checkTenDoiBong_trong_doiBong(tenDoiBong.value, DATA_DOI_BONG)) {
             alert("Tên đội bóng đã tồn tại!");
             return;
-        }x
+        }
         await hamChung.them(formData, "doi_bong");
         alert("Thêm thành công!");
     } else {
@@ -112,7 +112,7 @@ async function handleLuuThayDoi(event) {
     if (inputFile.value != "") {
         await hamChung.uploadImage(inputFile.files[0]);
     }
-    load_viewTbody();
+    await load_viewTbody();
 }
 
 function handleTaiLaiTrang(event) {

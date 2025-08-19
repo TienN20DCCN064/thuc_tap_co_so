@@ -35,14 +35,21 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 async function reset_data_toanCuc() {
 
-
-
-
     DATA_CAU_THU = await hamChung.layDanhSach("cau_thu");
     DATA_DOI_BONG = await hamChung.layDanhSach("doi_bong");
+    console.log("ROLE_USER", ROLE_USER);
+    console.log("DATA_CAU_THU", DATA_CAU_THU);
+    console.log("DATA_DOI_BONG", DATA_DOI_BONG);
     if (ROLE_USER === "VT02") {
         DATA_DOI_BONG = DATA_DOI_BONG.filter(item => item.ma_ql_doi_bong === GlobalStore.getUsername());
-        DATA_CAU_THU = DATA_CAU_THU.filter(item => item.ma_doi_bong === maDoiBong.value);
+        // DATA_CAU_THU = DATA_CAU_THU.filter(item => item.ma_doi_bong === maDoiBong.value);
+        console.log("DATA_DOI_BONG", DATA_DOI_BONG);
+        // lấy ra danh sách cầu thủ có ma_doi_bong === DATA_DOI_BONG[i]
+        let dataCauThu_theoDoiBong = [];
+        for(const item of DATA_DOI_BONG) {
+            dataCauThu_theoDoiBong = dataCauThu_theoDoiBong.concat(DATA_CAU_THU.filter(cauThu => cauThu.ma_doi_bong === item.ma_doi_bong));
+        }
+        DATA_CAU_THU = dataCauThu_theoDoiBong;
     }
 
 }

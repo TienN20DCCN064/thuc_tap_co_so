@@ -538,7 +538,7 @@ async function uploadImage(file) {
     formData.append('image', file);
 
     try {
-        alert("Đang upload ảnh...");
+        // alert("Đang upload ảnh...");
         const url = GlobalStore.getLinkCongApi_image()
         const response = await fetch(url, {
             method: 'POST',

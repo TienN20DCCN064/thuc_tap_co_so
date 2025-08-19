@@ -27,7 +27,7 @@ export async function viewTbody(data, onEdit, onDelete) {
     if (maDoiBong_chon_viewbody && maDoiBong_chon_viewbody.value !== "All") {
         data = data.filter(item => item.ma_doi_bong === maDoiBong_chon_viewbody.value);
     }
-    data = data.slice(0, 20);
+    data = data.slice(0, 40);
     tableBody.innerHTML = "";
 
     for (const item of data) {
@@ -82,14 +82,15 @@ export async function loadDanhSachViTri() {
 }
 
 export async function loadDanhSachDoiBong(data) {
+    console.log("loadDanhSachDoiBong", data);
     const selectElement = document.getElementById("maDoiBong");
     selectElement.innerHTML = '<option value="">-- Chọn Đội Bóng --</option>';
 
-    console.log("Danh sách đội bóng:", data);
-    console.log("GlobalStore.getUsername", GlobalStore.getUsername());
-    const dataDoiBong_theoMaQuanLy = data.filter(item => item.ma_ql_doi_bong === GlobalStore.getUsername());
+    // console.log("Danh sách đội bóng:", data);
+    // console.log("GlobalStore.getUsername", GlobalStore.getUsername());
+    // const dataDoiBong_theoMaQuanLy = data.filter(item => item.ma_ql_doi_bong === GlobalStore.getUsername());
 
-    dataDoiBong_theoMaQuanLy.forEach(item => {
+    data.forEach(item => {
         const option = document.createElement("option");
         option.value = item.ma_doi_bong;
         option.textContent = `${item.ten_doi_bong}`;

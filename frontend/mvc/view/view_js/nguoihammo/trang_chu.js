@@ -89,8 +89,8 @@ async function view_1TranDau(data1TranDau, dataCauHinhGiaiDau_chon) {
 
     // team1.querySelector("ul").innerHTML = dataCauHinhGiaiDau_chon.list_player_team_1.map(player => `<li>${player}</li>`).join("");
     // team2.querySelector("ul").innerHTML = dataCauHinhGiaiDau_chon.list_player_team_2.map(player => `<li>${player}</li>`).join("");
-    renderPlayerList("team-1-players", dataCauThu_doi1_trongGiai);
-    renderPlayerList("team-2-players", dataCauThu_doi2_trongGiai);
+    await renderPlayerList("team-1-players", dataCauThu_doi1_trongGiai);
+    await renderPlayerList("team-2-players", dataCauThu_doi2_trongGiai);
 
 }
 
@@ -153,7 +153,7 @@ async function view_bangXepHang(maGiaiDau, input_maVongDau) {
     //  console.log("Danh sách đội bóng giải đấu:", dataDoiBongGiaiDau_1GiaiDau);
     // const demThongSoDoiBong_theoGiai_vongDau = await demThongSoDoiBong_theoGiai_vongDau(maDoiBong, maGiaiDau, maVongDau);
     // const lay1QuyTacTinhDiem = await hamChung.layThongTinTheo_2_ID_notToken("quy_tac_tinh_diem", maGiaiDau, maVongDau);
-    const lay1QuyTacTinhDiem = await hamChung.layThongTinTheo_2_ID_notToken("quy_tac_tinh_diem", maGiaiDau, "VD01");
+    const lay1QuyTacTinhDiem = await hamChung.layThongTinTheo_2_ID_notToken("quy_tac_tinh_diem", maGiaiDau, "vd_0001");
     //  console.log("Quy tắc tính điểm:", lay1QuyTacTinhDiem);
     const danhSachThongSoDoiBong = [];
     for (const doiBong of dataDoiBongGiaiDau_1GiaiDau) {
@@ -198,15 +198,17 @@ var siteCountDown = function (date, element) {
     });
 
 };
-function renderPlayerList(containerId, players) {
+async function renderPlayerList(containerId, players) {
     const container = document.getElementById(containerId);
     container.innerHTML = ""; // Xóa danh sách cũ
 
-    players.forEach(player => {
+    for (const player of players) {
         const li = document.createElement("li");
-        li.textContent = `${player.ho_ten} (${player.ma_vi_tri})`; // Hiển thị tên cầu thủ và vị trí
+        const data1Vitri = await hamChung.layThongTinTheo_ID_notToken("vi_tri_cau_thu", player.ma_vi_tri);
+        // li.textContent = `${player.ho_ten} (${data1Vitri.ten_vi_tri})`; // Hiển thị tên cầu thủ và vị trí
+        li.textContent = `${player.ho_ten} `; // Hiển thị tên cầu thủ và vị trí
         container.appendChild(li);
-    });
+    }
 }
 async function tranDau_tiepTheo(maGiaiDau) {
     const dataTranDau = await hamChung.layDanhSach_notToken("tran_dau");

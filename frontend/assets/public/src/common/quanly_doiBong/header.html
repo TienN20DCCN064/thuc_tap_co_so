@@ -108,6 +108,10 @@
                                     <a class="nav-link"
                                         href="/frontend/mvc/view/view_html/quanly_doiBong/giai_dau/cau_hinh_giai_dau.html">Cấu
                                         Hình Giải Đấu</a>
+                                    <a class="nav-link"
+                                        href="/frontend/mvc/view/view_html/quanly_doiBong/giai_dau/sanVanDong.html">Sân
+                                        Vận
+                                        Động</a>
                                     <!-- <a class="nav-link"
                                         href="/frontend/mvc/view/view_html/quanly_doiBong/giai_dau/dangKyThamGiaGiai.html">Đăng
                                         Ký Tham Gia</a> -->
@@ -121,10 +125,7 @@
                                         href="/frontend/mvc/view/view_html/quanly_doiBong/giai_dau/quy_tac_tinh_diem.html">Quy
                                         Tắc Tính Điểm</a>
 
-                                    <a class="nav-link"
-                                        href="/frontend/mvc/view/view_html/quanly_doiBong/giai_dau/sanVanDong.html">Sân
-                                        Vận
-                                        Động</a>
+
                                 </nav>
                             </div>
 
@@ -162,30 +163,10 @@
                             </div>
 
 
-                            <!-- Đội Bóng -->
-                            <div class="sb-sidenav-menu-heading">Đội Bóng</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapseTeams" aria-expanded="false" aria-controls="collapseTeams">
-                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div> Đội Bóng Của Bạn
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseTeams" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link"
-                                        href="/frontend/mvc/view/view_html/quanly_doiBong/doi_bong/doiBong.html">Đội
-                                        Bóng</a>
-                                    <a class="nav-link"
-                                        href="/frontend/mvc/view/view_html/quanly_doiBong/doi_bong/cau_thu.html">Cầu
-                                        Thủ</a>
-                                  
-                                </nav>
-                            </div>
-
-                            <!-- Trận Đấu -->
-                            <div class="sb-sidenav-menu-heading">Trận Đấu</div>
+                            <div class="sb-sidenav-menu-heading">Xếp Lịch Trận Đấu</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                 data-bs-target="#collapseMatches" aria-expanded="false" aria-controls="collapseMatches">
-                                <div class="sb-nav-link-icon"><i class="fas fa-futbol"></i></div> Trận Đấu
+                                <div class="sb-nav-link-icon"><i class="fas fa-futbol"></i></div> Xếp Lịch Trận Đấu
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseMatches" data-bs-parent="#sidenavAccordion">
@@ -206,6 +187,45 @@
 
 
 
+
+                            <!-- Đội Bóng -->
+                            <div class="sb-sidenav-menu-heading">Đội Bóng Của Bạn</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTeams" aria-expanded="false" aria-controls="collapseTeams">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div> Đội Bóng Của Bạn
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseTeams" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link"
+                                        href="/frontend/mvc/view/view_html/quanly_doiBong/doi_bong/doiBong.html">Đội
+                                        Bóng</a>
+                                    <a class="nav-link"
+                                        href="/frontend/mvc/view/view_html/quanly_doiBong/doi_bong/cau_thu.html">Cầu
+                                        Thủ</a>
+
+                                </nav>
+                            </div>
+
+                            <!-- Đội Bóng -->
+                            <div class="sb-sidenav-menu-heading">Trận Đấu Của Bạn</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseMatchesYour" aria-expanded="false"
+                                aria-controls="collapseMatchesYour">
+                                <div class="sb-nav-link-icon"><i class="fas fa-futbol"></i></div> Trận Đấu Của Bạn
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseMatchesYour" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link"
+                                        href="/frontend/mvc/view/view_html/quanly_doiBong/tran_dau/tran_dau_cua_ban.html">Trận
+                                        Đấu</a>
+
+                                </nav>
+                            </div>
+
+
+                            <!-- Trận Đấu -->
 
                             <!-- <div class="sb-sidenav-menu-heading">Đăng ký</div>
                             <a class="nav-link"
@@ -235,13 +255,16 @@
                                         Giải Đấu
                                     </a>
                                     <a class="nav-link"
-                                        href="/frontend/mvc/view/view_html/quanly_doiBong/giai_dau/dangKyTaoGiaiDau.html">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div> Tạo Giải
+                                        href="/frontend/mvc/view/view_html/quanly_doiBong/dang_ky/danhSachYeuCauTaoGiai.html">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>Yêu Cầu Tạo
+                                        Giải
                                         Đấu
                                     </a>
                                 </nav>
                             </div>
                             <!-- ...existing code... -->
+
+
 
                         </div>
                     </div>

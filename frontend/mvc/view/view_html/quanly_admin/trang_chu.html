@@ -29,8 +29,9 @@
 
   <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
+<!-- C:\Users\vanti\Desktop\mvc_project\frontend\assets\home\images\bg_3.jpg -->
 
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed" style="background: url('/frontend/assets/home/images/bg_1.jpg');background-size: cover; ">
   <div id="chen"></div>
 
   <script type="module" src="/frontend/assets/public/src/common/common.view.js"></script>
@@ -40,8 +41,24 @@
       margin-top: 100px;
     }
   </style>
+  <!-- Thêm tiêu đề ở giữa màn hình -->
+  <div class="center-title">TRANG CHỦ ADMIN</div>
+  <style>
+    .center-title {
+      position: absolute;
+      top: 50%;
+      left: 60%;
+      /* thay đổi % để dịch sang phải */
+      transform: translate(-10%, -50%);
+      font-size: 70px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+
+    }
+  </style>
   <div id="layoutSidenav_content">
-    
+
 
     <footer class="py-4 bg-light mt-auto">
       <div class="container-fluid px-4">

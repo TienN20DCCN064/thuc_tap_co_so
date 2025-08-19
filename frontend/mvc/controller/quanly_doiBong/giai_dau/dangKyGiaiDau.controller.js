@@ -249,8 +249,9 @@ async function viewTbody() {
 
         row.innerHTML = `
             <td style="text-align: center;">${item.ten_giai_dau}</td>
-            <td style="text-align: center;">${item.ngay_bat_dau}</td>
-            <td style="text-align: center;">${item.ngay_ket_thuc}</td>
+            <td style="text-align:center">${item.ngay_bat_dau ? item.ngay_bat_dau.replace('T', ' ').slice(0, 16) : ""}</td>
+            <td style="text-align:center">${item.ngay_ket_thuc ? item.ngay_ket_thuc.replace('T', ' ').slice(0, 16) : ""}</td>
+         
             <td style="text-align: center;"><button class="xemMoTa-btn btn btn-warning btn-sm">Xem</button></td>
             <td style="text-align: center;">
                 <button class="sign_up-btn btn btn-warning btn-sm" 

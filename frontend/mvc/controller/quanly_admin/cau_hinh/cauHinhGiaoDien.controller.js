@@ -1,4 +1,4 @@
-import hamChung from "../../model/global/model.hamChung.js";
+import hamChung from "../../../model/global/model.hamChung.js";
 import {
     getElementIds,
     viewTbody,
@@ -6,7 +6,7 @@ import {
     loadDanhSachGiaiDau,
     loadDanhSachVongDau,
     loadDanhSachTranDau
-} from "../../view/view_js/trang_chung/cauHinhGiaoDien.view.js";
+} from "../../../view/view_js/quanly_admin/cau_hinh/cauHinhGiaoDien.view.js";
 
 const {
     btnLuuThayDoi, btnTaiLaiTrang, maCauHinhGiaoDien, tenCauHinhGiaoDien, background, backgroundFile,

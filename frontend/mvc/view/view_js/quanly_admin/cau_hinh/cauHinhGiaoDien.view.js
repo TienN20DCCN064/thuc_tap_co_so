@@ -98,10 +98,13 @@ export async function loadDanhSachTranDau(maGiaiDau, maVongDau) {
     if (maVongDau) {
         data = data.filter(item => item.ma_vong_dau === maVongDau);
     }
-    data.forEach(item => {
+    for await (const item of data) {
+        const dataDoiBong1 = await hamChung.layThongTinTheo_ID("doi_bong", item.ma_doi_1);
+        const dataDoiBong2 = await hamChung.layThongTinTheo_ID("doi_bong", item.ma_doi_2);
+        const string_value = `${dataDoiBong1.ten_doi_bong} - ${dataDoiBong2.ten_doi_bong}`;
         const option = document.createElement("option");
         option.value = item.ma_tran_dau;
-        option.textContent = `${item.ma_tran_dau} - ${item.ten_tran_dau}`;
+        option.textContent = `${item.ma_tran_dau} - ${string_value}`;
         selectElement.appendChild(option);
-    });
+    }
 }   

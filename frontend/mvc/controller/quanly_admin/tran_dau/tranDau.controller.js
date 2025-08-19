@@ -289,7 +289,7 @@ function taoDongTrongTai(index, ma_trong_tai, ma_loai_trong_tai, dsTrongTai, dsV
                 <select class="form-select select-trong-tai" required>
                     ${dsTrongTai.map(t => `
                         <option value="${t.ma_trong_tai}" ${t.ma_trong_tai === ma_trong_tai ? "selected" : ""}>
-                           ${t.ma_trong_tai} - ${t.ten_trong_tai}
+                           ${t.ten_trong_tai}
                         </option>`).join("")}
                 </select>
             </div>
@@ -297,7 +297,7 @@ function taoDongTrongTai(index, ma_trong_tai, ma_loai_trong_tai, dsTrongTai, dsV
                 <select class="form-select select-vai-tro" required>
                     ${dsVaiTro.map(t => `
                         <option value="${t.ma_loai_trong_tai}" ${t.ma_loai_trong_tai === ma_loai_trong_tai ? "selected" : ""}>
-                            ${t.ma_loai_trong_tai} - ${t.ten_loai_trong_tai}
+                          ${t.ten_loai_trong_tai}
                         </option>`).join("")}
                 </select>
             </div>
@@ -750,23 +750,24 @@ async function themDanhSachTranDau_vaoDaTa() {
         };
         console.log("index " + (i + 1));
         console.log("👉 Đang thêm trận:", formData);
+        await hamChung.them(formData, "tran_dau");
         if (i !== 1) {
-            //await hamChung.them(formData, "tran_dau");
+            //  await hamChung.them(formData, "tran_dau");
         } else {
             formData_so_batDongBo_index1 = formData;
         }
         console.log("✅ Thêm thành công:", formData);
     }
-    if (Object.keys(formData_so_batDongBo_index1).length !== 0) {
-        console.log("👉 Đang thêm trận them:", formData_so_batDongBo_index1);
-        const ma_tran_dau_2 = await hamChung.taoID_theoBang("tran_dau");
-        formData_so_batDongBo_index1.ma_tran_dau = ma_tran_dau_2;
-    }
+    // if (Object.keys(formData_so_batDongBo_index1).length !== 0) {
+    //     console.log("👉 Đang thêm trận them:", formData_so_batDongBo_index1);
+    //     const ma_tran_dau_2 = await hamChung.taoID_theoBang("tran_dau");
+    //     formData_so_batDongBo_index1.ma_tran_dau = ma_tran_dau_2;
+    // }
     if (chon_hinhThuc_tao_tran.value === "chia-bang") {
-        //  await capNhat_bangDau_doi_bong_giai_dau(danhSach_doiBong_theoBang);
+        await capNhat_bangDau_doi_bong_giai_dau(danhSach_doiBong_theoBang);
     }
     thongBao.thongBao_error("Thêm trận đấu thành công", 3000, "success");
-    // await viewTbody();
+    await viewTbody();
 }
 
 async function capNhat_bangDau_doi_bong_giai_dau(danhSach_doiBong_theoBang) {
